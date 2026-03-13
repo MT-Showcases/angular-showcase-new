@@ -93,7 +93,7 @@
   }
 
   h2 {
-    color: #fff;
+    color: #1a1a2e;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     border-bottom: 3px solid;
@@ -126,7 +126,7 @@
 
   p {
     line-height: 1.6;
-    color: #fff;
+    color: #1a1a2e;
     margin-bottom: 1rem;
     font-weight: 500;
     font-size: 1.05rem;
@@ -650,7 +650,7 @@
   margin-bottom: 3rem;
 
   h2 {
-    color: #fff;
+    color: #1a1a2e;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     border-bottom: 3px solid;
@@ -772,7 +772,7 @@
   margin-bottom: 3rem;
 
   h2 {
-    color: #fff;
+    color: #1a1a2e;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     border-bottom: 3px solid;
@@ -842,11 +842,11 @@
 // Riepilogo
 .summary {
   margin-top: 3rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #f0edff;
+  color: #2d1b69;
   border-radius: 20px;
   padding: 3rem;
-  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.15);
   position: relative;
   overflow: hidden;
   animation: fadeInUp 0.6s ease-out;
@@ -858,15 +858,15 @@
     right: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(109, 74, 255, 0.05) 0%, transparent 70%);
     animation: rotate 20s linear infinite;
   }
 
   h2 {
-    color: white;
+    color: #2d1b69;
     margin-bottom: 2rem;
     font-size: 2rem;
-    border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 3px solid rgba(109, 74, 255, 0.3);
     padding-bottom: 0.8rem;
     position: relative;
     z-index: 1;
@@ -879,12 +879,11 @@
     p {
       font-size: 1.15rem;
       margin-bottom: 1.5rem;
-      color: white;
+      color: #2d1b69;
       line-height: 1.7;
 
       strong {
         font-weight: 700;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       }
     }
 
@@ -896,7 +895,7 @@
         margin-bottom: 1rem;
         font-size: 1.1rem;
         line-height: 1.8;
-        color: white;
+        color: #2d1b69;
 
         strong {
           font-weight: 700;
@@ -913,7 +912,7 @@
       margin-top: 2rem;
       font-size: 1.15rem;
       border-left: 5px solid rgba(109, 74, 255, 0.8); // WHY WCAG AA: contrasto minimo 4.5:1 (era solid white)
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
       transition: all 0.3s ease;
 
       &:hover {
