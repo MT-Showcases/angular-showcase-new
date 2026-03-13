@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 
 export interface BreadcrumbItem {
   label: string;
@@ -10,13 +10,8 @@ export interface BreadcrumbItem {
   styleUrl: './breadcrumb-trail.scss',
 })
 export class BreadcrumbTrail {
-  private readonly itemsState = signal<BreadcrumbItem[]>([]);
+  readonly itemsState = input<BreadcrumbItem[]>([], { alias: 'items' });
 
-  @Input({ required: true })
-  set items(items: BreadcrumbItem[]) {
-    this.itemsState.set(items);
-  }
-
-  readonly breadcrumbItems = computed(() => this.itemsState());
+  readonly items = computed(() => this.itemsState());
   readonly depthLevel = computed(() => this.itemsState().length);
 }

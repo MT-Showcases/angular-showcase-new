@@ -14,6 +14,8 @@ import { PatternPlayground } from './components/pattern-playground/pattern-playg
 import { DepthModal } from './components/depth-modal/depth-modal';
 import { DepthSidePanel } from './components/depth-side-panel/depth-side-panel';
 import { BreadcrumbItem, BreadcrumbTrail } from './components/breadcrumb-trail/breadcrumb-trail';
+import { SearchBar } from '../components/search-bar/search-bar';
+import { PatternCard } from './pattern-explorer.models';
 
 @Component({
   selector: 'app-pattern-explorer',
@@ -21,6 +23,7 @@ import { BreadcrumbItem, BreadcrumbTrail } from './components/breadcrumb-trail/b
     PageHeader,
     PatternList,
     PatternPlayground,
+    SearchBar,
     DepthModal,
     DepthSidePanel,
     BreadcrumbTrail,
@@ -33,6 +36,20 @@ export class PatternExplorer {
 
   patterns = signal(this.patternExplorerFacade.getPatternCards());
   selectedPatternId = signal(this.patterns()[0]?.id ?? '');
+  searchQuery = signal('');
+
+  filteredPatterns = computed(() => {
+    const query = this.searchQuery().trim().toLowerCase();
+
+    if (!query) {
+      return this.patterns();
+    }
+
+    return this.patterns().filter((pattern) => {
+      const haystack = `${pattern.title} ${pattern.category} ${pattern.level}`.toLowerCase();
+      return haystack.includes(query);
+    });
+  });
 
   isDepthModalOpen = signal(false);
   isDepthPanelOpen = signal(false);
@@ -68,6 +85,10 @@ export class PatternExplorer {
   onSelectPattern(patternId: string): void {
     this.selectedPatternId.set(patternId);
     this.isDepthModalOpen.set(true);
+  }
+
+  onSearchResultSelected(result: PatternCard | { id: string }): void {
+    this.onSelectPattern(result.id);
   }
 
   onCloseModal(): void {

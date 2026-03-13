@@ -1,7 +1,7 @@
 <nav class="breadcrumb-trail" aria-label="Progressive depth navigation">
   <p class="breadcrumb-trail__meta">Depth level: {{ depthLevel() }}</p>
   <ol class="breadcrumb-trail__list">
-    @for (item of breadcrumbItems(); track item.label; let last = $last) {
+    @for (item of items(); track item.label; let last = $last) {
     <li class="breadcrumb-trail__item" [class.breadcrumb-trail__item--active]="last">
       <span class="breadcrumb-trail__label">{{ item.label }}</span>
       @if (!last) {

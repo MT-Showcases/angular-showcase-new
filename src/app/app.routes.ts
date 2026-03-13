@@ -61,6 +61,10 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'pattern-explorer',
+    component: PatternExplorer,
+  },
+  {
     path: 'examples',
     children: [
       {
@@ -69,7 +73,8 @@ export const routes: Routes = [
       },
       {
         path: 'pattern-explorer',
-        component: PatternExplorer,
+        redirectTo: '/pattern-explorer',
+        pathMatch: 'full',
       },
     ],
   },

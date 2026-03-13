@@ -11,8 +11,14 @@
     feature.
   </p>
 
+  <app-search-bar
+    [(query)]="searchQuery"
+    [results]="filteredPatterns()"
+    (resultSelected)="onSearchResultSelected($event)"
+  />
+
   <app-pattern-list
-    [patterns]="patterns()"
+    [patterns]="filteredPatterns()"
     [selectedPatternId]="selectedPatternId()"
     (selectPattern)="onSelectPattern($event)"
   />
