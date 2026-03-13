@@ -1,6 +1,16 @@
 @use 'globals' as *;
 
+// WHY: :host isolates the full page from the global violet gradient (styles.scss)
+// Every page component must set background on :host to avoid violet bleed-through
+:host {
+  display: block;
+  background: #ffffff;
+  min-height: 100vh;
+  padding: 0 1rem;
+}
+
 .pattern-explorer {
+  // WHY: max-width for readability on very wide screens, centered
   max-width: 1400px;
   margin: 0 auto;
   padding: 1rem 0 2rem;
