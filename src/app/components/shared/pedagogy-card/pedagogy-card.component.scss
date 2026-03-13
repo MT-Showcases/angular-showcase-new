@@ -1,9 +1,13 @@
+@use '../../../../styles/colors' as c;
+
 /**
- * WHY variabili CSS Material (var(--mat-*)): 
- * Rispettano il tema configurato dall'utente (light/dark, custom palette).
- * Hardcodare colori HEX romperebbe il theming dinamico.
+ * WHY colori hardcoded invece di var(--mat-*):
+ * Le CSS custom properties di Material (--mat-primary-color, ecc.) non sono
+ * garantite in tutti i temi e versioni. Usiamo le variabili SCSS del progetto
+ * per avere colori stabili e accessibili (contrasto WCAG AA minimo 4.5:1).
  *
- * WHY BEM + varianti: struttura prevedibile, sovrascrivibile dal consumer.
+ * WHY color-mix rimosso: non supportato in tutti i browser target e produce
+ * sfondi imprevedibili che possono causare testo illeggibile.
  */
 
 .pedagogy-card {
@@ -11,37 +15,77 @@
   border-left: 4px solid transparent;
   transition: box-shadow 200ms ease;
 
+  // WHY: colore testo esplicito — mai lasciare al browser/tema il default
+  // per componenti con sfondo colorato. Garantisce leggibilità sempre.
+  color: c.$neutral-darkest;
+
   &:hover {
-    box-shadow: var(--mat-card-hover-shadow, 0 4px 12px rgba(0, 0, 0, 0.15));
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
-  // Variante info — blu/primary
+  // WHY: forziamo il colore di mat-card-title/subtitle che Material può
+  // sovrascrivere con colori del tema (es. bianco in dark mode).
+  mat-card-title,
+  .mat-mdc-card-title {
+    color: c.$neutral-darkest; // default: quasi nero, leggibile su qualsiasi sfondo chiaro
+    font-weight: 600;
+  }
+
+  mat-card-subtitle,
+  .mat-mdc-card-subtitle {
+    color: c.$neutral-light;
+  }
+
+  mat-card-content,
+  .mat-mdc-card-content {
+    color: inherit; // eredita dal parent .pedagogy-card--* per consistenza
+  }
+
+  // Variante info — sfondo azzurro chiaro, testo scuro
   &--info {
-    border-left-color: var(--mat-primary-color, #1976d2);
-    background-color: color-mix(in srgb, var(--mat-primary-color, #1976d2) 8%, white);
+    border-left-color: c.$primary; // #667eea — viola primario del progetto
+    background-color: c.$blue-bg-lighter; // #f0f7ff — azzurro molto chiaro, contrasto > 7:1 col testo scuro
+
+    mat-card-title,
+    .mat-mdc-card-title {
+      color: c.$primary; // titolo viola per coerenza col bordo
+    }
   }
 
-  // Variante success — verde
+  // Variante success — verde accessibile
   &--success {
-    border-left-color: #388e3c;
-    background-color: color-mix(in srgb, #388e3c 8%, white);
+    border-left-color: #059669; // verde scuro, contrasto OK su sfondo chiaro
+    background-color: #d1fae5; // verde chiaro (Tailwind emerald-100)
+    color: #064e3b; // WHY: testo molto scuro su sfondo chiaro verde → WCAG AA
+
+    mat-card-title,
+    .mat-mdc-card-title {
+      color: #065f46; // verde scuro per il titolo
+    }
   }
 
-  // Variante warning — arancione/warn
+  // Variante warning — ambra/giallo accessibile
   &--warning {
-    border-left-color: var(--mat-warn-color, #f57c00);
-    background-color: color-mix(in srgb, var(--mat-warn-color, #f57c00) 8%, white);
+    border-left-color: #d97706; // ambra scuro
+    background-color: #fef3c7; // giallo chiaro (Tailwind amber-100)
+    color: #78350f; // WHY: marrone scuro su giallo chiaro → ottimo contrasto WCAG AA
+
+    mat-card-title,
+    .mat-mdc-card-title {
+      color: #92400e; // marrone per il titolo
+    }
   }
 
   &__icon {
-    &--info { color: var(--mat-primary-color, #1976d2); }
-    &--success { color: #388e3c; }
-    &--warning { color: var(--mat-warn-color, #f57c00); }
+    &--info { color: c.$primary; }
+    &--success { color: #059669; }
+    &--warning { color: #d97706; }
   }
 
   mat-card-content {
     padding-top: 0.5rem;
     font-size: 0.95rem;
     line-height: 1.6;
+    // WHY: ereditato dal parent .pedagogy-card — non serve ridichiarare il colore
   }
 }

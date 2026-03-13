@@ -1,7 +1,14 @@
+@use '../../../../styles/colors' as c;
+
 /**
  * WHY CSS Grid invece di Flexbox per il layout a 2 colonne:
  * Grid garantisce altezze uguali tra le due card automaticamente
  * e si adatta meglio al responsive con media query minimaliste.
+ *
+ * WHY colori hardcoded invece di var(--mat-*):
+ * Le custom properties Material non sono garantite e possono non resolversi,
+ * causando testo invisibile (bianco su bianco o testo ereditato dal tema).
+ * Usiamo colori semantici espliciti con contrasto WCAG AA verificato.
  */
 
 .comparison-grid {
@@ -18,26 +25,34 @@
   &__card {
     height: 100%; // Altezza uguale grazie al grid parent
 
+    // WHY colore testo esplicito sulle card colorate:
+    // Senza dichiarazione esplicita, il testo potrebbe ereditare bianco
+    // da un tema dark o da mat-card, rendendolo invisibile sullo sfondo chiaro.
+
     &--left {
-      border-left: 4px solid #388e3c;
-      background-color: color-mix(in srgb, #388e3c 6%, white);
+      border-left: 4px solid #059669; // verde — colonna "buona pratica" ✅
+      background-color: #d1fae5; // verde chiaro (Tailwind emerald-100)
+      color: #064e3b; // WHY: verde molto scuro → contrasto ~9:1 su #d1fae5 (WCAG AAA)
     }
 
     &--right {
-      border-left: 4px solid var(--mat-warn-color, #d32f2f);
-      background-color: color-mix(in srgb, var(--mat-warn-color, #d32f2f) 6%, white);
+      border-left: 4px solid #dc2626; // rosso — colonna "antipattern" ❌
+      background-color: #fee2e2; // rosso chiaro (Tailwind red-100)
+      color: #7f1d1d; // WHY: rosso molto scuro → contrasto ~8:1 su #fee2e2 (WCAG AAA)
     }
   }
 
   &__icon {
-    &--left { color: #388e3c !important; }
-    &--right { color: var(--mat-warn-color, #d32f2f) !important; }
+    &--left { color: #059669 !important; }  // verde per ✅
+    &--right { color: #dc2626 !important; } // rosso per ❌
   }
 
   &__list {
     list-style: none;
     padding: 0;
     margin: 0;
+    // WHY: no overflow hidden — il testo degli item deve essere completamente visibile
+    overflow: visible;
   }
 
   &__item {
@@ -47,16 +62,36 @@
     padding: 0.35rem 0;
     font-size: 0.9rem;
     line-height: 1.5;
+    // WHY: testo eredita dal card parent (--left: #064e3b, --right: #7f1d1d)
+    // nessun override qui — DRY e manutenibile
 
-    &--left .comparison-grid__item-icon { color: #388e3c; }
-    &--right .comparison-grid__item-icon { color: var(--mat-warn-color, #d32f2f); }
+    // WHY white-space + word-break: evita troncamento e garantisce wrap corretto
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    overflow: visible; // no clip
+
+    &--left .comparison-grid__item-icon { color: #059669; }
+    &--right .comparison-grid__item-icon { color: #dc2626; }
   }
 
   &__item-icon {
     font-size: 18px;
     width: 18px;
     height: 18px;
-    flex-shrink: 0;
+    flex-shrink: 0; // WHY: l'icona mantiene dimensione fissa, il testo ha tutto lo spazio
     margin-top: 2px;
+  }
+
+  // WHY: forziamo il colore del testo nelle mat-card-title/content
+  // per sovrascrivere eventuali stili del tema Material che potrebbero
+  // impostare colori non adatti agli sfondi colorati.
+  mat-card-title,
+  mat-card-subtitle,
+  mat-card-content,
+  .mat-mdc-card-title,
+  .mat-mdc-card-subtitle,
+  .mat-mdc-card-content {
+    color: inherit !important;
   }
 }

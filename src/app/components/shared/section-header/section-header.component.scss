@@ -1,33 +1,47 @@
+@use '../../../../styles/colors' as c;
+
 /**
- * WHY Material typography classes (.mat-headline-4, .mat-body-1):
- * Usare le classi tipografiche Material invece di font-size hardcoded
- * garantisce coerenza con il tema e supporto automatico per
- * eventuali cambi di scala tipografica nel design system.
+ * WHY colori con fallback espliciti sicuri invece di var(--mat-*) soli:
+ * I token Material (--mat-primary-text-color, ecc.) possono non resolversi
+ * in certi temi o versioni di Material, lasciando il colore undefined.
+ * Usiamo fallback HEX espliciti dal design system del progetto.
  */
 
 .section-header {
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--mat-divider-color, rgba(0, 0, 0, 0.12));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 
   &__breadcrumb {
     margin-bottom: 0.5rem;
-    color: var(--mat-secondary-text-color, rgba(0, 0, 0, 0.54));
+    color: c.$neutral-lighter; // #6b7280 — grigio medio, leggibile come testo secondario
     font-size: 0.85rem;
   }
 
   &__title {
     margin: 0 0 0.5rem;
-    // Usa il token tipografico Material per coerenza con il tema
-    font-size: var(--mat-headline-4-size, 2rem);
-    font-weight: var(--mat-headline-4-weight, 400);
+    font-size: 2rem;
+    font-weight: 400;
     line-height: 1.3;
-    color: var(--mat-primary-text-color, rgba(0, 0, 0, 0.87));
+    color: c.$neutral-darkest; // #1a1a1a — massimo contrasto su sfondo chiaro
+
+    // WHY: su mobile evitiamo che il titolo venga troncato
+    // con overflow hidden o nowrap. Il titolo deve sempre essere
+    // completamente leggibile indipendentemente dalla viewport.
+    white-space: normal;      // mai nowrap
+    word-break: break-word;   // break parole molto lunghe su schermi stretti
+    overflow-wrap: break-word;
+    overflow: visible;        // no clip
+
+    // Responsive: riduci font su mobile per evitare overflow
+    @media (max-width: 480px) {
+      font-size: 1.5rem; // WHY: 2rem su mobile 320px può causare overflow orizzontale
+    }
   }
 
   &__subtitle {
     margin: 0;
-    color: var(--mat-secondary-text-color, rgba(0, 0, 0, 0.6));
+    color: c.$neutral-light; // #4b5563 — leggibile come testo secondario
     font-size: 1rem;
     line-height: 1.6;
     max-width: 65ch; // Ottimale per leggibilità: ~65 caratteri per riga

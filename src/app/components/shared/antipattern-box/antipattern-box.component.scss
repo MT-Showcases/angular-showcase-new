@@ -1,36 +1,76 @@
+@use '../../../../styles/colors' as c;
+
 /**
- * WHY colore warn via CSS custom property:
- * Usa il token Material per coerenza col tema — se il designer
- * cambia il colore warn, questo componente si aggiorna automaticamente.
+ * WHY colori hardcoded invece di var(--mat-warn-color):
+ * --mat-warn-color non è garantito e può non essere definito in certi temi,
+ * causando fallback inattesi. Usiamo valori espliciti per accessibilità sicura.
+ *
+ * WHY sfondo #fee2e2 + testo #7f1d1d:
+ * Contrasto ratio ~8:1 → supera WCAG AA (4.5:1) e quasi WCAG AAA (7:1).
+ * Il rosso chiaro segnala visivamente "attenzione/errore" senza essere aggressivo.
  */
 
 .antipattern-box {
   margin-bottom: 1.5rem;
-  border-left: 4px solid var(--mat-warn-color, #d32f2f);
-  background-color: color-mix(in srgb, var(--mat-warn-color, #d32f2f) 6%, white);
+  border-left: 4px solid #dc2626; // rosso vivace per il bordo di avvertimento
+  background-color: #fee2e2; // rosso molto chiaro (Tailwind red-100)
+
+  // WHY testo scuro: il testo del contenuto deve essere leggibile su sfondo chiaro
+  color: #7f1d1d; // rosso molto scuro (Tailwind red-900), contrasto > 8:1 su #fee2e2
 
   &__icon {
-    color: var(--mat-warn-color, #d32f2f) !important;
+    color: #dc2626 !important; // rosso per l'icona di warning
   }
 
   &__title {
-    color: var(--mat-warn-color, #d32f2f);
+    color: #991b1b; // rosso scuro per il titolo (Tailwind red-800)
     font-weight: 600;
+  }
+
+  // WHY: mat-card-title/subtitle ereditano colori del tema che su sfondo rosso
+  // chiaro potrebbero non avere contrasto sufficiente.
+  mat-card-title,
+  .mat-mdc-card-title {
+    color: #991b1b;
+  }
+
+  mat-card-subtitle,
+  .mat-mdc-card-subtitle {
+    color: #7f1d1d;
   }
 
   &__item {
     // Leggera separazione visiva tra voci
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 
+    // WHY: mat-list-item imposta height fissa e overflow hidden per default.
+    // Forziamo height auto per permettere il wrap del testo lungo.
+    height: auto !important;
+    overflow: visible !important;
+
     &:last-child {
       border-bottom: none;
+    }
+
+    // WHY: matListItemTitle applica text-overflow: ellipsis + overflow: hidden
+    // per i titoli degli item → questo tronca il testo (es: "clo" invece di "clone").
+    // Sovrascriviamo per garantire visibilità completa del testo.
+    ::ng-deep [matListItemTitle],
+    ::ng-deep .mdc-list-item__primary-text {
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: unset !important;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
   }
 
   &__item-icon {
-    color: var(--mat-warn-color, #d32f2f) !important;
+    color: #dc2626 !important;
     font-size: 18px;
     width: 18px;
     height: 18px;
+    // WHY flex-shrink: 0 — l'icona non si restringe, lasciando spazio al testo
+    flex-shrink: 0;
   }
 }
