@@ -183,6 +183,12 @@
       max-height: calc(100dvh - rem(40));
       overflow: auto;
       padding-right: rem(4);
+
+      // Force single-column cards inside the narrow sidebar,
+      // regardless of the md breakpoint override in pattern-list.scss
+      .pattern-list__grid {
+        grid-template-columns: 1fr;
+      }
     }
   }
 
