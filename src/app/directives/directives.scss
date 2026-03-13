@@ -213,34 +213,9 @@
 }
 
 // ─── PEDAGOGICAL BOXES ───────────────────────────────────────────────────────
-
-.pedagogy-box {
-  background: linear-gradient(135deg, #e8f4fd 0%, #d6eaf8 100%);
-  border-left: 4px solid #2980b9;
-  border-radius: 8px;
-  padding: 1.25rem 1.5rem;
-
-  h3 {
-    margin: 0 0 0.75rem;
-    color: #1a5276;
-    font-size: 1rem;
-  }
-
-  p {
-    margin: 0.5rem 0;
-    color: #2c3e50;
-    font-size: 0.9rem;
-    line-height: 1.6;
-  }
-
-  code {
-    background: rgba(41, 128, 185, 0.15);
-    padding: 0.1rem 0.4rem;
-    border-radius: 3px;
-    font-size: 0.85rem;
-    color: #1a5276;
-  }
-}
+// Le classi .pedagogy-box e .antipattern-box sono ora gestite dai componenti
+// shared (AppPedagogyCardComponent, AppAntipatternBoxComponent).
+// Rimane solo il link interno alla pedagogy card.
 
 .pedagogy-link {
   margin-top: 0.75rem;
@@ -254,43 +229,6 @@
   color: #555;
   margin: 0.25rem 0 1rem;
   font-style: italic;
-}
-
-.antipattern-box {
-  background: linear-gradient(135deg, #fef9e7 0%, #fdebd0 100%);
-  border-left: 4px solid #e67e22;
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
-  margin: 1.25rem 0;
-
-  h4 {
-    margin: 0 0 0.5rem;
-    color: #7d3c0a;
-    font-size: 0.9rem;
-  }
-
-  code {
-    display: block;
-    background: rgba(230, 126, 34, 0.1);
-    padding: 0.5rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.82rem;
-    color: #784212;
-    margin: 0.5rem 0;
-    font-family: monospace;
-    white-space: pre-wrap;
-  }
-
-  p {
-    margin: 0.4rem 0;
-    font-size: 0.85rem;
-    color: #4a235a;
-    line-height: 1.5;
-  }
-
-  strong {
-    color: #784212;
-  }
 }
 
 .summary__header-cell {

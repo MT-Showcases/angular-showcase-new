@@ -1,8 +1,9 @@
 <div class="data-binding">
-  <app-page-header
+  <app-section-header
     title="Data Binding in Angular"
     subtitle="Tre modi per collegare dati tra componente e template"
-  ></app-page-header>
+    breadcrumb="Angular Basics"
+  ></app-section-header>
 
   <!-- ╔══════════════════════════════════════════════════════════════╗ -->
   <!-- ║  PERCHÉ QUESTO PATTERN?                                      ║ -->
@@ -19,8 +20,7 @@
       3. Event Binding   ( )   →  DOM → TS (eventi utente)
       4. Two-way        [( )]  →  TS ↔ DOM (usato con ngModel nei form)
   -->
-  <div class="data-binding__pedagogy-box">
-    <h3>📚 Perché il Data Binding?</h3>
+  <app-pedagogy-card title="📚 Perché il Data Binding?" variant="info">
     <p>
       Senza data binding dovresti scrivere:
       <code>document.getElementById('myEl').textContent = value</code>
@@ -34,7 +34,7 @@
     <p class="data-binding__pedagogy-link">
       → Approfondisci i pattern di stato nel <a routerLink="/patterns">Pattern Explorer</a>
     </p>
-  </div>
+  </app-pedagogy-card>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
   <!-- 1. INTERPOLAZIONE {{ }}                                             -->
@@ -103,24 +103,16 @@
       </div>
     </div>
 
-    <!-- ANTI-PATTERN BOX -->
-    <div class="data-binding__antipattern-box">
-      <h4>⚠️ Anti-pattern: metodi con side-effects nell'interpolazione</h4>
-      <code>{{ '{{' }} saveUserToDatabase() {{ '}}' }}</code>
-      <!-- Nota: saveUserToDatabase() è un esempio fittizio di metodo con side-effects -->
-      <!-- Questo chiamerebbe saveUserToDatabase() decine di volte al secondo
-           durante il change detection! Usa i metodi nel template SOLO per
-           funzioni di sola lettura (pure functions). -->
-      <p>
-        <strong>Problema:</strong> i metodi nel template vengono chiamati ad ogni ciclo di
-        Change Detection (potenzialmente centinaia di volte al secondo).
-        Un metodo con side-effects (chiamate HTTP, log, mutations) causerebbe caos.
-      </p>
-      <p>
-        <strong>Soluzione:</strong> usa un <code>getter</code> per valori derivati, o un
-        <code>pipe</code> per trasformazioni riutilizzabili.
-      </p>
-    </div>
+    <!-- ANTI-PATTERN BOX — sostituisce il div .antipattern-box precedente -->
+    <!-- Nota: saveUserToDatabase() è un esempio fittizio di metodo con side-effects -->
+    <!-- Questo chiamerebbe saveUserToDatabase() decine di volte al secondo
+         durante il change detection! Usa i metodi nel template SOLO per
+         funzioni di sola lettura (pure functions). -->
+    <app-antipattern-box
+      title="⚠️ Anti-pattern: metodi con side-effects nell'interpolazione"
+      description="Es: {{ '{{' }} saveUserToDatabase() {{ '}}' }}"
+      [items]="interpolationAntipatternItems"
+    ></app-antipattern-box>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -167,19 +159,11 @@
     </div>
 
     <!-- ANTI-PATTERN BOX -->
-    <div class="data-binding__antipattern-box">
-      <h4>⚠️ Anti-pattern: usare l'interpolazione per gli attributi</h4>
-      <code>&lt;img src="{{ '{{' }} imgLogoSrc {{ '}}' }}"&gt;</code>
-      <p>
-        <strong>Problema:</strong> il browser fa una richiesta HTTP con il literal
-        <code>{{ '{{' }} imgLogoSrc {{ '}}' }}</code> prima che Angular lo sostituisca,
-        causando un errore 404 temporaneo e un potenziale flash di contenuto rotto.
-      </p>
-      <p>
-        <strong>Soluzione:</strong> usa sempre <code>[src]="imgLogoSrc"</code>
-        per attributi che contengono URL, percorsi, o valori dinamici.
-      </p>
-    </div>
+    <app-antipattern-box
+      title="⚠️ Anti-pattern: usare l'interpolazione per gli attributi"
+      description="Es: &lt;img src=&quot;{{ '{{' }} imgLogoSrc {{ '}}' }}&quot;&gt;"
+      [items]="propertyBindingAntipatternItems"
+    ></app-antipattern-box>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -259,17 +243,10 @@
     <code class="data-binding__example-code">(click)="onClick()"</code>
 
     <!-- ANTI-PATTERN BOX -->
-    <div class="data-binding__antipattern-box">
-      <h4>⚠️ Anti-pattern: logica inline nell'event binding</h4>
-      <code>(click)="imgLogo = '/path.png'; count++; saveToStorage()"</code>
-      <p>
-        <strong>Problema:</strong> logica complessa nel template è difficile da testare,
-        leggere, e riutilizzare. Il template dovrebbe descrivere la struttura, non la logica.
-      </p>
-      <p>
-        <strong>Soluzione:</strong> sposta tutta la logica nel componente TypeScript
-        (<code>(click)="onClick()"</code>) e mantieni i metodi piccoli e testabili.
-      </p>
-    </div>
+    <app-antipattern-box
+      title="⚠️ Anti-pattern: logica inline nell'event binding"
+      description="Es: (click)=&quot;imgLogo = '/path.png'; count++; saveToStorage()&quot;"
+      [items]="eventBindingAntipatternItems"
+    ></app-antipattern-box>
   </div>
 </div>

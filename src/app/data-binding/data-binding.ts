@@ -46,11 +46,15 @@
 
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { PageHeader } from '../page-header/page-header';
+import {
+  SectionHeaderComponent,
+  PedagogyCardComponent,
+  AntipatternBoxComponent,
+} from '../components/shared';
 
 @Component({
   selector: 'app-data-binding',
-  imports: [CommonModule, PageHeader],
+  imports: [CommonModule, SectionHeaderComponent, PedagogyCardComponent, AntipatternBoxComponent],
   templateUrl: './data-binding.html',
   styleUrl: './data-binding.scss',
 })
@@ -83,10 +87,6 @@ export class DataBinding {
     return a + b;
   }
 
-  trackByUserId(_: number, user: any) {
-    return user.id;
-  }
-
   // GETTER: fornisce imgLogo come proprietà derivata
   // WHY: i getter sono calcolati solo quando viene letto il valore (lazy)
   //      e sono più efficienti di un metodo se il valore non cambia spesso
@@ -112,4 +112,28 @@ export class DataBinding {
   onReset() {
     this.imgLogo = '/logo.png';
   }
+
+  // ─── ANTIPATTERN ITEMS per AntipatternBoxComponent ───────────────────────
+  // WHY array di stringhe nel componente: mantiene il template pulito e
+  // permette di testare il contenuto pedagogico via unit test.
+
+  readonly interpolationAntipatternItems: string[] = [
+    'Problema: i metodi nel template vengono chiamati ad ogni ciclo di Change Detection ' +
+      '(potenzialmente centinaia di volte al secondo). Un metodo con side-effects ' +
+      '(chiamate HTTP, log, mutations) causerebbe caos.',
+    'Soluzione: usa un getter per valori derivati, o un pipe per trasformazioni riutilizzabili.',
+  ];
+
+  readonly propertyBindingAntipatternItems: string[] = [
+    'Problema: il browser fa una richiesta HTTP con il literal {{ imgLogoSrc }} prima che ' +
+      'Angular lo sostituisca, causando un errore 404 temporaneo e un potenziale flash di contenuto rotto.',
+    'Soluzione: usa sempre [src]="imgLogoSrc" per attributi che contengono URL, percorsi, o valori dinamici.',
+  ];
+
+  readonly eventBindingAntipatternItems: string[] = [
+    'Problema: logica complessa nel template è difficile da testare, leggere, e riutilizzare. ' +
+      'Il template dovrebbe descrivere la struttura, non la logica.',
+    'Soluzione: sposta tutta la logica nel componente TypeScript ((click)="onClick()") ' +
+      'e mantieni i metodi piccoli e testabili.',
+  ];
 }

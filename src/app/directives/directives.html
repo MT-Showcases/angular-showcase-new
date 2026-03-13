@@ -1,7 +1,8 @@
-<app-page-header
+<app-section-header
   title="Direttive Angular"
   subtitle="Controlla la struttura e lo stile del DOM in modo dinamico"
-></app-page-header>
+  breadcrumb="Angular Basics"
+></app-section-header>
 
 <div class="directives-container">
 
@@ -23,8 +24,7 @@
     ⚡ Angular 17+ ha introdotto @if e @for come alternativa nativa.
        Questo componente mostra entrambe per scopi didattici.
   -->
-  <section class="section pedagogy-box">
-    <h3>📚 Perché le Direttive?</h3>
+  <app-pedagogy-card title="📚 Perché le Direttive?" variant="info">
     <p>
       Le direttive strutturali sostituiscono la manipolazione manuale del DOM.
       Rendono il template dichiarativo: descrivi COSA mostrare, non COME.
@@ -38,7 +38,7 @@
     <p class="pedagogy-link">
       → Approfondisci i pattern di stato e rendering nel <strong>Pattern Explorer</strong>
     </p>
-  </section>
+  </app-pedagogy-card>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
   <!-- 1. *ngIf - Direttiva Strutturale Condizionale                      -->
@@ -73,20 +73,11 @@
       <p class="warning">⚠ Devi fare login</p>
     </ng-template>
 
-    <!-- ANTI-PATTERN BOX -->
-    <div class="antipattern-box">
-      <h4>⚠️ Anti-pattern: *ngIf e *ngStyle/display:none a confronto</h4>
-      <p>
-        <strong>*ngIf</strong> rimuove l'elemento dal DOM → componenti figli vengono
-        distrutti e ricreati, i loro cicli di vita vengono chiamati.
-        Usa questo quando vuoi risparmiare risorse (nessun componente in background).
-      </p>
-      <p>
-        <strong>[hidden]="!condizione"</strong> o <code>display:none</code> nasconde l'elemento
-        ma lo mantiene nel DOM → il componente figlio rimane in vita.
-        Usa questo quando vuoi preservare lo stato del componente (es. un form compilato).
-      </p>
-    </div>
+    <!-- ANTI-PATTERN BOX — sostituisce il div .antipattern-box precedente -->
+    <app-antipattern-box
+      title="⚠️ Anti-pattern: *ngIf e *ngStyle/display:none a confronto"
+      [items]="ngIfAntipatternItems"
+    ></app-antipattern-box>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -112,20 +103,11 @@
     </ul>
 
     <!-- ANTI-PATTERN BOX -->
-    <div class="antipattern-box">
-      <h4>⚠️ Anti-pattern: *ngFor senza trackBy su liste dinamiche</h4>
-      <code>&lt;li *ngFor="let item of items"&gt;&lt;/li&gt;</code>
-      <p>
-        <strong>Problema:</strong> senza <code>trackBy</code>, quando l'array cambia
-        Angular distrugge e ricrea TUTTI gli elementi DOM, anche quelli non cambiati.
-        Su liste lunghe questo causa lag visibile.
-      </p>
-      <p>
-        <strong>Soluzione:</strong> <code>*ngFor="let item of items; trackBy: trackById"</code>
-        con un metodo che ritorna un identificatore univoco (es. <code>item.id</code>).
-        Angular ricicla gli elementi DOM esistenti invece di ricrearli.
-      </p>
-    </div>
+    <app-antipattern-box
+      title="⚠️ Anti-pattern: *ngFor senza trackBy su liste dinamiche"
+      description="Es: &lt;li *ngFor=&quot;let item of items&quot;&gt;&lt;/li&gt;"
+      [items]="ngForAntipatternItems"
+    ></app-antipattern-box>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -153,20 +135,11 @@
     </div>
 
     <!-- ANTI-PATTERN BOX -->
-    <div class="antipattern-box">
-      <h4>⚠️ Anti-pattern: logica CSS inline invece di classi</h4>
-      <code>[ngStyle]="&#123;'font-weight': isActive ? 'bold' : 'normal', 'color': isActive ? 'blue' : 'black'&#125;"</code>
-      <p>
-        <strong>Problema:</strong> stili inline hanno la priorità più alta in CSS e sono
-        difficili da sovrascrivere. La logica di presentazione finisce nel TypeScript invece
-        che nel CSS — violando la separation of concerns.
-      </p>
-      <p>
-        <strong>Soluzione:</strong> definisci le varianti visive come classi CSS
-        (<code>.active &#123; font-weight: bold; color: blue; &#125;</code>) e usa
-        <code>[class.active]="isActive"</code> — i CSS restano nei CSS.
-      </p>
-    </div>
+    <app-antipattern-box
+      title="⚠️ Anti-pattern: logica CSS inline invece di classi"
+      description="Es: [ngStyle]=&quot;&#123;'font-weight': isActive ? 'bold' : 'normal'&#125;&quot;"
+      [items]="ngClassAntipatternItems"
+    ></app-antipattern-box>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->

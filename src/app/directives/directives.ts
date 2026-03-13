@@ -52,11 +52,15 @@
 
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { PageHeader } from '../page-header/page-header';
+import {
+  SectionHeaderComponent,
+  PedagogyCardComponent,
+  AntipatternBoxComponent,
+} from '../components/shared';
 
 @Component({
   selector: 'app-directives',
-  imports: [CommonModule, PageHeader],
+  imports: [CommonModule, SectionHeaderComponent, PedagogyCardComponent, AntipatternBoxComponent],
   templateUrl: './directives.html',
   styleUrl: './directives.scss',
 })
@@ -94,4 +98,32 @@ export class Directives {
   changeColor(color: string) {
     this.textColor = color;
   }
+
+  // ─── ANTIPATTERN ITEMS per AntipatternBoxComponent ───────────────────────
+
+  readonly ngIfAntipatternItems: string[] = [
+    '*ngIf rimuove l\'elemento dal DOM → componenti figli vengono distrutti e ricreati, ' +
+      'i loro cicli di vita vengono chiamati. Usa questo quando vuoi risparmiare risorse ' +
+      '(nessun componente in background).',
+    '[hidden]="!condizione" o display:none nasconde l\'elemento ma lo mantiene nel DOM → ' +
+      'il componente figlio rimane in vita. Usa questo quando vuoi preservare lo stato del ' +
+      'componente (es. un form compilato).',
+  ];
+
+  readonly ngForAntipatternItems: string[] = [
+    'Problema: senza trackBy, quando l\'array cambia Angular distrugge e ricrea TUTTI gli ' +
+      'elementi DOM, anche quelli non cambiati. Su liste lunghe questo causa lag visibile.',
+    'Soluzione: *ngFor="let item of items; trackBy: trackById" con un metodo che ritorna ' +
+      'un identificatore univoco (es. item.id). Angular ricicla gli elementi DOM esistenti ' +
+      'invece di ricrearli.',
+  ];
+
+  readonly ngClassAntipatternItems: string[] = [
+    'Problema: stili inline hanno la priorità più alta in CSS e sono difficili da sovrascrivere. ' +
+      'La logica di presentazione finisce nel TypeScript invece che nel CSS — ' +
+      'violando la separation of concerns.',
+    'Soluzione: definisci le varianti visive come classi CSS ' +
+      '(.active { font-weight: bold; color: blue; }) e usa [class.active]="isActive" ' +
+      '— i CSS restano nei CSS.',
+  ];
 }
