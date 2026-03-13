@@ -16,7 +16,7 @@
 // ═══ MAIN CONTAINER ═══
 .home {
   max-width: rem(1200);
-  margin: 0 auto;
+  margin: 2rem auto;
   padding: rem(16);
 
   // More padding on tablets and up
@@ -71,15 +71,16 @@
     gap: rem(20);
     margin-bottom: rem(48);
 
-    @include media-min-breakpoint(md) {
+    // Tablet: 2 columns (768px - 1023px)
+    @media (min-width: 768px) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: rem(24);
       margin-bottom: rem(60);
     }
 
-    // 7 cards become 4 + 3 rows instead of 3 + 3 + 1 orphan
-    @include media-min-breakpoint(lg) {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+    // Desktop: 3 columns (1024px+)
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     // Staggered animation for cards

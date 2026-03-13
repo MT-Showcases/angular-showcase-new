@@ -4,10 +4,11 @@
 }
 
 .gof-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
   max-width: 1200px;
+  width: calc(100% - 4rem);
   margin: 2rem auto;
   padding: 1.5rem;
   background: #1a1a1a;
@@ -38,5 +39,24 @@
         color: #fff;
       }
     }
+  }
+}
+
+@media (min-width: 768px) {
+  .gof-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .gof-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .gof-container {
+    width: calc(100% - 2rem);
+    padding: 1rem;
   }
 }

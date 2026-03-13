@@ -5,10 +5,12 @@
 
 .data-binding {
   max-width: 1200px;
+  width: min(1200px, calc(100% - 2rem));
   margin: 2rem auto;
   padding: 2rem;
   background: #ffffff;
   border-radius: 1rem;
+  box-sizing: border-box;
 
   &__section {
     background: rgba(255, 255, 255, 0.95);
@@ -198,7 +200,7 @@
 // Rimane solo il link interno alla pedagogy card.
 
 .data-binding__pedagogy-link {
-  margin-top: 0.75rem !important;
+  margin-top: 0.75rem;
   font-weight: 500;
 
   a {
@@ -207,12 +209,17 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 768px) {
   .data-binding {
-    max-width: 1200px;
-    width: 100%;
+    padding: 1rem;
   }
 
+  .data-binding__section {
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
   .data-binding__examples {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

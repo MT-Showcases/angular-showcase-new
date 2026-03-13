@@ -1,9 +1,20 @@
 <div class="form__container">
-
   <app-section-header
-  title="Reactive Forms"
-  subtitle="Gestione avanzata dei form con validazione real-time"
-></app-section-header>
+    title="Reactive Forms"
+    subtitle="Gestione avanzata dei form con validazione real-time"
+  ></app-section-header>
+
+  <div class="form__layout">
+    <nav class="form__toc" aria-label="Sommario pagina">
+      <h3 class="form__toc-title">📋 Sommario</h3>
+      <ul class="form__toc-list">
+        <li><a href="#forms-pedagogy">Reactive vs Template-driven</a></li>
+        <li><a href="#forms-example">Esempio pratico</a></li>
+        <li><a href="#forms-antipattern">Anti-pattern</a></li>
+      </ul>
+    </nav>
+
+    <section class="form__content">
 
   <!-- ╔══════════════════════════════════════════════════════════════╗ -->
   <!-- ║  PERCHÉ QUESTO PATTERN?                                      ║ -->
@@ -21,7 +32,7 @@
       - Meno testabili e meno flessibili
       - Usa quando hai 2-3 campi semplici senza logica complessa
   -->
-  <div class="form__pedagogy-box">
+  <div id="forms-pedagogy" class="form__pedagogy-box">
     <h3>📚 Reactive Forms vs Template-driven Forms</h3>
     <div class="form__comparison">
       <div class="form__comparison-col">
@@ -50,7 +61,7 @@
     </p>
   </div>
 
-  <div class="form__card">
+  <div id="forms-example" class="form__card">
     <h2 class="form__title">Esempio Pratico</h2>
     <p class="form__subtitle">Compila tutti i campi per inviare il form</p>
 
@@ -213,7 +224,7 @@
   </div>
 
   <!-- ANTI-PATTERN BOX -->
-  <div class="form__antipattern-box">
+  <div id="forms-antipattern" class="form__antipattern-box">
     <h4>⚠️ Anti-pattern: Template-driven form con logica complessa</h4>
     <code>&lt;input [(ngModel)]="name" required minlength="3" #nameRef="ngModel"&gt;</code>
     <p>
@@ -227,5 +238,7 @@
       Puoi testare la validazione direttamente nel componente TS:
       <code>component.reactiveForm.get('name')?.setValue('ab'); expect(form.valid).toBeFalsy();</code>
     </p>
+  </div>
+    </section>
   </div>
 </div>

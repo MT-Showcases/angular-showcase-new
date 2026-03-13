@@ -6,15 +6,17 @@
 // Main directives page container
 .directives-container {
   max-width: 1200px;
+  width: min(1200px, calc(100% - 2rem));
   margin: 2rem auto;
   padding: 2rem;
   background: #ffffff;
   border-radius: 1rem;
+  box-sizing: border-box;
 
   // Main title (if present)
   &__main-title {
-    color: #fff;
-    border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+    color: #1a1a2e;
+    border-bottom: 3px solid rgba(26, 26, 46, 0.16);
     padding-bottom: 10px;
     margin-bottom: 30px;
     font-size: 32px;
@@ -48,7 +50,7 @@
     // Buttons with purple gradient
     &__button {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      color: #f8faff;
       border: none;
       padding: 12px 24px;
       border-radius: 8px;
@@ -155,7 +157,7 @@
     &.active {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-color: #667eea;
-      color: white;
+      color: #f8faff;
       font-weight: 600;
       box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
       transform: scale(1.02);
@@ -245,9 +247,16 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 768px) {
   .directives-container {
-    max-width: 1200px;
-    width: 100%;
+    padding: 1rem;
+  }
+
+  .directives-container .section {
+    padding: 1rem;
+  }
+
+  .directives-container .color-buttons {
+    flex-wrap: wrap;
   }
 }

@@ -196,3 +196,21 @@
     }
   }
 }
+
+// Desktop (min-width: 1024px)
+@include media-min-breakpoint(lg) {
+  .pattern-list {
+    &__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+// Large desktop (min-width: 1280px)
+@include media-min-breakpoint(xl) {
+  .pattern-list {
+    &__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}

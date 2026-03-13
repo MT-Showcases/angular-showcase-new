@@ -5,7 +5,8 @@
 
 .container {
   max-width: 1200px;
-  margin: 0 auto;
+  width: calc(100% - 4rem);
+  margin: 2rem auto;
   padding: 2rem;
   animation: fadeIn 0.6s ease-out;
   // WHY background bianco: isola il contenuto dal gradient viola globale di styles.scss.
@@ -961,6 +962,7 @@
 // Responsive
 @media (max-width: 768px) {
   .container {
+    width: calc(100% - 2rem);
     padding: 1rem;
   }
 

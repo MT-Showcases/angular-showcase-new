@@ -6,6 +6,7 @@
 // Main container
 .http-container {
   max-width: 1200px;
+  width: calc(100% - 4rem);
   margin: 2rem auto;
   padding: 2rem;
   background: #ffffff;
@@ -400,6 +401,7 @@ pre {
 // Responsive
 @media (max-width: 768px) {
   .http-container {
+    width: calc(100% - 2rem);
     padding: 16px;
   }
 
@@ -807,6 +809,7 @@ pre {
 // Responsive
 @media (max-width: 768px) {
   .http-container {
+    width: calc(100% - 2rem);
     padding: 16px;
   }
 
