@@ -44,16 +44,18 @@ import { MatListModule } from '@angular/material/list';
 
       @if (items.length > 0) {
         <mat-card-content>
-          <mat-list>
+          <!-- WHY ul nativo invece di mat-list: mat-list applica overflow hidden
+               agli item per gestire avatar/icon layout, troncando testo lungo.
+               Per liste pedagogiche con testo variabile, ul semantico + SCSS
+               è più affidabile e accessibile. -->
+          <ul class="antipattern-box__list">
             @for (item of items; track item) {
-              <mat-list-item class="antipattern-box__item">
-                <mat-icon matListItemIcon class="antipattern-box__item-icon">
-                  close
-                </mat-icon>
-                <span matListItemTitle>{{ item }}</span>
-              </mat-list-item>
+              <li class="antipattern-box__item">
+                <mat-icon class="antipattern-box__item-icon">close</mat-icon>
+                <span>{{ item }}</span>
+              </li>
             }
-          </mat-list>
+          </ul>
         </mat-card-content>
       }
     </mat-card>

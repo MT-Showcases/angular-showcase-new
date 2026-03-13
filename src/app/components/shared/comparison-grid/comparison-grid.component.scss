@@ -83,9 +83,20 @@
     margin-top: 2px;
   }
 
-  // WHY: forziamo il colore del testo nelle mat-card-title/content
-  // per sovrascrivere eventuali stili del tema Material che potrebbero
-  // impostare colori non adatti agli sfondi colorati.
+  // WHY: mat-card-header con avatar usa grid con colonne fisse (40px avatar + restante).
+  // Il titolo nella terza colonna eredita overflow ellipsis dal tema Material.
+  // Forziamo wrap per titoli lunghi.
+  mat-card-header,
+  .mat-mdc-card-header {
+    align-items: flex-start;
+
+    .mat-mdc-card-header-text {
+      overflow: visible;
+      min-width: 0;
+      flex: 1;
+    }
+  }
+
   mat-card-title,
   mat-card-subtitle,
   mat-card-content,
@@ -93,5 +104,8 @@
   .mat-mdc-card-subtitle,
   .mat-mdc-card-content {
     color: inherit !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
   }
 }
