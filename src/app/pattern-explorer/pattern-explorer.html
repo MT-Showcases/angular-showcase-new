@@ -1,0 +1,30 @@
+<app-page-header
+  title="Pattern Explorer"
+  subtitle="Learn Angular architecture through container/presentational flow, facade boundaries, and signal-driven local state"
+></app-page-header>
+
+<section class="pattern-explorer">
+  <p class="pattern-explorer__intro">
+    This area demonstrates three recurring Angular patterns working together inside one educational
+    feature.
+  </p>
+
+  <app-pattern-list
+    [patterns]="patterns()"
+    [selectedPatternId]="selectedPatternId()"
+    (selectPattern)="onSelectPattern($event)"
+  />
+
+  <section class="pattern-explorer__selection">
+    <h2 class="pattern-explorer__selection-title">Currently selected pattern</h2>
+    @if (selectedPattern(); as pattern) {
+    <p class="pattern-explorer__selection-summary">
+      <strong>{{ pattern.title }}</strong> — {{ pattern.summary }}
+    </p>
+    } @else {
+    <p class="pattern-explorer__selection-summary">Select a pattern card to inspect details.</p>
+    }
+  </section>
+
+  <app-pattern-playground [patterns]="patterns()" />
+</section>

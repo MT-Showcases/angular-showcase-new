@@ -85,7 +85,14 @@ export class Navbar {
     {
       label: 'Examples',
       icon: 'users',
-      items: [{ label: 'Users List', route: '/examples/users', icon: 'users' }],
+      items: [
+        { label: 'Users List', route: '/examples/users', icon: 'users' },
+        {
+          label: 'Pattern Explorer',
+          route: '/examples/pattern-explorer',
+          icon: 'blocks',
+        },
+      ],
     },
   ];
 

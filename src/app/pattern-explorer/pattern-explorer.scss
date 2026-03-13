@@ -1,0 +1,55 @@
+/**
+ * PatternExplorer Container Styles
+ *
+ * Route-level composition for pattern-learning sections.
+ * Provides vertical rhythm and subtle section framing.
+ */
+
+@use 'globals' as *;
+
+// ═══ MAIN CONTAINER ═══
+.pattern-explorer {
+  @include flex(flex-start, stretch, column);
+  gap: rem(16);
+  padding: rem(16);
+
+  &__intro {
+    margin: 0;
+    padding: rem(14);
+    border-radius: rem(12);
+    background: $neutral-bg;
+    color: $neutral-darker;
+    line-height: rem(23);
+  }
+
+  &__selection {
+    border-radius: rem(12);
+    border: rem(1) dashed $neutral-lighter;
+    padding: rem(14);
+    background: $white;
+  }
+
+  &__selection-title {
+    margin: 0 0 rem(6);
+    font-size: rem(16);
+    color: $neutral-darkest;
+  }
+
+  &__selection-summary {
+    margin: 0;
+    color: $neutral-darker;
+    line-height: rem(23);
+  }
+}
+
+// Tablet and up (min-width: 768px)
+@include media-min-breakpoint(md) {
+  .pattern-explorer {
+    padding: rem(24);
+    gap: rem(20);
+
+    &__selection-title {
+      font-size: rem(18);
+    }
+  }
+}

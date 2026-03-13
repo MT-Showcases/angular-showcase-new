@@ -1,0 +1,66 @@
+<section class="pattern-playground" aria-label="Signals local state playground">
+  <header class="pattern-playground__header">
+    <h3 class="pattern-playground__title">Signals Local State Playground</h3>
+    <p class="pattern-playground__text">
+      This panel keeps UI interactions local with <code>signal()</code> and derives filtered data via
+      <code>computed()</code>.
+    </p>
+  </header>
+
+  <div class="pattern-playground__controls">
+    <div class="pattern-playground__chips">
+      @for (level of levels; track level) {
+      <button
+        type="button"
+        class="pattern-playground__chip"
+        [class.pattern-playground__chip--active]="selectedLevel() === level"
+        (click)="updateLevel(level)"
+      >
+        {{ level }}
+      </button>
+      }
+    </div>
+
+    <button
+      type="button"
+      class="pattern-playground__toggle"
+      (click)="toggleContributorTips()"
+    >
+      {{ showContributorTips() ? 'Hide' : 'Show' }} contributor tips
+    </button>
+  </div>
+
+  <p class="pattern-playground__counter">
+    Visible patterns: <strong>{{ filteredPatterns().length }}</strong>
+  </p>
+
+  <ul class="pattern-playground__list">
+    @for (pattern of filteredPatterns(); track pattern.id) {
+    <li class="pattern-playground__item">
+      <span class="pattern-playground__item-title">{{ pattern.title }}</span>
+      <span class="pattern-playground__item-meta">{{ pattern.level }} · {{ pattern.category }}</span>
+    </li>
+    } @empty {
+    <li class="pattern-playground__item pattern-playground__item--empty">
+      No patterns match this level filter.
+    </li>
+    }
+  </ul>
+
+  @if (showContributorTips()) {
+  <aside class="pattern-playground__tips">
+    <h4 class="pattern-playground__tips-title">Contributor tips</h4>
+    <ul class="pattern-playground__tips-list">
+      <li class="pattern-playground__tips-item">
+        Keep local interactions in signals unless they are reused across multiple routes.
+      </li>
+      <li class="pattern-playground__tips-item">
+        Prefer computed signals for counters, labels, and filtered arrays.
+      </li>
+      <li class="pattern-playground__tips-item">
+        If state starts coordinating remote data, introduce or extend a facade boundary.
+      </li>
+    </ul>
+  </aside>
+  }
+</section>

@@ -1,0 +1,125 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-03-13T00:00:00Z",
+  "depthLevels": [
+    {
+      "id": "intro",
+      "label": "Intro",
+      "order": 1,
+      "description": "Understand the core idea and vocabulary.",
+      "expectedOutcome": "Can explain the concept in plain language."
+    },
+    {
+      "id": "guided",
+      "label": "Guided Practice",
+      "order": 2,
+      "description": "Apply the concept with examples and hints.",
+      "expectedOutcome": "Can solve similar problems with light guidance."
+    },
+    {
+      "id": "applied",
+      "label": "Applied",
+      "order": 3,
+      "description": "Use the concept in realistic scenarios.",
+      "expectedOutcome": "Can use the concept in project-like situations."
+    },
+    {
+      "id": "mastery",
+      "label": "Mastery",
+      "order": 4,
+      "description": "Connect this concept to architecture and trade-offs.",
+      "expectedOutcome": "Can teach and adapt the concept to new contexts."
+    }
+  ],
+  "concepts": [
+    {
+      "id": "svc-facade",
+      "title": "Service Facade Pattern",
+      "summary": "Encapsulate data access and orchestration behind a small API for UI layers.",
+      "tags": ["architecture", "angular", "separation-of-concerns"],
+      "depthLevels": ["intro", "guided", "applied", "mastery"],
+      "relatedTopics": [
+        {
+          "topicId": "dependency-injection",
+          "relation": "prerequisite",
+          "note": "Understand constructor/inject usage first."
+        },
+        {
+          "topicId": "signals",
+          "relation": "supports",
+          "note": "Signals provide ergonomic local state in facades."
+        }
+      ],
+      "examples": [
+        {
+          "id": "svc-facade-analogy",
+          "title": "Restaurant analogy",
+          "format": "analogy",
+          "prompt": "Why should a component call a facade instead of HttpClient directly?",
+          "solution": "The component is the diner, facade is the waiter, and HttpClient is the kitchen. The diner should not walk into the kitchen.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "svc-facade-snippet",
+          "title": "Typed facade API",
+          "format": "snippet",
+          "prompt": "Create a method that returns strongly typed concepts from local JSON.",
+          "solution": "Use HttpClient.get<LearningContent>() and expose computed/signal selectors.",
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "id": "signals",
+      "title": "Signals for Local Reactive State",
+      "summary": "Use Angular signals to keep local state predictable and ergonomic.",
+      "tags": ["angular", "signals", "reactivity"],
+      "depthLevels": ["intro", "guided", "applied"],
+      "relatedTopics": [
+        {
+          "topicId": "svc-facade",
+          "relation": "supports",
+          "note": "Facade state can be expressed as signals."
+        },
+        {
+          "topicId": "rxjs",
+          "relation": "alternative",
+          "note": "Observable pipelines remain useful for streaming cases."
+        }
+      ],
+      "examples": [
+        {
+          "id": "signals-exercise",
+          "title": "Filter by depth",
+          "format": "exercise",
+          "prompt": "Implement a computed signal that returns concepts available at a selected depth level.",
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "id": "dependency-injection",
+      "title": "Dependency Injection",
+      "summary": "Inject framework services and app services to avoid manual wiring.",
+      "tags": ["angular", "di", "testability"],
+      "depthLevels": ["intro", "guided"],
+      "relatedTopics": [
+        {
+          "topicId": "svc-facade",
+          "relation": "extends",
+          "note": "Facades depend on DI for HttpClient and collaborators."
+        }
+      ],
+      "examples": [
+        {
+          "id": "di-case",
+          "title": "Swap data source",
+          "format": "case-study",
+          "prompt": "How can DI help replace mock JSON with a real backend later?",
+          "solution": "Depend on an abstract repository token and provide a different implementation by environment.",
+          "difficulty": "hard"
+        }
+      ]
+    }
+  ]
+}

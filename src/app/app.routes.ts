@@ -10,6 +10,7 @@ import { HttpExample } from './http-example/http-example';
 import { NgrxExample } from './ngrx-example/ngrx-example';
 import { CodeBlockDemo } from './code-block-demo/code-block-demo';
 import { BehaviorSubjectComponent } from './behavior-subject/behavior-subject';
+import { PatternExplorer } from './pattern-explorer/pattern-explorer';
 
 export const routes: Routes = [
   {
@@ -65,6 +66,10 @@ export const routes: Routes = [
       {
         path: 'users',
         component: UserPage,
+      },
+      {
+        path: 'pattern-explorer',
+        component: PatternExplorer,
       },
     ],
   },

@@ -89,5 +89,16 @@ export class Home {
       description: 'Gestione utenti con componenti standalone, Signals e Service',
       features: ['Lista utenti dinamica', 'Ricerca in tempo reale', 'Cards con animazioni'],
     },
+    {
+      routerLink: '/examples/pattern-explorer',
+      iconName: 'blocks',
+      title: 'Pattern Explorer',
+      description: 'Container/Presentational, Facade Service e Signals locali in un flusso unico',
+      features: [
+        'Container + Presentational split',
+        'Facade come boundary dati',
+        'Signals per stato locale UI',
+      ],
+    },
   ];
 }

@@ -1,0 +1,57 @@
+<section class="pattern-list" aria-label="Pattern cards">
+  <div class="pattern-list__grid">
+    @for (pattern of patterns; track pattern.id) {
+    <button
+      type="button"
+      class="pattern-list__card"
+      [class.pattern-list__card--active]="selectedPatternId === pattern.id"
+      (click)="onSelectPattern(pattern.id)"
+    >
+      <div class="pattern-list__card-header">
+        <span class="pattern-list__card-title">{{ pattern.title }}</span>
+        <span class="pattern-list__card-level">{{ pattern.level }}</span>
+      </div>
+
+      <p class="pattern-list__card-summary">{{ pattern.summary }}</p>
+
+      <span class="pattern-list__card-category">
+        <app-icon name="blocks" />
+        {{ pattern.category }}
+      </span>
+    </button>
+    }
+  </div>
+
+  @if (patterns.length) {
+  <article class="pattern-list__detail" aria-live="polite">
+    @for (pattern of patterns; track pattern.id) {
+      @if (selectedPatternId === pattern.id) {
+      <h3 class="pattern-list__detail-title">{{ pattern.title }}</h3>
+      <p class="pattern-list__detail-text">{{ pattern.whyItMatters }}</p>
+
+      <div class="pattern-list__detail-columns">
+        <div class="pattern-list__detail-column">
+          <h4 class="pattern-list__detail-subtitle">Implementation Checklist</h4>
+          <ul class="pattern-list__detail-list">
+            @for (point of pattern.checklist; track point) {
+            <li class="pattern-list__detail-item">{{ point }}</li>
+            }
+          </ul>
+        </div>
+
+        <div class="pattern-list__detail-column">
+          <h4 class="pattern-list__detail-subtitle">Common Anti-Patterns</h4>
+          <ul class="pattern-list__detail-list">
+            @for (antiPattern of pattern.antiPatterns; track antiPattern) {
+            <li class="pattern-list__detail-item pattern-list__detail-item--danger">
+              {{ antiPattern }}
+            </li>
+            }
+          </ul>
+        </div>
+      </div>
+      }
+    }
+  </article>
+  }
+</section>
