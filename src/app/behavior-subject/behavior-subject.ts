@@ -24,7 +24,7 @@
  *   - ❌ Dimenticare unsubscribe → usa async pipe o takeUntilDestroyed()
  *   - ❌ Mutare oggetti nel valore → crea sempre nuove referenze (immutabilità)
  */
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { CodeBlock } from '../components/code-block/code-block';
@@ -57,7 +57,9 @@ interface Message {
   standalone: true,
   imports: [CommonModule, CodeBlock, MessageDemo, SectionHeaderComponent, AntipatternBoxComponent, ComparisonGridComponent],
   templateUrl: './behavior-subject.html',
-  styleUrl: './behavior-subject.scss'
+  styleUrl: './behavior-subject.scss',
+  // WHY OnPush: questo componente gestisce dati asincroni tramite BehaviorSubject e asObservable, OnPush è l'ideale per la performance.
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BehaviorSubjectComponent {
   // BehaviorSubject with initial value

@@ -19,7 +19,7 @@
 // - Keep explanations beginner-friendly
 // - Add new patterns to StorePattern type if needed
 
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CodeBlock } from '@components/code-block/code-block';
 import { ConceptCard, ConceptCardData } from '@components/concept-card/concept-card';
@@ -37,6 +37,8 @@ type StorePattern = 'centralized' | 'feature' | null;
   imports: [CommonModule, CodeBlock, ConceptCard, GuideStep],
   templateUrl: './ngrx-concepts.html',
   styleUrls: ['./ngrx-concepts.scss'],
+  // WHY OnPush: questo componente è puramente presentational e mostra contenuti statici/esplicativi.
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgrxConcepts {
   // ═══ STATE ═══

@@ -45,7 +45,7 @@
 // - Maintain Italian for user-facing content
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   SectionHeaderComponent,
   PedagogyCardComponent,
@@ -57,6 +57,8 @@ import {
   imports: [CommonModule, SectionHeaderComponent, PedagogyCardComponent, AntipatternBoxComponent],
   templateUrl: './data-binding.html',
   styleUrl: './data-binding.scss',
+  // WHY OnPush: questo componente è principalmente presentational e usa binding semplici.
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataBinding {
   // Simple property - used with interpolation {{ text }}

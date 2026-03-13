@@ -45,7 +45,7 @@
 // - Show validation states visually (check/error icons)
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -61,6 +61,8 @@ import { Icon } from '../components/icon/icon';
   imports: [CommonModule, ReactiveFormsModule, FormsModule, SectionHeaderComponent, Icon],
   templateUrl: './forms.html',
   styleUrl: './forms.scss',
+  // WHY OnPush: questo componente è principalmente presentational, i dati cambiano solo tramite input utente nel form.
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Forms {
   // FormGroup: il contenitore del form — raccoglie tutti i FormControl

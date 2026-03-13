@@ -1,9 +1,9 @@
-<app-section-header
+<div class="gof-container">
+  <app-section-header
   title="GoF Design Patterns in Angular"
   subtitle="Cheat sheet dei principali pattern della Gang of Four mappati ai concetti Angular"
 ></app-section-header>
 
-<div class="gof-container">
   <div class="pattern-card" *ngFor="let pattern of patterns">
     <h3>{{ pattern.name }} &rarr; <span class="highlight">{{ pattern.angularEquivalent }}</span></h3>
     <p><strong>Descrizione:</strong> {{ pattern.description }}</p>

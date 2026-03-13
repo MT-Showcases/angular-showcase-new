@@ -25,7 +25,7 @@
 // COMPONENT TYPE: Container
 // SECTION: HTTP and Async Operations
 
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { PostsService, Post } from '../../services/posts.service';
 import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
 import { CodeBlock } from '../components/code-block/code-block';
@@ -35,6 +35,8 @@ import { CodeBlock } from '../components/code-block/code-block';
   imports: [SectionHeaderComponent, CodeBlock],
   templateUrl: './http-example.html',
   styleUrl: './http-example.scss',
+  // WHY OnPush: questo componente gestisce dati asincroni tramite Signals, OnPush garantisce performance ottimali.
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HttpExample {
   // Dependency Injection of PostsService

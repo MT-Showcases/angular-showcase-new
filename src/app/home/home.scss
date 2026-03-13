@@ -8,6 +8,11 @@
 
 @use 'globals' as *;
 
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
 // ═══ MAIN CONTAINER ═══
 .home {
   max-width: rem(1200);

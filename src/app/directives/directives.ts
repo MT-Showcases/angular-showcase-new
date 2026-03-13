@@ -51,7 +51,7 @@
 // - Use Italian for user-facing descriptions
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   SectionHeaderComponent,
   PedagogyCardComponent,
@@ -63,6 +63,8 @@ import {
   imports: [CommonModule, SectionHeaderComponent, PedagogyCardComponent, AntipatternBoxComponent],
   templateUrl: './directives.html',
   styleUrl: './directives.scss',
+  // WHY OnPush: questo componente è principalmente presentational, i dati cambiano solo tramite input utente.
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Directives {
   // Proprietà booleane per le direttive condizionali

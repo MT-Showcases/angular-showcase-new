@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SectionHeaderComponent } from '../../components/shared/section-header/section-header.component';
 
@@ -7,7 +7,9 @@ import { SectionHeaderComponent } from '../../components/shared/section-header/s
   standalone: true,
   imports: [CommonModule, SectionHeaderComponent],
   templateUrl: './gof-reference.html',
-  styleUrls: ['./gof-reference.scss']
+  styleUrls: ['./gof-reference.scss'],
+  // WHY OnPush: questo componente è puramente presentational, i dati (patterns) sono statici.
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GofReference {
   patterns = [

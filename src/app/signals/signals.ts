@@ -26,7 +26,7 @@
 // COMPONENT TYPE: Container
 // SECTION: Angular Signals
 
-import { Component, signal, computed, effect } from '@angular/core';
+import { Component, signal, computed, effect, ChangeDetectionStrategy } from '@angular/core';
 import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
 
 @Component({
@@ -34,6 +34,8 @@ import { SectionHeaderComponent } from '../components/shared/section-header/sect
   imports: [SectionHeaderComponent],
   templateUrl: './signals.html',
   styleUrl: './signals.scss',
+  // WHY OnPush: i Signals si integrano perfettamente con OnPush, notificando Angular esattamente quando il valore cambia.
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Signals {
   // ═══════════════════════════════════════════════════════════════════
