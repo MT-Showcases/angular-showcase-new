@@ -18,7 +18,7 @@
 // - Used primarily in ngrx-concepts for step-by-step guides
 // - Both codeExample and explanationBox are optional
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CodeBlock } from '@components/code-block/code-block';
 import { CodeLanguage } from '@models/code';
@@ -60,12 +60,17 @@ export interface GuideStepData {
   };
 }
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-guide-step',
   standalone: true,
   imports: [CommonModule, CodeBlock],
   templateUrl: './guide-step.html',
   styleUrl: './guide-step.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GuideStep {
   /** Step number to display in the circular badge */

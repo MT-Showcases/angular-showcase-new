@@ -18,17 +18,22 @@
 // - Keep token patterns in order (most specific to least specific)
 // - Sanitize all HTML to prevent XSS attacks
 
-import { Component, Input, signal, inject, SecurityContext } from '@angular/core';
+import { Component, Input, signal, inject, SecurityContext, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Icon } from '../icon/icon';
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-code-block',
   standalone: true,
   imports: [CommonModule, Icon],
   templateUrl: './code-block.html',
   styleUrls: ['./code-block.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CodeBlock {
   @Input() code = '';

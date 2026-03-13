@@ -20,7 +20,7 @@
 // - All todos state lives in store/todo/
 // - Template uses single subscription: @if (vm$ | async; as vm)
 
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -32,12 +32,17 @@ import * as TodoSelectors from '../../store/todo/todo.selectors';
 import * as ActionsLogActions from '../../store/actions-log/actions-log.actions';
 import * as ActionsLogSelectors from '../../store/actions-log/actions-log.selectors';
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-ngrx-todo-demo',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './ngrx-todo-demo.html',
   styleUrls: ['./ngrx-todo-demo.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgrxTodoDemo {
   // PATTERN: View Model with combineLatest

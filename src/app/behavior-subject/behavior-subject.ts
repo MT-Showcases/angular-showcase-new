@@ -24,7 +24,8 @@
  *   - ❌ Dimenticare unsubscribe → usa async pipe o takeUntilDestroyed()
  *   - ❌ Mutare oggetti nel valore → crea sempre nuove referenze (immutabilità)
  */
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { CodeBlock } from '../components/code-block/code-block';
@@ -85,12 +86,16 @@ export class BehaviorSubjectComponent {
   userState$ = this.userStateSubject.asObservable();
   currentUserState = { name: 'Ospite', online: false };
 
+  private destroyRef = inject(DestroyRef);
+
   constructor() {
-    // Subscriptions to display current values
-    this.message$.subscribe((msg) => (this.currentMessage = msg));
-    this.counter$.subscribe((count) => (this.currentCount = count));
-    this.messages$.subscribe((msgs) => (this.messageHistory = msgs));
-    this.userState$.subscribe((state) => (this.currentUserState = state));
+    // WHY: evita memory leak quando il componente viene distrutto
+    // QUANDO USARLO: sempre con subscribe in componenti e servizi con lifecycle
+    // ANTI-PATTERN: subscribe senza unsubscribe — leak garantito
+    this.message$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((msg) => (this.currentMessage = msg));
+    this.counter$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((count) => (this.currentCount = count));
+    this.messages$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((msgs) => (this.messageHistory = msgs));
+    this.userState$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => (this.currentUserState = state));
   }
 
   // Methods for message example

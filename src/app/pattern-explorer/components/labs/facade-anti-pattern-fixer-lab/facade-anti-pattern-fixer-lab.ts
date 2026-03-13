@@ -1,6 +1,6 @@
 // GoF Pattern: Template Method — keep fixed lab lifecycle while customizing scenario evaluation logic.
 
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { NotificationService } from '../../../../services/notification.service';
 import { BasePatternLab } from '../base-pattern-lab';
 
@@ -11,11 +11,16 @@ interface FacadeScenario {
   correctFix: string;
 }
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-facade-anti-pattern-fixer-lab',
   imports: [],
   templateUrl: './facade-anti-pattern-fixer-lab.html',
   styleUrl: './facade-anti-pattern-fixer-lab.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FacadeAntiPatternFixerLab extends BasePatternLab {
   private readonly notificationService = inject(NotificationService);

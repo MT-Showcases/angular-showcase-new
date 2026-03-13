@@ -20,7 +20,7 @@
 // - Memory cleanup is critical: always cancel animation frames in ngOnDestroy
 // - Velocity multipliers create varied speeds (1x, 2x, 4x, 8x, infinite)
 
-import { Component, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Icon } from '../components/icon/icon';
 
 // PATTERN: Bouncing logo data structure
@@ -42,12 +42,17 @@ interface BouncingLogoData {
   topicTitle?: string; // Topic title if contentType is 'topic'
 }
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-bouncing-logo',
   standalone: true,
   imports: [Icon],
   templateUrl: './bouncing-logo.html',
   styleUrl: './bouncing-logo.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BouncingLogo implements OnInit, OnDestroy {
   // ═══════════════════════════════════════════════════════════════════

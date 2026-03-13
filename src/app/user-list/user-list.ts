@@ -20,7 +20,7 @@
 // - Follow this pattern when adding more user features
 
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal, effect } from '@angular/core';
+import { Component, inject, signal, effect, ChangeDetectionStrategy } from '@angular/core';
 import { User } from '../../types/users';
 import { UserCard } from './user-card/user-card';
 import { FormsModule } from '@angular/forms';
@@ -28,11 +28,16 @@ import { UsersService } from '../../services/users.service';
 import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
 import { Icon } from '../components/icon/icon';
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-user-list',
   imports: [CommonModule, UserCard, FormsModule, SectionHeaderComponent, Icon],
   templateUrl: './user-list.html',
   styleUrl: './user-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserList {
   // Inject the users service via Dependency Injection

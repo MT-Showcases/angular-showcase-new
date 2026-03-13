@@ -12,7 +12,7 @@
  * ogni componente dichiara esattamente le sue dipendenze, migliorando il
  * tree-shaking del bundle.
  */
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -20,6 +20,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { PedagogyCardComponent, AntipatternBoxComponent, ComparisonGridComponent, SectionHeaderComponent } from '../shared';
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-material-demo',
   standalone: true,
@@ -36,6 +40,7 @@ import { PedagogyCardComponent, AntipatternBoxComponent, ComparisonGridComponent
   ],
   templateUrl: './material-demo.html',
   styleUrl: './material-demo.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MaterialDemo {
   /** Progresso demo per mat-progress-bar */

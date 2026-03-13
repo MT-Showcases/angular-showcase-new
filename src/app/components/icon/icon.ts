@@ -17,13 +17,18 @@
 // - Keep icon names lowercase and kebab-case
 // - All icons should be 24x24 viewBox for consistency
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-icon',
   imports: [],
   templateUrl: './icon.html',
   styleUrl: './icon.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Icon {
   // The @Input name specifies which icon to render

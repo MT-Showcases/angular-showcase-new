@@ -1,6 +1,16 @@
-import { Component, ElementRef, HostListener, input, model, output, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, input, model, output, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+export interface SearchResult {
+  id: string;
+  title: string;
+  category: string;
+}
+
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-search-bar',
   standalone: true,
@@ -131,17 +141,18 @@ import { CommonModule } from '@angular/common';
       white-space: nowrap;
       border-width: 0;
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBar {
   id = input('search-input');
   label = input('Search learning patterns');
   placeholder = input('Search by title, category, or level...');
-  results = input<any[]>([]);
+  results = input<SearchResult[]>([]);
   
   query = model('');
   
-  resultSelected = output<any>();
+  resultSelected = output<SearchResult>();
   
   showResults = signal(false);
   activeIndex = signal(-1);
@@ -184,7 +195,7 @@ export class SearchBar {
     }
   }
 
-  selectResult(result: any): void {
+  selectResult(result: SearchResult): void {
     this.resultSelected.emit(result);
     this.query.set('');
     this.showResults.set(false);

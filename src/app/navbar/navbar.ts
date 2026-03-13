@@ -19,7 +19,8 @@
 // - Keep navigation structure flat (avoid deep nesting)
 // - Update currentUrl signal when adding route tracking features
 
-import { Component, signal, inject, HostListener } from '@angular/core';
+import { Component, signal, inject, HostListener, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Icon } from '../components/icon/icon';
@@ -43,14 +44,20 @@ interface NavGroup {
   items: NavItem[];
 }
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink, RouterLinkActive, Icon, CommonModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Navbar {
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
   openDropdown = signal<string | null>(null);
   currentUrl = signal<string>('');
 
@@ -107,8 +114,11 @@ export class Navbar {
     // Track current route
     this.currentUrl.set(this.router.url);
 
+    // WHY: evita memory leak quando il componente viene distrutto
+    // QUANDO USARLO: sempre con subscribe in componenti e servizi con lifecycle
+    // ANTI-PATTERN: subscribe senza unsubscribe — leak garantito
     this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd), takeUntilDestroyed(this.destroyRef))
       .subscribe((event) => {
         this.currentUrl.set(event.urlAfterRedirects);
       });

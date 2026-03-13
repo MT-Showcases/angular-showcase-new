@@ -14,15 +14,20 @@
 // - Keep this component UI-focused and stateless
 // - Add fields to PatternCard model before introducing new rendered properties
 
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { PatternCard } from '../../pattern-explorer.models';
 import { Icon } from '../../../components/icon/icon';
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-pattern-list',
   imports: [Icon],
   templateUrl: './pattern-list.html',
   styleUrl: './pattern-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PatternList {
   @Input({ required: true }) patterns: PatternCard[] = [];

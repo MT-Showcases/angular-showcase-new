@@ -28,19 +28,24 @@
 // COMPONENT TYPE: Container
 // SECTION: State Management - NgRx
 
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
 import { NgrxConcepts } from './ngrx-concepts/ngrx-concepts';
 import { NgrxCounterDemo } from './ngrx-counter-demo/ngrx-counter-demo';
 import { NgrxTodoDemo } from './ngrx-todo-demo/ngrx-todo-demo';
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-ngrx-example',
   standalone: true,
   imports: [CommonModule, SectionHeaderComponent, NgrxConcepts, NgrxCounterDemo, NgrxTodoDemo],
   templateUrl: './ngrx-example.html',
   styleUrls: ['./ngrx-example.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgrxExample {
   selectedTab = signal<'counter' | 'todos' | 'concepts'>('concepts');

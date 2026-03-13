@@ -19,7 +19,7 @@
 // - Actions log demonstrates Redux DevTools alternative
 // - Follow this pattern for new store features
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -30,12 +30,17 @@ import * as CounterSelectors from '../../store/counter/counter.selectors';
 import * as ActionsLogActions from '../../store/actions-log/actions-log.actions';
 import * as ActionsLogSelectors from '../../store/actions-log/actions-log.selectors';
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-ngrx-counter-demo',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './ngrx-counter-demo.html',
   styleUrls: ['./ngrx-counter-demo.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgrxCounterDemo {
   // SELECTORS: Observable streams from Store

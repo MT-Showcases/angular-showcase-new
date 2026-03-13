@@ -20,18 +20,24 @@
 // - Always clear component refs on close to prevent memory leaks
 // - Use DomSanitizer for all external URLs
 
-import { Component, signal, ViewChild, ViewContainerRef, ComponentRef, Type, inject } from '@angular/core';
+import { Component, signal, ViewChild, ViewContainerRef, ComponentRef, Type, inject, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalService, ModalContent, ModalState } from '../services/modal.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Icon } from '../components/icon/icon';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-link-modal',
   standalone: true,
   imports: [CommonModule, Icon],
   templateUrl: './link-modal.html',
   styleUrl: './link-modal.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LinkModal {
   @ViewChild('dynamicComponentContainer', { read: ViewContainerRef })
@@ -44,9 +50,13 @@ export class LinkModal {
   private componentRef: ComponentRef<any> | null = null;
   private modalService = inject(ModalService);
   private sanitizer = inject(DomSanitizer);
+  private destroyRef = inject(DestroyRef);
 
   constructor() {
-    this.modalService.modalState$.subscribe((state: ModalState) => {
+    // WHY: evita memory leak quando il componente viene distrutto
+    // QUANDO USARLO: sempre con subscribe in componenti e servizi con lifecycle
+    // ANTI-PATTERN: subscribe senza unsubscribe — leak garantito
+    this.modalService.modalState$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state: ModalState) => {
       this.isOpen.set(state.isOpen);
       this.content.set(state.content);
 

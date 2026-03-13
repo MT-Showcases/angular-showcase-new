@@ -1,6 +1,6 @@
 // GoF Pattern: Template Method — specialize lab lifecycle steps while reusing base reset flow.
 
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { NotificationService } from '../../../../services/notification.service';
 import { BasePatternLab } from '../base-pattern-lab';
 
@@ -13,11 +13,16 @@ interface RefactorTask {
   rationale: string;
 }
 
+// WHY: OnPush riduce i cicli di change detection al minimo necessario
+// QUANDO USARLO: sempre, su ogni componente
+// ALTERNATIVA: Default CD — solo se usi librerie terze che richiedono CD globale
+// ANTI-PATTERN: Default CD su tutti i componenti — spreca cicli CPU
 @Component({
   selector: 'app-smart-dumb-refactor-lab',
   imports: [],
   templateUrl: './smart-dumb-refactor-lab.html',
   styleUrl: './smart-dumb-refactor-lab.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SmartDumbRefactorLab extends BasePatternLab {
   private readonly notificationService = inject(NotificationService);
