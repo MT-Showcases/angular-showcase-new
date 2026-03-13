@@ -905,25 +905,25 @@
     }
 
     .key-takeaway {
-      background: rgba(255, 255, 255, 0.15);
+      background: #f0edff; // WHY WCAG AA: contrasto minimo 4.5:1 (era rgba(255,255,255,0.15) su viola = ~1.5:1)
+      color: #2d1b69; // WHY WCAG AA: contrasto minimo 4.5:1 (era color: white su sfondo quasi bianco)
       backdrop-filter: blur(10px);
       padding: 1.5rem 2rem;
       border-radius: 12px;
       margin-top: 2rem;
       font-size: 1.15rem;
-      border-left: 5px solid white;
+      border-left: 5px solid rgba(109, 74, 255, 0.8); // WHY WCAG AA: contrasto minimo 4.5:1 (era solid white)
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       transition: all 0.3s ease;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.25);
+        background: #e8e3ff; // WHY WCAG AA: contrasto minimo 4.5:1 (era rgba(255,255,255,0.25) su viola = ~1.5:1)
         transform: translateX(5px);
       }
 
       strong {
-        color: #fff;
+        color: #2d1b69; // WHY WCAG AA: contrasto minimo 4.5:1 (era color: #fff su sfondo chiaro)
         font-size: 1.25rem;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       }
     }
   }
