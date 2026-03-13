@@ -12,6 +12,7 @@ import { CodeBlockDemo } from './code-block-demo/code-block-demo';
 import { BehaviorSubjectComponent } from './behavior-subject/behavior-subject';
 import { PatternExplorer } from './pattern-explorer/pattern-explorer';
 import { SignalFormDemo } from './signal-form-demo/signal-form-demo';
+import { MaterialDemo } from './components/material-demo/material-demo';
 
 export const routes: Routes = [
   {
@@ -95,5 +96,12 @@ export const routes: Routes = [
   {
     path: 'code-block-demo',
     component: CodeBlockDemo,
+  },
+  {
+    // WHY /material-demo?
+    // Route di test per verificare l'integrazione Angular Material + tema M3.
+    // Accessibile direttamente durante lo sviluppo.
+    path: 'material-demo',
+    component: MaterialDemo,
   },
 ];

@@ -1,0 +1,47 @@
+/**
+ * WHY variabili CSS Material (var(--mat-*)): 
+ * Rispettano il tema configurato dall'utente (light/dark, custom palette).
+ * Hardcodare colori HEX romperebbe il theming dinamico.
+ *
+ * WHY BEM + varianti: struttura prevedibile, sovrascrivibile dal consumer.
+ */
+
+.pedagogy-card {
+  margin-bottom: 1.5rem;
+  border-left: 4px solid transparent;
+  transition: box-shadow 200ms ease;
+
+  &:hover {
+    box-shadow: var(--mat-card-hover-shadow, 0 4px 12px rgba(0, 0, 0, 0.15));
+  }
+
+  // Variante info — blu/primary
+  &--info {
+    border-left-color: var(--mat-primary-color, #1976d2);
+    background-color: color-mix(in srgb, var(--mat-primary-color, #1976d2) 8%, white);
+  }
+
+  // Variante success — verde
+  &--success {
+    border-left-color: #388e3c;
+    background-color: color-mix(in srgb, #388e3c 8%, white);
+  }
+
+  // Variante warning — arancione/warn
+  &--warning {
+    border-left-color: var(--mat-warn-color, #f57c00);
+    background-color: color-mix(in srgb, var(--mat-warn-color, #f57c00) 8%, white);
+  }
+
+  &__icon {
+    &--info { color: var(--mat-primary-color, #1976d2); }
+    &--success { color: #388e3c; }
+    &--warning { color: var(--mat-warn-color, #f57c00); }
+  }
+
+  mat-card-content {
+    padding-top: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}

@@ -5,6 +5,11 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+// WHY provideAnimationsAsync?
+// Angular Material richiede il modulo Animations per le transizioni dei
+// componenti (ripple, overlay, drawer, ecc.). La versione "async" carica
+// il modulo in modo lazy, migliorando le performance del bundle iniziale.
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { routes } from './app.routes';
 import { appReducers } from './store/app.reducers';
@@ -23,5 +28,7 @@ export const appConfig: ApplicationConfig = {
       trace: false,
       traceLimit: 75,
     }),
+    // Angular Material animations — lazy loaded per performance ottimale
+    provideAnimationsAsync(),
   ],
 };

@@ -1,0 +1,71 @@
+.demo-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.demo-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #6d4aff;
+  margin-bottom: 0.25rem;
+}
+
+.demo-subtitle {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.demo-card {
+  width: 100%;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.progress-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-width: 3rem;
+    text-align: center;
+  }
+}
+
+.palette-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.palette-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+
+  small {
+    font-size: 0.6rem;
+    font-weight: 400;
+    opacity: 0.85;
+  }
+}

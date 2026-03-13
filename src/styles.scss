@@ -1,4 +1,9 @@
 @use 'typography';
+// WHY material-theme prima del resto?
+// Il tema Material deve essere caricato prima degli stili custom per
+// garantire che le CSS custom properties siano disponibili e che
+// gli override locali abbiano la precedenza corretta.
+@use 'material-theme';
 
 /* Global styles */
 * {

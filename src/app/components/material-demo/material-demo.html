@@ -1,0 +1,85 @@
+<div class="demo-container">
+  <h1 class="demo-title">Angular Material — Tema M3 Custom</h1>
+  <p class="demo-subtitle">Palette viola (#6d4aff) applicata come primary color</p>
+
+  <!-- MAT-CARD: contenitore elevated con shadow Material -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Buttons</mat-card-title>
+      <mat-card-subtitle>Varianti: filled, outlined, text</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="button-row">
+        <!-- WHY color="primary"? Applica il colore primary dalla palette custom -->
+        <button mat-raised-button color="primary">Primary</button>
+        <button mat-stroked-button color="primary">Outlined</button>
+        <button mat-button color="primary">Text</button>
+        <button mat-raised-button color="accent">Accent</button>
+        <button mat-raised-button color="warn">Warn</button>
+        <button mat-raised-button disabled>Disabled</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- MAT-CHIP: etichette interattive -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Chips</mat-card-title>
+      <mat-card-subtitle>Click per selezionare/deselezionare</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-chip-listbox>
+        @for (tag of ['Angular', 'Material', 'M3', 'TypeScript', 'SCSS']; track tag) {
+          <mat-chip-option
+            [selected]="selectedChips.has(tag)"
+            (click)="toggleChip(tag)"
+            color="primary">
+            {{ tag }}
+          </mat-chip-option>
+        }
+      </mat-chip-listbox>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- MAT-PROGRESS-BAR: indicatore di avanzamento -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Progress Bar</mat-card-title>
+      <mat-card-subtitle>Valore: {{ progress }}%</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-progress-bar
+        mode="determinate"
+        [value]="progress"
+        color="primary">
+      </mat-progress-bar>
+      <div class="progress-actions">
+        <button mat-icon-button color="primary" (click)="decreaseProgress()">
+          <mat-icon>remove</mat-icon>
+        </button>
+        <span>{{ progress }}%</span>
+        <button mat-icon-button color="primary" (click)="increaseProgress()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Palette preview -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Palette Preview</mat-card-title>
+      <mat-card-subtitle>Shade viola custom (50→900)</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="palette-row">
+        @for (shade of paletteShades; track shade.label) {
+          <div class="palette-swatch" [style.background]="shade.color" [style.color]="shade.contrast">
+            <span>{{ shade.label }}</span>
+            <small>{{ shade.color }}</small>
+          </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

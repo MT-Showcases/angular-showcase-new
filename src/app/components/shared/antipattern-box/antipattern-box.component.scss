@@ -1,0 +1,36 @@
+/**
+ * WHY colore warn via CSS custom property:
+ * Usa il token Material per coerenza col tema — se il designer
+ * cambia il colore warn, questo componente si aggiorna automaticamente.
+ */
+
+.antipattern-box {
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--mat-warn-color, #d32f2f);
+  background-color: color-mix(in srgb, var(--mat-warn-color, #d32f2f) 6%, white);
+
+  &__icon {
+    color: var(--mat-warn-color, #d32f2f) !important;
+  }
+
+  &__title {
+    color: var(--mat-warn-color, #d32f2f);
+    font-weight: 600;
+  }
+
+  &__item {
+    // Leggera separazione visiva tra voci
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__item-icon {
+    color: var(--mat-warn-color, #d32f2f) !important;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}

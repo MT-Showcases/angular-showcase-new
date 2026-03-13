@@ -1,0 +1,69 @@
+// =============================================================================
+// Angular Material M3 Theme — angular-showcase-new
+// =============================================================================
+//
+// WHY M3?
+// Material Design 3 è il sistema di design più recente di Google. Introduce
+// token di design dinamici, supporto per colori personalizzati via
+// "color schemes" e una migliore integrazione con l'accessibilità.
+// Angular Material 17+ supporta M3 nativamente tramite mat.define-theme().
+//
+// WHY mat.define-theme invece di define-palette?
+// In Angular Material 17+, le API M2 (define-palette, define-light-theme)
+// sono state rimosse. M3 usa mat.define-theme() con system colors.
+// =============================================================================
+
+@use '@angular/material' as mat;
+
+// -----------------------------------------------------------------------------
+// STEP 1: mat.core() — setup globale obbligatorio (una sola volta per app).
+// Include reset di base, overlay, ripple, ecc.
+// -----------------------------------------------------------------------------
+@include mat.core();
+
+// -----------------------------------------------------------------------------
+// STEP 2: Definizione del tema M3
+//
+// WHY mat.define-theme?
+// M3 calcola automaticamente tutte le shade e i token di colore
+// partendo da un singolo colore sorgente (source-color).
+// Niente più palette manuali con 50-900 shade!
+//
+// WHY il viola #6d4aff?
+// È il colore primary del progetto — viola vibrante che identifica
+// visivamente angular-showcase-new.
+// -----------------------------------------------------------------------------
+$angular-showcase-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    // WHY use-system-variables:
+    // Genera CSS custom properties (--mat-*) invece di valori hardcoded.
+    // Permette theming dinamico via JavaScript e overriding puntuale via SCSS.
+    use-system-variables: true,
+  ),
+  typography: (
+    // WHY use-system-variables per typography:
+    // Stessa motivazione — i token tipografici diventano CSS variables
+    // sovrascrivibili senza dover rigenerare il bundle Angular.
+    use-system-variables: true,
+  ),
+  density: (
+    // WHY density: 0?
+    // Density 0 è la densità "default" di Material — componenti alla
+    // dimensione standard. Valori negativi (-1, -2) comprimono i componenti.
+    scale: 0,
+  ),
+));
+
+// -----------------------------------------------------------------------------
+// STEP 3: Applica il tema a tutti i componenti Material
+//
+// WHY all-component-themes?
+// Genera i CSS custom properties e le classi per ogni componente Material
+// (button, card, chip, progress-bar, ecc.) usando il tema definito sopra.
+// In produzione si può ottimizzare con mat.include-component-themes()
+// includendo solo i componenti effettivamente usati.
+// -----------------------------------------------------------------------------
+:root {
+  @include mat.all-component-themes($angular-showcase-theme);
+}
