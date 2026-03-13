@@ -3,6 +3,11 @@
   margin: 0 auto;
   padding: 2rem;
   animation: fadeIn 0.6s ease-out;
+  // WHY background bianco: isola il contenuto dal gradient viola globale di styles.scss.
+  // Senza questo, le sezioni interne ereditano il viola e il testo bianco diventa illeggibile.
+  background: #ffffff;
+  border-radius: 1rem;
+  color: #1a1a2e;
 }
 
 // ═══ TOC ═══
