@@ -305,3 +305,30 @@
     color: #784212;
   }
 }
+
+@media (min-width: 1024px) {
+  .form__container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 0 1rem;
+  }
+
+  .form__card {
+    max-width: 900px;
+  }
+
+  .form__pedagogy-box,
+  .form__antipattern-box {
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .form__comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}

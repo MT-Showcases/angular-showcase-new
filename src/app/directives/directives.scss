@@ -298,3 +298,10 @@
     background: rgba(39, 174, 96, 0.15);
   }
 }
+
+@media (min-width: 1024px) {
+  .directives-container {
+    max-width: 1200px;
+    width: 100%;
+  }
+}

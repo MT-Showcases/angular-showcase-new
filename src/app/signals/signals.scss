@@ -468,3 +468,15 @@
     border: 1px solid rgba(128, 90, 213, 0.25);
   }
 }
+
+@media (min-width: 1024px) {
+  .signals-container {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .pedagogy-grid,
+  .comparison-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

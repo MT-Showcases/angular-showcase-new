@@ -261,3 +261,14 @@
     color: #784212;
   }
 }
+
+@media (min-width: 1024px) {
+  .data-binding {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .data-binding__examples {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

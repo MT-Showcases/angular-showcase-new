@@ -1000,3 +1000,15 @@
   font-style: italic;
   margin-top: 12px;
 }
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1200px;
+  }
+
+  .pedagogy-grid,
+  .practice-grid,
+  .use-cases {
+    grid-template-columns: 1fr 1fr;
+  }
+}

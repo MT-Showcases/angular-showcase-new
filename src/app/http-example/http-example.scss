@@ -466,3 +466,14 @@ pre {
   font-style: italic;
   margin-top: 12px;
 }
+
+@media (min-width: 1024px) {
+  .http-container {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .pedagogy-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
