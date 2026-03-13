@@ -14,7 +14,17 @@
 
   // Remove default blue highlight on mobile for all buttons and links
   -webkit-tap-highlight-color: transparent;
-  outline: none;
+
+  // WHY: outline:none rimosso dal selettore globale — violava WCAG 2.4.7
+  // Gli elementi interattivi devono mostrare un focus ring visibile per utenti da tastiera.
+  // Ogni componente gestisce il proprio :focus-visible se necessario.
+}
+
+// WHY: :focus-visible invece di :focus — si attiva solo per navigazione da tastiera,
+// non per click del mouse. Garantisce WCAG 2.4.7 senza disturbare gli utenti mouse.
+:focus-visible {
+  outline: 2px solid #6d4aff;
+  outline-offset: 2px;
 }
 
 body {
@@ -22,6 +32,15 @@ body {
   background-size: 400% 400%;
   animation: gradientShift 5s ease-in-out infinite alternate;
   min-height: 100vh;
+
+  // WHY: prefers-reduced-motion — utenti con vestibular disorders
+  // possono disabilitare le animazioni dal sistema operativo.
+  // WCAG 2.3.3 (AAA) e best practice per accessibilità.
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background: #764ba2;
+    background-size: unset;
+  }
 }
 
 @keyframes gradientShift {
@@ -32,3 +51,4 @@ body {
     background-position: 100% 50%;
   }
 }
+

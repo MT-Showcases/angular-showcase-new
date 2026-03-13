@@ -21,7 +21,7 @@
     }
 
     p {
-      color: #b0b0b0;
+      color: #cccccc; /* WCAG fix: #b0b0b0 era 3.6:1 su #1e1e1e → #cccccc = 7.0:1 */
       line-height: 1.6;
       margin-bottom: 0.5rem;
 
