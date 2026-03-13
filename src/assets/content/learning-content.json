@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "generatedAt": "2026-03-13T00:00:00Z",
+  "version": "1.1.0",
+  "generatedAt": "2026-03-13T01:30:00Z",
   "depthLevels": [
     {
       "id": "intro",
@@ -48,6 +48,11 @@
           "topicId": "signals",
           "relation": "supports",
           "note": "Signals provide ergonomic local state in facades."
+        },
+        {
+          "topicId": "resilient-http-data-layer",
+          "relation": "extends",
+          "note": "Facades become more useful when HTTP concerns are standardized."
         }
       ],
       "examples": [
@@ -66,15 +71,23 @@
           "prompt": "Create a method that returns strongly typed concepts from local JSON.",
           "solution": "Use HttpClient.get<LearningContent>() and expose computed/signal selectors.",
           "difficulty": "medium"
+        },
+        {
+          "id": "svc-facade-exercise",
+          "title": "Refactor component orchestration",
+          "format": "exercise",
+          "prompt": "Move loading/error/empty-state logic from a component into a facade. Add one public load() API and at least two computed selectors.",
+          "solution": "Extract imperative orchestration into facade methods, keep view layer declarative, and expose readonly signals for rendering states.",
+          "difficulty": "hard"
         }
       ]
     },
     {
       "id": "signals",
       "title": "Signals for Local Reactive State",
-      "summary": "Use Angular signals to keep local state predictable and ergonomic.",
+      "summary": "Use Angular signals to keep local state predictable, composable, and side-effect aware.",
       "tags": ["angular", "signals", "reactivity"],
-      "depthLevels": ["intro", "guided", "applied"],
+      "depthLevels": ["intro", "guided", "applied", "mastery"],
       "relatedTopics": [
         {
           "topicId": "svc-facade",
@@ -82,9 +95,9 @@
           "note": "Facade state can be expressed as signals."
         },
         {
-          "topicId": "rxjs",
-          "relation": "alternative",
-          "note": "Observable pipelines remain useful for streaming cases."
+          "topicId": "rxjs-signal-interop",
+          "relation": "extends",
+          "note": "Use interop utilities to bridge observables and signals."
         }
       ],
       "examples": [
@@ -93,21 +106,27 @@
           "title": "Filter by depth",
           "format": "exercise",
           "prompt": "Implement a computed signal that returns concepts available at a selected depth level.",
+          "solution": "Use selectedDepth signal and concepts signal with computed(() => concepts().filter(...)).",
           "difficulty": "medium"
         }
       ]
     },
     {
       "id": "dependency-injection",
-      "title": "Dependency Injection",
-      "summary": "Inject framework services and app services to avoid manual wiring.",
-      "tags": ["angular", "di", "testability"],
-      "depthLevels": ["intro", "guided"],
+      "title": "Dependency Injection and Token Design",
+      "summary": "Use DI tokens and provider scopes to swap implementations and isolate side effects.",
+      "tags": ["angular", "di", "testability", "providers"],
+      "depthLevels": ["intro", "guided", "applied", "mastery"],
       "relatedTopics": [
         {
           "topicId": "svc-facade",
           "relation": "extends",
-          "note": "Facades depend on DI for HttpClient and collaborators."
+          "note": "Facades depend on DI for transport and repositories."
+        },
+        {
+          "topicId": "standalone-architecture",
+          "relation": "supports",
+          "note": "Provider scoping is central in standalone apps."
         }
       ],
       "examples": [
@@ -117,6 +136,273 @@
           "format": "case-study",
           "prompt": "How can DI help replace mock JSON with a real backend later?",
           "solution": "Depend on an abstract repository token and provide a different implementation by environment.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "di-exercise",
+          "title": "Create a repository token",
+          "format": "exercise",
+          "prompt": "Define an InjectionToken<LearningRepository> and provide one in-memory and one HTTP implementation. Toggle them by environment provider config.",
+          "solution": "Expose shared interface, register useClass/useFactory providers, and inject token in facade without touching component code.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "standalone-architecture",
+      "title": "Standalone Architecture and Feature Boundaries",
+      "summary": "Organize apps using standalone components, route-level providers, and explicit feature boundaries.",
+      "tags": ["standalone", "architecture", "routing", "providers"],
+      "depthLevels": ["intro", "guided", "applied", "mastery"],
+      "relatedTopics": [
+        {
+          "topicId": "route-level-code-splitting",
+          "relation": "supports",
+          "note": "Standalone route declarations simplify lazy loading."
+        },
+        {
+          "topicId": "dependency-injection",
+          "relation": "prerequisite",
+          "note": "You need provider scope fundamentals first."
+        }
+      ],
+      "examples": [
+        {
+          "id": "standalone-snippet",
+          "title": "Feature route providers",
+          "format": "snippet",
+          "prompt": "Define a standalone route that provides a feature-scoped facade and API base URL.",
+          "solution": "Use a route with providers: [FeatureFacade, { provide: API_URL, useValue: ... }].",
+          "difficulty": "medium"
+        },
+        {
+          "id": "standalone-exercise",
+          "title": "Extract a bounded feature",
+          "format": "exercise",
+          "prompt": "Take one existing page and split it into a standalone feature with its own routes, providers, and shared public barrel.",
+          "solution": "Move implementation details into feature folder, expose only route and public types, and verify imports remain one-way.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "rxjs-signal-interop",
+      "title": "RxJS + Signals Interop",
+      "summary": "Combine stream-based workflows with signal-driven UI state without double subscriptions.",
+      "tags": ["rxjs", "signals", "interop", "reactivity"],
+      "depthLevels": ["guided", "applied", "mastery"],
+      "relatedTopics": [
+        {
+          "topicId": "signals",
+          "relation": "prerequisite",
+          "note": "Start from signal fundamentals."
+        },
+        {
+          "topicId": "resilient-http-data-layer",
+          "relation": "supports",
+          "note": "HTTP streams often feed UI signals."
+        }
+      ],
+      "examples": [
+        {
+          "id": "interop-case",
+          "title": "Observable pipeline to signal",
+          "format": "case-study",
+          "prompt": "You have a debounced search Observable. How do you expose results as signal state in a component?",
+          "solution": "Use toSignal(searchResults$) for read path, keep side effects in RxJS pipeline, and avoid duplicate local subscribe().",
+          "difficulty": "medium"
+        },
+        {
+          "id": "interop-exercise",
+          "title": "Bi-directional bridge",
+          "format": "exercise",
+          "prompt": "Create a search box where user input is a signal but API calls are RxJS. Add cancellation and loading state.",
+          "solution": "Convert signal to observable for switchMap, then map final stream back to signal via toSignal.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "route-level-code-splitting",
+      "title": "Route-Level Code Splitting and Prefetch Strategy",
+      "summary": "Use lazy routes, deferrable chunks, and selective prefetching to balance performance and UX.",
+      "tags": ["performance", "routing", "lazy-loading", "bundles"],
+      "depthLevels": ["guided", "applied", "mastery"],
+      "relatedTopics": [
+        {
+          "topicId": "standalone-architecture",
+          "relation": "prerequisite",
+          "note": "Standalone routes make split points explicit."
+        },
+        {
+          "topicId": "deferrable-views",
+          "relation": "extends",
+          "note": "Deferring non-critical blocks complements route splitting."
+        }
+      ],
+      "examples": [
+        {
+          "id": "code-splitting-snippet",
+          "title": "Lazy route with preload hint",
+          "format": "snippet",
+          "prompt": "Add a lazy feature route and mark it as prefetch candidate after first interaction.",
+          "solution": "Use loadComponent/loadChildren and metadata consumed by a custom preloading strategy.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "code-splitting-exercise",
+          "title": "Measure and tune",
+          "format": "exercise",
+          "prompt": "Split one heavy route into separate chunks and measure initial bundle delta before/after. Document any regressions.",
+          "solution": "Record baseline bundle stats, apply lazy boundaries, compare startup TTI/LCP and adjust preloading accordingly.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "deferrable-views",
+      "title": "Deferrable Views for Progressive Rendering",
+      "summary": "Render critical UI first and defer secondary blocks using trigger-based loading.",
+      "tags": ["performance", "ux", "defer", "rendering"],
+      "depthLevels": ["guided", "applied", "mastery"],
+      "relatedTopics": [
+        {
+          "topicId": "route-level-code-splitting",
+          "relation": "supports",
+          "note": "Both reduce initial JavaScript pressure."
+        },
+        {
+          "topicId": "signals",
+          "relation": "supports",
+          "note": "Signals help model loaded/deferred states in templates."
+        }
+      ],
+      "examples": [
+        {
+          "id": "defer-analogy",
+          "title": "Magazine fold analogy",
+          "format": "analogy",
+          "prompt": "Why defer below-the-fold content?",
+          "solution": "You print the cover first so users can start reading immediately; long articles can arrive a moment later.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "defer-exercise",
+          "title": "Add defer blocks",
+          "format": "exercise",
+          "prompt": "Wrap a non-critical widget in @defer with loading and placeholder states. Use viewport or idle trigger and compare perceived speed.",
+          "solution": "Implement @defer with @placeholder/@loading, verify main content paints first, and ensure deferred state remains accessible.",
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "id": "zoneless-change-detection",
+      "title": "Zoneless Change Detection with Signal-First Patterns",
+      "summary": "Design deterministic UI updates without Zone.js by leaning on explicit reactivity.",
+      "tags": ["performance", "change-detection", "signals", "architecture"],
+      "depthLevels": ["applied", "mastery"],
+      "relatedTopics": [
+        {
+          "topicId": "signals",
+          "relation": "prerequisite",
+          "note": "Signals are the primary update mechanism in zoneless setups."
+        },
+        {
+          "topicId": "rxjs-signal-interop",
+          "relation": "supports",
+          "note": "Interop avoids hidden async change propagation."
+        }
+      ],
+      "examples": [
+        {
+          "id": "zoneless-case",
+          "title": "Event-driven updates",
+          "format": "case-study",
+          "prompt": "A component updates after async calls only. What must be explicit when Zone.js is removed?",
+          "solution": "All state transitions must flow through reactive primitives/signals observed by the template, with no reliance on patched async APIs.",
+          "difficulty": "hard"
+        },
+        {
+          "id": "zoneless-exercise",
+          "title": "Migrate one feature",
+          "format": "exercise",
+          "prompt": "Pick one feature and remove implicit mutation patterns. Convert state to signals/computed and verify UI updates still occur deterministically.",
+          "solution": "Replace mutable local fields with signal state, isolate effects, and ensure template reads only reactive values.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "dynamic-component-composition",
+      "title": "Dynamic Component Composition",
+      "summary": "Compose runtime UIs with typed contracts for plugin-like sections and context-aware rendering.",
+      "tags": ["dynamic-components", "composition", "architecture", "extensibility"],
+      "depthLevels": ["guided", "applied", "mastery"],
+      "relatedTopics": [
+        {
+          "topicId": "standalone-architecture",
+          "relation": "supports",
+          "note": "Standalone components simplify dynamic registration."
+        },
+        {
+          "topicId": "dependency-injection",
+          "relation": "supports",
+          "note": "Injection tokens can register dynamic blocks safely."
+        }
+      ],
+      "examples": [
+        {
+          "id": "dynamic-snippet",
+          "title": "Typed dynamic outlet",
+          "format": "snippet",
+          "prompt": "Define a typed config model that maps widget IDs to component classes and input schemas.",
+          "solution": "Use a discriminated union for widget config and strongly typed component input contracts.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "dynamic-exercise",
+          "title": "Add pluggable section",
+          "format": "exercise",
+          "prompt": "Implement a dashboard section registry where adding a new widget requires no dashboard template edits.",
+          "solution": "Introduce registry token, iterate over configs, and render via ngComponentOutlet/dynamic APIs with validated inputs.",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "resilient-http-data-layer",
+      "title": "Resilient HTTP Data Layer",
+      "summary": "Centralize retries, timeout, mapping, and error normalization to keep UI logic clean and robust.",
+      "tags": ["http", "resilience", "rxjs", "architecture"],
+      "depthLevels": ["guided", "applied", "mastery"],
+      "relatedTopics": [
+        {
+          "topicId": "svc-facade",
+          "relation": "prerequisite",
+          "note": "Facades consume normalized data-layer outputs."
+        },
+        {
+          "topicId": "rxjs-signal-interop",
+          "relation": "supports",
+          "note": "Stream operators power retries, fallback, and cancellation."
+        }
+      ],
+      "examples": [
+        {
+          "id": "http-snippet",
+          "title": "Normalize API errors",
+          "format": "snippet",
+          "prompt": "Wrap HttpClient errors into a domain-safe Result type with retry/backoff for idempotent requests.",
+          "solution": "Use pipe(catchError, retryWhen/backoff) and map to a typed Result union consumed by facades.",
+          "difficulty": "medium"
+        },
+        {
+          "id": "http-exercise",
+          "title": "Design request policy",
+          "format": "exercise",
+          "prompt": "Implement one interceptor or data-access utility that applies timeout, correlation ID, and user-friendly error mapping for all feature APIs.",
+          "solution": "Create shared policy layer, expose typed success/error contracts, and ensure UI receives predictable failure states.",
           "difficulty": "hard"
         }
       ]

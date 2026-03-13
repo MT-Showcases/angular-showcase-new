@@ -27,7 +27,10 @@ export interface PatternCard {
   antiPatterns: string[];
 }
 
+export type PatternLabId = 'smart-dumb-refactor' | 'signal-vs-observable' | 'facade-fixer';
+
 export interface PatternPlaygroundState {
   selectedLevel: PatternLevel;
   showContributorTips: boolean;
+  activeLabId: PatternLabId;
 }

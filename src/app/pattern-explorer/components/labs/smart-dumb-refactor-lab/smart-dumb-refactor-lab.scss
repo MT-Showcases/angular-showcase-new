@@ -1,0 +1,103 @@
+@use 'globals' as *;
+
+.smart-dumb-lab {
+  &__header {
+    margin-bottom: rem(12);
+  }
+
+  &__title {
+    margin: 0 0 rem(6);
+    font-size: rem(17);
+    color: $neutral-darkest;
+  }
+
+  &__text {
+    margin: 0;
+    color: $neutral-darker;
+    line-height: rem(22);
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: rem(1) solid $neutral-lightest;
+    border-radius: rem(10);
+    overflow: hidden;
+  }
+
+  &__item {
+    padding: rem(12);
+    border-bottom: rem(1) solid $neutral-lightest;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  &__item-main {
+    @include flex(space-between, center);
+    gap: rem(12);
+  }
+
+  &__label {
+    margin: 0;
+    color: $neutral-darkest;
+    font-weight: 600;
+  }
+
+  &__actions {
+    @include flex(flex-start, center);
+    gap: rem(8);
+  }
+
+  &__choice,
+  &__reset {
+    border: rem(1) solid $neutral-lighter;
+    border-radius: rem(999);
+    padding: rem(7) rem(12);
+    background: $neutral-bg;
+    color: $neutral-darker;
+    font-size: rem(13);
+    transition: $transition;
+
+    &:hover {
+      border-color: $primary;
+      color: $primary;
+    }
+
+    &--active {
+      border-color: $primary;
+      background: $blue-bg-lighter;
+      color: $primary;
+      font-weight: 700;
+    }
+  }
+
+  &__feedback {
+    margin: rem(8) 0 0;
+    font-size: rem(13);
+    line-height: rem(20);
+
+    &--good {
+      color: $green;
+    }
+
+    &--warn {
+      color: $warning;
+    }
+  }
+
+  &__footer {
+    margin-top: rem(12);
+    @include flex(flex-start, center, column);
+    gap: rem(6);
+    align-items: flex-start;
+  }
+
+  &__score,
+  &__status {
+    margin: 0;
+    color: $neutral-darker;
+  }
+}

@@ -26,10 +26,14 @@ src/app/pattern-explorer/
       pattern-list.ts
       pattern-list.html
       pattern-list.scss
-    pattern-playground/               # Presentational + local signals demo
+    pattern-playground/               # Presentational + local signals + lab host
       pattern-playground.ts
       pattern-playground.html
       pattern-playground.scss
+    labs/                             # Interactive architecture exercises
+      smart-dumb-refactor-lab/
+      signal-vs-observable-lab/
+      facade-anti-pattern-fixer-lab/
 ```
 
 ---

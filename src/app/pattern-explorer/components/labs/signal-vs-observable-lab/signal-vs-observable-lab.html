@@ -1,0 +1,49 @@
+<section class="reactivity-lab" aria-label="Signal versus observable lab">
+  <header class="reactivity-lab__header">
+    <h4 class="reactivity-lab__title">Lab: Signal vs Observable</h4>
+    <p class="reactivity-lab__text">
+      Switch active mode, update counters, and inspect how each primitive manages local UI updates.
+    </p>
+  </header>
+
+  <div class="reactivity-lab__mode-switch">
+    <button
+      type="button"
+      class="reactivity-lab__chip"
+      [class.reactivity-lab__chip--active]="activeMode() === 'signal'"
+      (click)="selectMode('signal')"
+    >
+      Signal
+    </button>
+
+    <button
+      type="button"
+      class="reactivity-lab__chip"
+      [class.reactivity-lab__chip--active]="activeMode() === 'observable'"
+      (click)="selectMode('observable')"
+    >
+      Observable
+    </button>
+  </div>
+
+  <p class="reactivity-lab__summary">{{ modeSummary() }}</p>
+
+  <div class="reactivity-lab__counters">
+    <article class="reactivity-lab__counter-card">
+      <h5 class="reactivity-lab__counter-title">Signal Counter</h5>
+      <p class="reactivity-lab__counter-value">{{ signalCounter() }}</p>
+    </article>
+
+    <article class="reactivity-lab__counter-card">
+      <h5 class="reactivity-lab__counter-title">Observable Counter</h5>
+      <p class="reactivity-lab__counter-value">{{ observableCounter() }}</p>
+    </article>
+  </div>
+
+  <div class="reactivity-lab__actions">
+    <button type="button" class="reactivity-lab__btn" (click)="decrement()">-1</button>
+    <button type="button" class="reactivity-lab__btn" (click)="increment()">+1</button>
+    <button type="button" class="reactivity-lab__btn" (click)="syncCounters()">Sync from signal</button>
+    <button type="button" class="reactivity-lab__btn" (click)="reset()">Reset</button>
+  </div>
+</section>

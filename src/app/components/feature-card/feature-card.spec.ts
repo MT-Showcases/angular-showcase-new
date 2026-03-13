@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { FeatureCard } from './feature-card';
 
@@ -8,9 +9,9 @@ describe('FeatureCard', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FeatureCard]
-    })
-    .compileComponents();
+      imports: [FeatureCard],
+      providers: [provideRouter([])],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FeatureCard);
     component = fixture.componentInstance;

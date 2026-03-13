@@ -63,4 +63,43 @@
     </ul>
   </aside>
   }
+
+  <section class="pattern-playground__labs" aria-label="Interactive pattern labs">
+    <header class="pattern-playground__labs-header">
+      <h4 class="pattern-playground__labs-title">Interactive Pattern Labs</h4>
+      <p class="pattern-playground__labs-text">
+        Practice architecture decisions through guided micro-exercises.
+      </p>
+    </header>
+
+    <div class="pattern-playground__lab-tabs" role="tablist" aria-label="Pattern lab selector">
+      @for (lab of labTabs; track lab.id) {
+      <button
+        type="button"
+        role="tab"
+        class="pattern-playground__lab-tab"
+        [attr.aria-selected]="activeLabId() === lab.id"
+        [class.pattern-playground__lab-tab--active]="activeLabId() === lab.id"
+        (click)="selectLab(lab.id)"
+      >
+        <span class="pattern-playground__lab-tab-title">{{ lab.label }}</span>
+        <span class="pattern-playground__lab-tab-summary">{{ lab.summary }}</span>
+      </button>
+      }
+    </div>
+
+    <div class="pattern-playground__lab-panel" role="tabpanel">
+      @if (activeLabId() === 'smart-dumb-refactor') {
+      <app-smart-dumb-refactor-lab />
+      }
+
+      @if (activeLabId() === 'signal-vs-observable') {
+      <app-signal-vs-observable-lab />
+      }
+
+      @if (activeLabId() === 'facade-fixer') {
+      <app-facade-anti-pattern-fixer-lab />
+      }
+    </div>
+  </section>
 </section>

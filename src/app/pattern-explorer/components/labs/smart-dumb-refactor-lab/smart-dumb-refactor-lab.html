@@ -1,0 +1,56 @@
+<section class="smart-dumb-lab" aria-label="Smart and dumb refactor lab">
+  <header class="smart-dumb-lab__header">
+    <h4 class="smart-dumb-lab__title">Lab: Smart vs Dumb Refactor</h4>
+    <p class="smart-dumb-lab__text">
+      For each responsibility, decide whether it belongs in a smart container/facade layer or in a
+      dumb presentational component.
+    </p>
+  </header>
+
+  <ul class="smart-dumb-lab__list">
+    @for (task of refactorTasks; track task.id) {
+    <li class="smart-dumb-lab__item">
+      <div class="smart-dumb-lab__item-main">
+        <p class="smart-dumb-lab__label">{{ task.label }}</p>
+
+        <div class="smart-dumb-lab__actions">
+          <button
+            type="button"
+            class="smart-dumb-lab__choice"
+            [class.smart-dumb-lab__choice--active]="selections()[task.id] === 'smart'"
+            (click)="chooseOwner(task.id, 'smart')"
+          >
+            Smart
+          </button>
+
+          <button
+            type="button"
+            class="smart-dumb-lab__choice"
+            [class.smart-dumb-lab__choice--active]="selections()[task.id] === 'dumb'"
+            (click)="chooseOwner(task.id, 'dumb')"
+          >
+            Dumb
+          </button>
+        </div>
+      </div>
+
+      @if (selections()[task.id] !== null) {
+      <p
+        class="smart-dumb-lab__feedback"
+        [class.smart-dumb-lab__feedback--good]="isCorrect(task)"
+        [class.smart-dumb-lab__feedback--warn]="!isCorrect(task)"
+      >
+        {{ task.rationale }}
+      </p>
+      }
+    </li>
+    }
+  </ul>
+
+  <footer class="smart-dumb-lab__footer">
+    <p class="smart-dumb-lab__score">Score: {{ solvedCount() }}/{{ refactorTasks.length }}</p>
+    <p class="smart-dumb-lab__status">{{ completionLabel() }}</p>
+
+    <button type="button" class="smart-dumb-lab__reset" (click)="resetLab()">Reset lab</button>
+  </footer>
+</section>

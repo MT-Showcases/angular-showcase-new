@@ -2,7 +2,7 @@
  * PatternPlayground Component Styles
  *
  * Educational local-state playground that visualizes signal-driven filters.
- * Includes chips, toggles, list summaries, and optional contributor tips.
+ * Includes chips, toggles, list summaries, contributor tips, and interactive pattern labs.
  */
 
 @use 'globals' as *;
@@ -43,7 +43,8 @@
   }
 
   &__chip,
-  &__toggle {
+  &__toggle,
+  &__lab-tab {
     border: rem(1) solid $neutral-lighter;
     border-radius: rem(999);
     padding: rem(8) rem(12);
@@ -138,6 +139,64 @@
       margin-bottom: 0;
     }
   }
+
+  &__labs {
+    margin-top: rem(18);
+    padding-top: rem(14);
+    border-top: rem(1) solid $neutral-lightest;
+  }
+
+  &__labs-header {
+    margin-bottom: rem(10);
+  }
+
+  &__labs-title {
+    margin: 0 0 rem(6);
+    font-size: rem(18);
+    color: $neutral-darkest;
+  }
+
+  &__labs-text {
+    margin: 0;
+    color: $neutral-darker;
+    line-height: rem(21);
+  }
+
+  &__lab-tabs {
+    @include flex(flex-start, stretch, column);
+    gap: rem(8);
+    margin-bottom: rem(12);
+  }
+
+  &__lab-tab {
+    @include flex(flex-start, flex-start, column);
+    gap: rem(3);
+    text-align: left;
+    border-radius: rem(12);
+
+    &--active {
+      border-color: $primary;
+      background: $blue-bg-lighter;
+      color: $primary;
+    }
+  }
+
+  &__lab-tab-title {
+    font-weight: 700;
+  }
+
+  &__lab-tab-summary {
+    color: $neutral-light;
+    font-size: rem(12);
+    line-height: rem(18);
+  }
+
+  &__lab-panel {
+    border: rem(1) solid $neutral-lightest;
+    border-radius: rem(12);
+    padding: rem(12);
+    background: $neutral-bg;
+  }
 }
 
 // Tablet and up (min-width: 768px)
@@ -147,8 +206,19 @@
       @include flex(space-between, center);
     }
 
-    &__title {
+    &__title,
+    &__labs-title {
       font-size: rem(20);
+    }
+
+    &__lab-tabs {
+      @include flex(flex-start, stretch);
+      flex-wrap: wrap;
+    }
+
+    &__lab-tab {
+      flex: 1 1 rem(220);
+      min-height: rem(88);
     }
   }
 }

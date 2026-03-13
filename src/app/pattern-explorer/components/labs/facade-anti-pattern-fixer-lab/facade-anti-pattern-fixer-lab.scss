@@ -1,0 +1,95 @@
+@use 'globals' as *;
+
+.facade-fixer-lab {
+  &__header {
+    margin-bottom: rem(12);
+  }
+
+  &__title {
+    margin: 0 0 rem(6);
+    font-size: rem(17);
+    color: $neutral-darkest;
+  }
+
+  &__text {
+    margin: 0;
+    color: $neutral-darker;
+    line-height: rem(22);
+  }
+
+  &__scenarios {
+    @include flex(flex-start, stretch, column);
+    gap: rem(10);
+  }
+
+  &__scenario {
+    border: rem(1) solid $neutral-lightest;
+    border-radius: rem(10);
+    padding: rem(12);
+    background: $white;
+  }
+
+  &__anti-pattern {
+    margin: 0 0 rem(8);
+    color: $neutral-darkest;
+    font-weight: 600;
+    line-height: rem(21);
+  }
+
+  &__options {
+    @include flex(flex-start, stretch, column);
+    gap: rem(8);
+  }
+
+  &__option,
+  &__reset {
+    border: rem(1) solid $neutral-lighter;
+    border-radius: rem(10);
+    padding: rem(8) rem(10);
+    background: $neutral-bg;
+    color: $neutral-darker;
+    text-align: left;
+    transition: $transition;
+
+    &:hover {
+      border-color: $primary;
+      color: $primary;
+    }
+
+    &--active {
+      border-color: $primary;
+      background: $blue-bg-lighter;
+      color: $primary;
+      font-weight: 600;
+    }
+  }
+
+  &__feedback {
+    margin: rem(8) 0 0;
+    font-size: rem(13);
+
+    &--good {
+      color: $success;
+    }
+
+    &--warn {
+      color: $warning;
+    }
+  }
+
+  &__footer {
+    margin-top: rem(12);
+    @include flex(space-between, center);
+    gap: rem(8);
+    flex-wrap: wrap;
+  }
+
+  &__score {
+    margin: 0;
+    color: $neutral-darker;
+  }
+
+  &__reset {
+    border-radius: rem(999);
+  }
+}

@@ -1,0 +1,70 @@
+name: Learning content request
+description: Suggest a new learning topic, walkthrough, or tutorial for the showcase.
+title: "[Learning] "
+labels:
+  - learning-content
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us improve the learning experience.
+        Please share enough context so contributors can implement this quickly.
+
+  - type: input
+    id: topic
+    attributes:
+      label: Topic title
+      description: A concise name for the learning content.
+      placeholder: "Signals vs RxJS in component state"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: level
+    attributes:
+      label: Target level
+      options:
+        - Beginner
+        - Intermediate
+        - Advanced
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Learner problem to solve
+      description: What confusion or challenge should this content address?
+      placeholder: "When should I choose signals over observable streams in Angular UI state?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-content
+    attributes:
+      label: Proposed content outline
+      description: Bullet points are perfect.
+      placeholder: |
+        - Why this topic matters
+        - Core concepts
+        - Practical example
+        - Trade-offs / pitfalls
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Done when...
+      description: What would make this request complete and useful?
+      placeholder: |
+        - A dedicated section exists in docs
+        - Includes runnable code sample
+        - Links to related patterns
+    validations:
+      required: true
+
+  - type: input
+    id: references
+    attributes:
+      label: Helpful references (optional)
+      description: Links to articles, talks, RFCs, repos, etc.
+      placeholder: "https://..."

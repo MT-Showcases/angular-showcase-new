@@ -1,0 +1,48 @@
+<section class="facade-fixer-lab" aria-label="Facade anti-pattern fixer lab">
+  <header class="facade-fixer-lab__header">
+    <h4 class="facade-fixer-lab__title">Lab: Facade Anti-pattern Fixer</h4>
+    <p class="facade-fixer-lab__text">
+      Read each anti-pattern and choose the remediation that preserves a clear facade boundary.
+    </p>
+  </header>
+
+  <div class="facade-fixer-lab__scenarios">
+    @for (scenario of antiPatternScenarios; track scenario.id) {
+    <article class="facade-fixer-lab__scenario">
+      <p class="facade-fixer-lab__anti-pattern">{{ scenario.antiPattern }}</p>
+
+      <div class="facade-fixer-lab__options">
+        @for (option of scenario.fixOptions; track option) {
+        <button
+          type="button"
+          class="facade-fixer-lab__option"
+          [class.facade-fixer-lab__option--active]="selectedFixes()[scenario.id] === option"
+          (click)="chooseFix(scenario.id, option)"
+        >
+          {{ option }}
+        </button>
+        }
+      </div>
+
+      @if (selectedFixes()[scenario.id]) {
+      <p
+        class="facade-fixer-lab__feedback"
+        [class.facade-fixer-lab__feedback--good]="isCorrectSelection(scenario)"
+        [class.facade-fixer-lab__feedback--warn]="!isCorrectSelection(scenario)"
+      >
+        {{
+          isCorrectSelection(scenario)
+            ? 'Correct. This keeps implementation details behind semantic facade APIs.'
+            : 'Not quite. Prefer facade methods that hide source details and provide typed UI-ready data.'
+        }}
+      </p>
+      }
+    </article>
+    }
+  </div>
+
+  <footer class="facade-fixer-lab__footer">
+    <p class="facade-fixer-lab__score">Solved scenarios: {{ solvedCount() }}/{{ antiPatternScenarios.length }}</p>
+    <button type="button" class="facade-fixer-lab__reset" (click)="reset()">Reset lab</button>
+  </footer>
+</section>

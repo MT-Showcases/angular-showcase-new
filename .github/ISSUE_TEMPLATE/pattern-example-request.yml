@@ -1,0 +1,69 @@
+name: Pattern example request
+description: Request a new implementation example for a specific pattern.
+title: "[Pattern] "
+labels:
+  - pattern-request
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to request a concrete pattern example in the showcase.
+
+  - type: input
+    id: pattern-name
+    attributes:
+      label: Pattern name
+      placeholder: "Container/Presentational Components"
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Real-world use case
+      description: Where would this pattern be useful in practice?
+      placeholder: "A dashboard where business logic should stay out of presentational widgets."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-example
+    attributes:
+      label: What the example should include
+      description: Mention architecture, files, testing expectations, docs, etc.
+      placeholder: |
+        - Folder structure
+        - Data flow diagram or explanation
+        - Minimal tests
+        - Common mistakes to avoid
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Desired complexity
+      options:
+        - Minimal / starter
+        - Production-like
+        - Both
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How should maintainers verify the example is complete?
+      placeholder: |
+        - Example is runnable
+        - README/docs section added
+        - Pattern trade-offs documented
+    validations:
+      required: true
+
+  - type: input
+    id: related
+    attributes:
+      label: Related docs/issues (optional)
+      placeholder: "#123, https://..."

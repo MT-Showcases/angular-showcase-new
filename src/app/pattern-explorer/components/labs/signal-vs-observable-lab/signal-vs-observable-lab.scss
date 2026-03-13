@@ -1,0 +1,83 @@
+@use 'globals' as *;
+
+.reactivity-lab {
+  &__header {
+    margin-bottom: rem(12);
+  }
+
+  &__title {
+    margin: 0 0 rem(6);
+    font-size: rem(17);
+    color: $neutral-darkest;
+  }
+
+  &__text,
+  &__summary {
+    margin: 0;
+    color: $neutral-darker;
+    line-height: rem(22);
+  }
+
+  &__mode-switch {
+    @include flex(flex-start, center);
+    gap: rem(8);
+    margin: rem(12) 0 rem(10);
+  }
+
+  &__chip,
+  &__btn {
+    border: rem(1) solid $neutral-lighter;
+    border-radius: rem(999);
+    padding: rem(7) rem(12);
+    background: $neutral-bg;
+    color: $neutral-darker;
+    font-size: rem(13);
+    transition: $transition;
+
+    &:hover {
+      border-color: $primary;
+      color: $primary;
+    }
+
+    &--active {
+      border-color: $primary;
+      background: $blue-bg-lighter;
+      color: $primary;
+      font-weight: 700;
+    }
+  }
+
+  &__counters {
+    @include flex(flex-start, stretch);
+    gap: rem(10);
+    margin: rem(12) 0;
+    flex-wrap: wrap;
+  }
+
+  &__counter-card {
+    min-width: rem(180);
+    padding: rem(10);
+    border: rem(1) solid $neutral-lightest;
+    border-radius: rem(10);
+    background: $white;
+  }
+
+  &__counter-title {
+    margin: 0 0 rem(4);
+    font-size: rem(13);
+    color: $neutral-light;
+  }
+
+  &__counter-value {
+    margin: 0;
+    font-size: rem(24);
+    font-weight: 700;
+    color: $neutral-darkest;
+  }
+
+  &__actions {
+    @include flex(flex-start, center);
+    gap: rem(8);
+    flex-wrap: wrap;
+  }
+}
