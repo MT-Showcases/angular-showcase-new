@@ -999,7 +999,9 @@
   gap: 16px;
   margin: 16px 0;
 
-  @media (max-width: 640px) {
+  // WHY 768px: allineato al breakpoint tablet standard; a 768px due colonne
+  // sono troppo strette per le pedagogy card con codice e liste.
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
 }
@@ -1036,6 +1038,12 @@
   border-collapse: collapse;
   font-size: 13px;
   margin-top: 8px;
+  // WHY overflow-x: auto: le tabelle con molte colonne su viewport strette
+  // causano scroll orizzontale dell'intera pagina; contenere l'overflow
+  // nel wrapper della tabella isola il problema e mantiene il layout intatto.
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 
   th, td {
     padding: 6px 10px;

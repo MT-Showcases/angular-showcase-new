@@ -17,7 +17,9 @@
     width: 100%;
     animation: slideIn 0.5s ease-out;
 
-    @media (max-width: 600px) {
+    // WHY 768px: tablet breakpoint standard — sotto questa larghezza il padding
+    // ridotto migliora la leggibilità senza sprecare spazio su schermi stretti.
+    @media (max-width: 768px) {
       padding: 24px;
     }
   }
@@ -30,7 +32,8 @@
     margin-bottom: 8px;
     text-align: center;
 
-    @media (max-width: 600px) {
+    // WHY 768px: ridurre il font-size a tablet evita troncamenti su viewport strette.
+    @media (max-width: 768px) {
       font-size: 24px;
     }
   }
@@ -99,7 +102,9 @@
     gap: 12px;
     margin-top: 32px;
 
-    @media (max-width: 600px) {
+    // WHY 768px: a tablet i bottoni affiancati diventano troppo stretti;
+    // impilare verticalmente garantisce tap target adeguati (≥44px).
+    @media (max-width: 768px) {
       flex-direction: column;
     }
   }
@@ -169,7 +174,9 @@
     transform: scale(0.98);
   }
 
-  @media (max-width: 600px) {
+  // WHY 768px: su tablet il bottone deve occupare tutta la larghezza
+  // per mantenere tap target ≥44px e allinearsi con il flex-direction: column sopra.
+  @media (max-width: 768px) {
     width: 100%;
   }
 

@@ -121,7 +121,10 @@
 }
 .concepts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  // WHY minmax(min(500px,100%), 1fr): su viewport < 500px il minmax tradizionale
+  // forza overflow orizzontale; min() garantisce che la colonna non superi il
+  // 100% della larghezza disponibile, restando responsive senza media query aggiuntive.
+  grid-template-columns: repeat(auto-fit, minmax(min(500px, 100%), 1fr));
   gap: 2rem;
   margin-bottom: 3rem;
 }
@@ -138,7 +141,9 @@
   }
   .setup-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    // WHY minmax(min(350px,100%), 1fr): stesso principio di concepts-grid —
+    // evita overflow orizzontale su tablet senza forzare una media query extra.
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
     gap: 1.5rem;
   }
   .setup-step {

@@ -304,6 +304,14 @@
 
   // Summary table
   .summary {
+    &__table-wrapper {
+      // WHY overflow-x: auto: la tabella riassuntiva ha 4 colonne che a 768px
+      // non entrano nella viewport; il wrapper scrollabile evita l'overflow
+      // globale della pagina mantenendo il layout colonna intatto.
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     &__table {
       width: 100%;
       border-collapse: collapse;
@@ -378,7 +386,9 @@
   gap: 16px;
   margin: 16px 0;
 
-  @media (max-width: 640px) {
+  // WHY 768px: allineato al breakpoint tablet standard per coerenza con
+  // gli altri layout a due colonne della stessa pagina.
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
 }
@@ -430,7 +440,10 @@
   gap: 20px;
   margin: 20px 0;
 
-  @media (max-width: 640px) {
+  // WHY 768px (non 640px): il breakpoint tablet standard è 768px; a questa
+  // larghezza due colonne diventano troppo strette per leggere il codice
+  // nelle card di confronto Signal vs RxJS.
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
 }
