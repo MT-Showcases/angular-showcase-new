@@ -1,3 +1,30 @@
+/**
+ * PATTERN: Angular Reactive Forms
+ *
+ * WHY: I Reactive Forms (FormBuilder, FormGroup, FormControl) sono il modo
+ *      "Angular way" per gestire form complessi con validazione. La logica
+ *      del form vive nel TypeScript (testabile, esplicita) invece che nel template.
+ *
+ * QUANDO USARLO:
+ *   - Form con validazione complessa (multi-field, async validators)
+ *   - Form che devono essere testati con unit test
+ *   - Form che cambiano struttura dinamicamente
+ *   - Quando hai bisogno di osservare i cambiamenti del form (valueChanges observable)
+ *
+ * ALTERNATIVA — Template-driven Forms:
+ *   - Più semplici per form piccoli (usa ngModel, simile ad Angular.js)
+ *   - Meno testabili (la logica è nel template)
+ *   - Usa FormsModule invece di ReactiveFormsModule
+ *   - Esempio: <input [(ngModel)]="name" required minlength="3">
+ *   - QUANDO USARLI: form semplici di 2-3 campi senza logica complessa
+ *
+ * ANTI-PATTERN:
+ *   - Mescolare Template-driven e Reactive Forms nello stesso componente
+ *   - Accedere direttamente all'input del DOM per leggere i valori
+ *   - Creare FormControl manualmente invece di usare FormBuilder
+ *   - Dimenticare di gestire lo stato "touched" per la validazione UI
+ */
+
 // COMPONENT TYPE: Container
 // SECTION: Angular Basics
 //
@@ -36,27 +63,38 @@ import { Icon } from '../components/icon/icon';
   styleUrl: './forms.scss',
 })
 export class Forms {
+  // FormGroup: il contenitore del form — raccoglie tutti i FormControl
+  // WHY: il FormGroup ci dà accesso allo stato globale del form (valid, dirty, touched)
+  //      e ci permette di leggere tutti i valori in un unico oggetto con .value
   reactiveForm: FormGroup;
 
-  // Inject FormBuilder to create reactive form in constructor
+  // WHY FormBuilder: è un servizio helper che abbrevia la sintassi.
+  // Invece di: new FormGroup({ name: new FormControl('', [Validators.required]) })
+  // Scrivi:    this.fb.group({ name: ['', [Validators.required]] })
+  // Il risultato è identico, ma più conciso e leggibile.
   constructor(private fb: FormBuilder) {
-    // Configura il form reattivo con validazioni
+    // Crea il form con FormBuilder.group()
+    // Ogni chiave è un FormControl: [valoreIniziale, validatori]
     this.reactiveForm = this.fb.group({
       name: [
         '',
         [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20),
-          Validators.pattern('^[a-zA-Z]+$'),
+          Validators.required,       // Campo obbligatorio
+          Validators.minLength(3),   // Minimo 3 caratteri
+          Validators.maxLength(20),  // Massimo 20 caratteri
+          Validators.pattern('^[a-zA-Z]+$'), // Solo lettere (regex)
         ],
       ],
-      surname: ['', Validators.required],
+      surname: [
+        '',
+        Validators.required,  // Un solo validator: si passa direttamente (non array)
+      ],
       email: [
         '',
         [
           Validators.required,
-          Validators.email,
+          Validators.email,  // Valida formato email (base)
+          // Pattern più restrittivo del validator email built-in:
           Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
         ],
       ],
@@ -64,19 +102,25 @@ export class Forms {
   }
 
   onSubmit() {
-    // Esempio di setValue per aggiornare il valore di un controllo
-    //this.reactiveForm.get('name')?.setValue('Mario');
-
+    // WHY: controlliamo this.reactiveForm.valid prima di procedere.
+    // Il button [disabled]="reactiveForm.invalid" previene il submit UI,
+    // ma questa validazione lato TS è necessaria per sicurezza
+    // (il button disabled può essere bypassato dagli utenti).
     if (this.reactiveForm.valid) {
       console.log('Form reattivo inviato:', this.reactiveForm.value);
       alert('Form reattivo inviato con successo!');
     } else {
+      // markAllAsTouched() mostrerebbe gli errori su tutti i campi intoccati
+      // this.reactiveForm.markAllAsTouched();
       console.log('Form reattivo non valido', this.reactiveForm.controls);
       alert('Form reattivo non valido. Controlla i campi e riprova.');
     }
   }
 
   onReset() {
+    // reset() azzera tutti i valori E lo stato (touched, dirty, valid)
+    // WHY: senza reset() i messaggi di errore rimarrebbero visibili
+    // anche dopo aver svuotato i campi manualmente.
     this.reactiveForm.reset();
   }
 }

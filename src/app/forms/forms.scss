@@ -217,3 +217,91 @@
     transform: translateY(0);
   }
 }
+
+// ─── PEDAGOGICAL BOXES ───────────────────────────────────────────────────────
+
+.form__pedagogy-box {
+  background: linear-gradient(135deg, #e8f4fd 0%, #d6eaf8 100%);
+  border-left: 4px solid #2980b9;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 700px;
+
+  h3 {
+    margin: 0 0 0.75rem;
+    color: #1a5276;
+    font-size: 1rem;
+  }
+}
+
+.form__comparison {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+
+  &-col {
+    flex: 1;
+    min-width: 200px;
+
+    h4 {
+      margin: 0 0 0.5rem;
+      font-size: 0.9rem;
+      color: #1a5276;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.25rem;
+      font-size: 0.85rem;
+      color: #2c3e50;
+      line-height: 1.7;
+    }
+  }
+}
+
+.form__pedagogy-link {
+  margin-top: 0.75rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #2980b9;
+}
+
+.form__antipattern-box {
+  background: linear-gradient(135deg, #fef9e7 0%, #fdebd0 100%);
+  border-left: 4px solid #e67e22;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 700px;
+
+  h4 {
+    margin: 0 0 0.5rem;
+    color: #7d3c0a;
+    font-size: 0.9rem;
+  }
+
+  code {
+    display: block;
+    background: rgba(230, 126, 34, 0.1);
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    color: #784212;
+    margin: 0.5rem 0;
+    font-family: monospace;
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+
+  p {
+    margin: 0.4rem 0;
+    font-size: 0.85rem;
+    color: #4a235a;
+    line-height: 1.5;
+  }
+
+  strong {
+    color: #784212;
+  }
+}

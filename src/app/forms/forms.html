@@ -4,15 +4,76 @@
 ></app-page-header>
 
 <div class="form__container">
+
+  <!-- ╔══════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  PERCHÉ QUESTO PATTERN?                                      ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════╝ -->
+  <!--
+    I Reactive Forms spostano la logica del form dal template al TypeScript.
+    Questo li rende:
+      - Testabili: puoi testare la validazione senza renderizzare il DOM
+      - Espliciti: la struttura e le regole del form sono visibili nel codice TS
+      - Potenti: supportano validatori asincroni, form dinamici, observables
+
+    Alternativa — Template-driven Forms:
+      - Più semplici per form piccoli
+      - La logica vive nel template (ngModel, required, minlength come attributi)
+      - Meno testabili e meno flessibili
+      - Usa quando hai 2-3 campi semplici senza logica complessa
+  -->
+  <div class="form__pedagogy-box">
+    <h3>📚 Reactive Forms vs Template-driven Forms</h3>
+    <div class="form__comparison">
+      <div class="form__comparison-col">
+        <h4>✅ Reactive Forms (questo esempio)</h4>
+        <ul>
+          <li>Logica nel TypeScript — testabile</li>
+          <li>FormBuilder, FormGroup, FormControl</li>
+          <li>Validatori come funzioni pure</li>
+          <li>Osservabili con <code>valueChanges</code></li>
+          <li>Ideale per form complessi</li>
+        </ul>
+      </div>
+      <div class="form__comparison-col">
+        <h4>📝 Template-driven Forms</h4>
+        <ul>
+          <li>Logica nel template HTML — più semplice</li>
+          <li>Usa <code>ngModel</code>, attributi HTML</li>
+          <li>Validatori come attributi (<code>required</code>, <code>minlength</code>)</li>
+          <li>Meno controllo sul flusso dati</li>
+          <li>Ideale per form piccoli e veloci</li>
+        </ul>
+      </div>
+    </div>
+    <p class="form__pedagogy-link">
+      → Approfondisci i pattern di stato nel <strong>Pattern Explorer</strong>
+    </p>
+  </div>
+
   <div class="form__card">
     <h2 class="form__title">Esempio Pratico</h2>
     <p class="form__subtitle">Compila tutti i campi per inviare il form</p>
 
+    <!--
+      [formGroup]="reactiveForm" — collega questo <form> al FormGroup nel componente.
+      (ngSubmit)="onSubmit()" — intercetta il submit del form (previene il reload della pagina).
+      WHY: ngSubmit invece di (click) sul button permette anche l'invio con Enter.
+    -->
     <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">
-      <!--/* NAME FIELD */-->
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- CAMPO NOME                                                   -->
+      <!-- Validators: required, minLength(3), maxLength(20), pattern  -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
       <div class="form__group">
         <label class="form__label">
           Nome
+          <!--
+            Mostra l'icona di validazione solo dopo che l'utente ha "toccato" il campo.
+            WHY: non mostrare errori prima che l'utente abbia interagito — è una UX pessima
+            mostrare "campo obbligatorio" su un form appena caricato.
+            "touched" diventa true quando il campo perde il focus (blur event).
+          -->
           @if (reactiveForm.get('name')?.touched) {
             <span class="validation-icon">
               @if (reactiveForm.get('name')?.invalid) {
@@ -23,6 +84,14 @@
             </span>
           }
         </label>
+        <!--
+          formControlName="name" — collega questo input al FormControl "name" nel FormGroup.
+          Angular gestisce automaticamente il value e gli eventi dell'input.
+          NON hai bisogno di (ngModel) o di leggere il valore manualmente.
+
+          [class.invalid] e [class.valid] — applicano stili visivi basati sullo stato del controllo.
+          "touched" previene di mostrare lo stile di errore prima dell'interazione utente.
+        -->
         <input
           type="text"
           class="form__input"
@@ -31,7 +100,13 @@
           [class.invalid]="reactiveForm.get('name')?.invalid && reactiveForm.get('name')?.touched"
           [class.valid]="reactiveForm.get('name')?.valid && reactiveForm.get('name')?.touched"
         />
+        <!-- Mostra i messaggi di errore solo se il campo è stato toccato E ha errori -->
         <div *ngIf="reactiveForm.get('name')?.errors && reactiveForm.get('name')?.touched" class="error__messages">
+          <!--
+            reactiveForm.get('name')?.errors ritorna un oggetto come:
+            { required: true } oppure { minlength: { requiredLength: 3, actualLength: 1 } }
+            | keyvalue pipe converte l'oggetto in array di { key, value } per iterare con *ngFor.
+          -->
           <small *ngFor="let error of reactiveForm.get('name')?.errors | keyvalue" class="error__item">
             <span *ngIf="error.key === 'required'">Il nome è obbligatorio</span>
             <span *ngIf="error.key === 'minlength'">Minimo 3 caratteri</span>
@@ -41,7 +116,10 @@
         </div>
       </div>
 
-      <!--/* SURNAME FIELD */-->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- CAMPO COGNOME                                               -->
+      <!-- Validators: required only                                   -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
       <div class="form__group">
         <label class="form__label">
           Cognome
@@ -68,7 +146,12 @@
         </div>
       </div>
 
-      <!--/* EMAIL FIELD */-->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- CAMPO EMAIL                                                  -->
+      <!-- Validators: required, email, pattern                        -->
+      <!-- Nota: usiamo ENTRAMBI Validators.email e Validators.pattern -->
+      <!-- perché email built-in è più permissivo del pattern custom   -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
       <div class="form__group">
         <label class="form__label">
           Email
@@ -82,6 +165,12 @@
             </span>
           }
         </label>
+        <!--
+          type="email" — hint al browser per la tastiera mobile e la validazione HTML5.
+          NOTA: la validazione HTML5 del browser è separata dalla validazione Angular.
+          Angular gestisce la propria validazione tramite Validators — il type="email"
+          migliora solo la UX (tastiera con @ su mobile, suggerimento del browser).
+        -->
         <input
           type="email"
           class="form__input"
@@ -98,15 +187,45 @@
         </div>
       </div>
 
-      <!--/* BUTTONS */-->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- PULSANTI AZIONE                                              -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
       <div class="form__actions">
+        <!--
+          [disabled]="reactiveForm.invalid" — disabilita il button finché il form non è valido.
+          WHY: previene submit accidentali, migliorando la UX.
+          NOTA: questa è una protezione UX, non di sicurezza — la validazione
+          vera avviene sempre nel metodo onSubmit() e nel backend.
+        -->
         <button type="submit" class="btn btn__submit" [disabled]="reactiveForm.invalid">
           Invia Form
         </button>
+        <!--
+          type="button" — IMPORTANTE! Senza questo attributo, il button dentro un <form>
+          farebbe submit di default (type="submit" è il default).
+          (click)="onReset()" chiama il metodo che fa reactiveForm.reset()
+        -->
         <button type="button" class="btn btn__reset" (click)="onReset()">
           Reset
         </button>
       </div>
     </form>
+  </div>
+
+  <!-- ANTI-PATTERN BOX -->
+  <div class="form__antipattern-box">
+    <h4>⚠️ Anti-pattern: Template-driven form con logica complessa</h4>
+    <code>&lt;input [(ngModel)]="name" required minlength="3" #nameRef="ngModel"&gt;</code>
+    <p>
+      <strong>Problema:</strong> con i template-driven form, la logica di validazione
+      è distribuita tra template e componente. Non puoi testare la validazione
+      senza renderizzare il componente. Con form di 10+ campi o validatori cross-field
+      (es. "password == confirmPassword") il template diventa ingestibile.
+    </p>
+    <p>
+      <strong>Soluzione:</strong> usa i Reactive Forms come in questo esempio.
+      Puoi testare la validazione direttamente nel componente TS:
+      <code>component.reactiveForm.get('name')?.setValue('ab'); expect(form.valid).toBeFalsy();</code>
+    </p>
   </div>
 </div>

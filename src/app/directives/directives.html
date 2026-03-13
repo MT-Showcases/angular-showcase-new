@@ -5,99 +5,239 @@
 
 <div class="directives-container">
 
+  <!-- ╔══════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  PERCHÉ QUESTO PATTERN?                                      ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════╝ -->
+  <!--
+    Le direttive sono il modo in cui Angular porta comportamento dichiarativo
+    nell'HTML. Invece di scrivere JavaScript imperativo:
+      if (show) { element.style.display = 'block' }
+    dichiari nel template:
+      <p *ngIf="show">...</p>
+    Angular si occupa di aggiungere/rimuovere l'elemento dal DOM.
+
+    Esistono due categorie principali:
+      - Strutturali (*ngIf, *ngFor): cambiano la STRUTTURA del DOM
+      - Attributo ([ngClass], [ngStyle]): cambiano l'ASPETTO di un elemento
+
+    ⚡ Angular 17+ ha introdotto @if e @for come alternativa nativa.
+       Questo componente mostra entrambe per scopi didattici.
+  -->
+  <section class="section pedagogy-box">
+    <h3>📚 Perché le Direttive?</h3>
+    <p>
+      Le direttive strutturali sostituiscono la manipolazione manuale del DOM.
+      Rendono il template dichiarativo: descrivi COSA mostrare, non COME.
+    </p>
+    <p>
+      <strong>Angular 17+</strong> ha introdotto <code>&#64;if</code> e <code>&#64;for</code>
+      come sintassi nativa nel template (più leggibili, migliori performance, no import di CommonModule).
+      Questo esempio mostra la sintassi legacy (<code>*ngIf</code>, <code>*ngFor</code>)
+      che troverai in molti progetti esistenti.
+    </p>
+    <p class="pedagogy-link">
+      → Approfondisci i pattern di stato e rendering nel <strong>Pattern Explorer</strong>
+    </p>
+  </section>
+
   <!-- ═══════════════════════════════════════════════════════════════════ -->
-  <!-- 1. *ngIf - Mostra/Nascondi elementi                                 -->
+  <!-- 1. *ngIf - Direttiva Strutturale Condizionale                      -->
+  <!-- WHY: aggiunge/rimuove elementi dal DOM in base a una condizione.   -->
+  <!-- NOTA: rimuove fisicamente l'elemento (diverso da display:none!)    -->
   <!-- ═══════════════════════════════════════════════════════════════════ -->
   <section class="section">
     <h3 class="section__title">*ngIf - Condizionale</h3>
+    <p class="section__description">
+      <!-- Nota: *ngIf è una direttiva strutturale — il * è syntactic sugar per <ng-template>.
+           Quando la condizione è falsa, l'elemento viene RIMOSSO dal DOM (non nascosto).
+           In Angular 17+ scrivi: @if (showMessage) { <p>...</p> } -->
+      <em>*ngIf="condizione" — rimuove/aggiunge fisicamente l'elemento nel DOM</em>
+    </p>
 
-    <!-- Esempio base -->
+    <!-- Esempio base: *ngIf con valore booleano -->
     <!-- Angular: *ngIf="showMessage" -->
-    <!-- React: {showMessage && <p>Messaggio</p>} -->
+    <!-- React:   {showMessage && <p>Messaggio</p>} -->
+    <!-- Angular 17+: @if (showMessage) { <p>...</p> } -->
     <button class="section__button" (click)="toggleMessage()">Toggle Messaggio</button>
     <p *ngIf="showMessage" class="message">✓ Messaggio visibile!</p>
 
-    <!-- *ngIf con else -->
-    <!-- Angular: *ngIf="condition; else elseBlock" -->
-    <!-- React: {isLoggedIn ? <p>Benvenuto</p> : <p>Login</p>} -->
+    <!-- Esempio con else: *ngIf con ng-template -->
+    <!-- Angular: *ngIf="condition; else elseBlock" + <ng-template #elseBlock> -->
+    <!-- React:   {isLoggedIn ? <p>Benvenuto</p> : <p>Login</p>} -->
+    <!-- Nota: #notLoggedIn è un template reference variable — un riferimento locale al template -->
     <button class="section__button" (click)="toggleLogin()">Toggle Login</button>
     <p *ngIf="isLoggedIn; else notLoggedIn" class="success">✓ Sei autenticato</p>
     <ng-template #notLoggedIn>
+      <!-- ng-template non viene renderizzato finché *ngIf non lo richiede.
+           È il blocco "else" del condizionale. -->
       <p class="warning">⚠ Devi fare login</p>
     </ng-template>
+
+    <!-- ANTI-PATTERN BOX -->
+    <div class="antipattern-box">
+      <h4>⚠️ Anti-pattern: *ngIf e *ngStyle/display:none a confronto</h4>
+      <p>
+        <strong>*ngIf</strong> rimuove l'elemento dal DOM → componenti figli vengono
+        distrutti e ricreati, i loro cicli di vita vengono chiamati.
+        Usa questo quando vuoi risparmiare risorse (nessun componente in background).
+      </p>
+      <p>
+        <strong>[hidden]="!condizione"</strong> o <code>display:none</code> nasconde l'elemento
+        ma lo mantiene nel DOM → il componente figlio rimane in vita.
+        Usa questo quando vuoi preservare lo stato del componente (es. un form compilato).
+      </p>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
-  <!-- 2. *ngFor - Ripeti elementi                                         -->
+  <!-- 2. *ngFor - Direttiva Strutturale per Liste                        -->
+  <!-- WHY: renderizza una lista di elementi a partire da un array.       -->
+  <!-- IMPORTANTE: aggiungi sempre trackBy per performance ottimali!      -->
   <!-- ═══════════════════════════════════════════════════════════════════ -->
   <section class="section">
     <h3 class="section__title">*ngFor - Lista</h3>
+    <p class="section__description">
+      <!-- Nota: *ngFor itera sull'array "items" e crea un <li> per ogni elemento.
+           "index as i" espone l'indice corrente — Angular 17+: @for (item of items; track item) -->
+      <em>*ngFor="let item of items; index as i" — renderizza N copie dell'elemento</em>
+    </p>
 
     <!-- Angular: *ngFor="let item of items; index as i" -->
-    <!-- React: {items.map((item, i) => <div key={i}>{item}</div>)} -->
+    <!-- React:   {items.map((item, i) => <div key={i}>{item}</div>)} -->
+    <!-- Angular 17+: @for (item of items; track item) { <li>...</li> } -->
     <ul class="section__list">
+      <!-- Nota: in *ngFor hai accesso a variabili locali:
+           index, first, last, even, odd — molto utili per styling alternato -->
       <li class="section__list-item" *ngFor="let item of items; index as i">{{ i + 1 }}. {{ item }}</li>
     </ul>
+
+    <!-- ANTI-PATTERN BOX -->
+    <div class="antipattern-box">
+      <h4>⚠️ Anti-pattern: *ngFor senza trackBy su liste dinamiche</h4>
+      <code>&lt;li *ngFor="let item of items"&gt;&lt;/li&gt;</code>
+      <p>
+        <strong>Problema:</strong> senza <code>trackBy</code>, quando l'array cambia
+        Angular distrugge e ricrea TUTTI gli elementi DOM, anche quelli non cambiati.
+        Su liste lunghe questo causa lag visibile.
+      </p>
+      <p>
+        <strong>Soluzione:</strong> <code>*ngFor="let item of items; trackBy: trackById"</code>
+        con un metodo che ritorna un identificatore univoco (es. <code>item.id</code>).
+        Angular ricicla gli elementi DOM esistenti invece di ricrearli.
+      </p>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
-  <!-- 3. [ngClass] - Classi CSS dinamiche                                 -->
+  <!-- 3. [ngClass] - Direttiva Attributo per Classi CSS Dinamiche        -->
+  <!-- WHY: applica/rimuove classi CSS in modo condizionale.              -->
+  <!-- PREFERISCI questo a [ngStyle] per styling mantenibile.             -->
   <!-- ═══════════════════════════════════════════════════════════════════ -->
   <section class="section">
     <h3 class="section__title">[ngClass] - Classi dinamiche</h3>
+    <p class="section__description">
+      <!-- Nota: [class.active]="isActive" è la sintassi shorthand per applicare
+           una singola classe. Per più classi usa [ngClass]="{'active': isActive, 'bold': isBold}"
+           o la sintassi array: [ngClass]="['class1', isActive ? 'active' : '']" -->
+      <em>[class.nomeClasse]="condizione" — aggiunge/rimuove una classe CSS</em>
+    </p>
 
-    <!-- Angular: [class.active]="isActive" -->
-    <!-- React: className={isActive ? 'active' : ''} -->
+    <!-- Angular: [class.active]="isActive"  (shorthand per una classe) -->
+    <!-- Angular: [ngClass]="{'active': isActive}"  (sintassi oggetto per più classi) -->
+    <!-- React:   className={isActive ? 'active' : ''} -->
     <button class="section__button" (click)="toggleActive()">Toggle Active</button>
-    <div [class.active]="isActive" class="box">Box con classe dinamica</div>
+    <div [class.active]="isActive" class="box">
+      Box con classe dinamica
+      <!-- Nota: "box" è una classe statica, "active" viene aggiunta/rimossa da Angular.
+           Puoi avere classi statiche e dinamiche sullo stesso elemento. -->
+    </div>
+
+    <!-- ANTI-PATTERN BOX -->
+    <div class="antipattern-box">
+      <h4>⚠️ Anti-pattern: logica CSS inline invece di classi</h4>
+      <code>[ngStyle]="&#123;'font-weight': isActive ? 'bold' : 'normal', 'color': isActive ? 'blue' : 'black'&#125;"</code>
+      <p>
+        <strong>Problema:</strong> stili inline hanno la priorità più alta in CSS e sono
+        difficili da sovrascrivere. La logica di presentazione finisce nel TypeScript invece
+        che nel CSS — violando la separation of concerns.
+      </p>
+      <p>
+        <strong>Soluzione:</strong> definisci le varianti visive come classi CSS
+        (<code>.active &#123; font-weight: bold; color: blue; &#125;</code>) e usa
+        <code>[class.active]="isActive"</code> — i CSS restano nei CSS.
+      </p>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
-  <!-- 4. [ngStyle] - Stili dinamici                                       -->
+  <!-- 4. [ngStyle] - Direttiva Attributo per Stili Dinamici              -->
+  <!-- WHY: applica stili CSS inline calcolati a runtime.                 -->
+  <!-- QUANDO: quando il valore dello stile non può essere una classe CSS -->
+  <!-- (es. colori scelti dall'utente, dimensioni calcolate in px, ecc.) -->
   <!-- ═══════════════════════════════════════════════════════════════════ -->
   <section class="section">
     <h3 class="section__title">[ngStyle] - Stili dinamici</h3>
+    <p class="section__description">
+      <!-- Nota: [style.color]="textColor" è la sintassi shorthand.
+           Usa [ngStyle] solo quando il valore deve essere calcolato a runtime
+           e non può essere rappresentato come una classe CSS predefinita. -->
+      <em>[style.proprietà]="valore" — applica uno stile inline calcolato a runtime</em>
+    </p>
 
-    <!-- Angular: [style.color]="textColor" -->
-    <!-- React: style={{color: textColor}} -->
+    <!-- Angular: [style.color]="textColor"  (shorthand per una proprietà) -->
+    <!-- React:   style={{color: textColor}} -->
+    <!-- Nota: usiamo ngStyle qui perché il colore è scelto dall'utente a runtime.
+         In un caso con colori predefiniti, preferiremmo [ngClass] con classi CSS. -->
     <div class="color-buttons">
       <button class="section__button" (click)="changeColor('#e74c3c')">Rosso</button>
       <button class="section__button" (click)="changeColor('#3498db')">Blu</button>
       <button class="section__button" (click)="changeColor('#2ecc71')">Verde</button>
     </div>
-    <p class="section__text" [style.color]="textColor" [style.font-size.px]="20">Testo con colore dinamico</p>
+    <p class="section__text" [style.color]="textColor" [style.font-size.px]="20">
+      Testo con colore dinamico
+      <!-- Nota: [style.font-size.px]="20" — Angular supporta il suffisso dell'unità
+           direttamente nella sintassi del binding! Non devi scrivere "20px" come stringa. -->
+    </p>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
-  <!-- Riepilogo                                                           -->
+  <!-- RIEPILOGO COMPARATIVO Angular vs React                              -->
   <!-- ═══════════════════════════════════════════════════════════════════ -->
   <section class="section summary">
     <h3 class="section__title">Riepilogo Angular vs React</h3>
+    <!-- Nota: questa tabella aiuta gli studenti che arrivano da React.
+         Le concetti sono gli stessi, solo la sintassi cambia. -->
     <table class="summary__table">
       <thead>
         <tr>
-          <th class="summary__header-cell">Angular</th>
+          <th class="summary__header-cell">Angular (legacy)</th>
+          <th class="summary__header-cell">Angular 17+ (moderno)</th>
           <th class="summary__header-cell">React</th>
         </tr>
       </thead>
       <tbody>
         <tr class="summary__row">
           <td class="summary__cell summary__cell--angular">*ngIf="show"</td>
+          <td class="summary__cell summary__cell--angular">&#64;if (show) &#123; &#125;</td>
           <td class="summary__cell summary__cell--react">{{ '{' }}show && &lt;div /&gt;{{ '}' }}</td>
         </tr>
         <tr class="summary__row">
           <td class="summary__cell summary__cell--angular">*ngIf="x; else y"</td>
+          <td class="summary__cell summary__cell--angular">&#64;if (x) &#123; &#125; &#64;else &#123; &#125;</td>
           <td class="summary__cell summary__cell--react">{{ '{' }}x ? &lt;A/&gt; : &lt;B/&gt;{{ '}' }}</td>
         </tr>
         <tr class="summary__row">
           <td class="summary__cell summary__cell--angular">*ngFor="let i of items"</td>
+          <td class="summary__cell summary__cell--angular">&#64;for (i of items; track i) &#123; &#125;</td>
           <td class="summary__cell summary__cell--react">{{ '{' }}items.map(i => ...){{ '}' }}</td>
         </tr>
         <tr class="summary__row">
           <td class="summary__cell summary__cell--angular">[class.active]="isActive"</td>
+          <td class="summary__cell summary__cell--angular">[class.active]="isActive"</td>
           <td class="summary__cell summary__cell--react">className={{ '{' }}isActive ? 'active' : ''{{ '}' }}</td>
         </tr>
         <tr class="summary__row">
+          <td class="summary__cell summary__cell--angular">[style.color]="color"</td>
           <td class="summary__cell summary__cell--angular">[style.color]="color"</td>
           <td class="summary__cell summary__cell--react">style={{ '{' }}{{ '{' }}color: color{{ '}' }}{{ '}' }}</td>
         </tr>

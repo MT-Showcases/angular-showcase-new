@@ -4,7 +4,42 @@
     subtitle="Tre modi per collegare dati tra componente e template"
   ></app-page-header>
 
-  <!-- INTERPOLAZIONE -->
+  <!-- ╔══════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  PERCHÉ QUESTO PATTERN?                                      ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════╝ -->
+  <!--
+    Il Data Binding è il cuore di Angular: elimina la necessità di
+    manipolare manualmente il DOM (document.getElementById, innerHTML).
+    Angular aggiorna automaticamente il DOM quando cambia lo stato,
+    e aggiorna lo stato quando l'utente interagisce con la UI.
+
+    Esistono 3 tipi di binding "one-way" + 1 "two-way":
+      1. Interpolazione  {{ }}  →  TS → DOM (solo testo)
+      2. Property Binding [ ]  →  TS → DOM (attributi, props)
+      3. Event Binding   ( )   →  DOM → TS (eventi utente)
+      4. Two-way        [( )]  →  TS ↔ DOM (usato con ngModel nei form)
+  -->
+  <div class="data-binding__pedagogy-box">
+    <h3>📚 Perché il Data Binding?</h3>
+    <p>
+      Senza data binding dovresti scrivere:
+      <code>document.getElementById('myEl').textContent = value</code>
+      ad ogni aggiornamento — codice fragile e difficile da testare.
+    </p>
+    <p>
+      Angular gestisce questo automaticamente tramite il suo
+      <strong>Change Detection</strong>: quando una proprietà del componente cambia,
+      il DOM viene aggiornato in automatico. ✨
+    </p>
+    <p class="data-binding__pedagogy-link">
+      → Approfondisci i pattern di stato nel <a routerLink="/patterns">Pattern Explorer</a>
+    </p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- 1. INTERPOLAZIONE {{ }}                                             -->
+  <!-- One-way binding: TypeScript Component → DOM (solo testo)           -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
   <div class="data-binding__section">
     <div class="data-binding__section-header">
       <svg
@@ -25,15 +60,25 @@
         1. Interpolazione <code>{{ "{{ }}" }}</code>
       </h2>
     </div>
-    <p class="data-binding__description">Mostra valori e risultati di espressioni nel DOM</p>
+    <p class="data-binding__description">
+      Mostra valori e risultati di espressioni nel DOM.
+      <!-- Nota: l'interpolazione è sempre one-way (TS → DOM). Non puoi modificare
+           il componente da qui — per quello serve l'Event Binding (sezione 3). -->
+      <em>Flusso dati: Componente TypeScript → DOM (sola lettura)</em>
+    </p>
 
     <div class="data-binding__examples">
+      <!-- Nota: {{ text }} legge la proprietà pubblica "text" del componente.
+           Angular sostituisce il placeholder con il valore attuale a ogni change detection. -->
       <div class="data-binding__example">
         <div class="data-binding__example-label">Variabile:</div>
         <div class="data-binding__example-result">{{ text }}</div>
         <code class="data-binding__example-code">&#123;&#123; text &#125;&#125;</code>
       </div>
 
+      <!-- Nota: puoi chiamare metodi nell'interpolazione, ma attenzione!
+           Vengono chiamati a ogni ciclo di change detection.
+           Per calcoli costosi, usa un getter o un pipe. -->
       <div class="data-binding__example">
         <div class="data-binding__example-label">Metodo:</div>
         <div class="data-binding__example-result">{{ getText() }}</div>
@@ -48,15 +93,41 @@
         >
       </div>
 
+      <!-- Nota: le espressioni JavaScript semplici sono permesse nell'interpolazione.
+           NON usare: operatori di assegnazione (=), new, typeof, bitwise.
+           PUOI usare: operatori ternari, nullish coalescing (??), chiamate di metodi. -->
       <div class="data-binding__example">
         <div class="data-binding__example-label">Calcolo:</div>
         <div class="data-binding__example-result">{{ sum(10, 25) }}</div>
         <code class="data-binding__example-code">&#123;&#123; sum(10, 25) &#125;&#125;</code>
       </div>
     </div>
+
+    <!-- ANTI-PATTERN BOX -->
+    <div class="data-binding__antipattern-box">
+      <h4>⚠️ Anti-pattern: metodi con side-effects nell'interpolazione</h4>
+      <code>{{ '{{' }} saveUserToDatabase() {{ '}}' }}</code>
+      <!-- Nota: saveUserToDatabase() è un esempio fittizio di metodo con side-effects -->
+      <!-- Questo chiamerebbe saveUserToDatabase() decine di volte al secondo
+           durante il change detection! Usa i metodi nel template SOLO per
+           funzioni di sola lettura (pure functions). -->
+      <p>
+        <strong>Problema:</strong> i metodi nel template vengono chiamati ad ogni ciclo di
+        Change Detection (potenzialmente centinaia di volte al secondo).
+        Un metodo con side-effects (chiamate HTTP, log, mutations) causerebbe caos.
+      </p>
+      <p>
+        <strong>Soluzione:</strong> usa un <code>getter</code> per valori derivati, o un
+        <code>pipe</code> per trasformazioni riutilizzabili.
+      </p>
+    </div>
   </div>
 
-  <!-- PROPERTY BINDING -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- 2. PROPERTY BINDING [ ]                                             -->
+  <!-- One-way binding: TypeScript Component → DOM Property               -->
+  <!-- Differenza chiave da interpolazione: lega proprietà DOM, non testo -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
   <div class="data-binding__section">
     <div class="data-binding__section-header">
       <svg
@@ -75,18 +146,46 @@
       </svg>
       <h2>2. Property Binding <code>[ ]</code></h2>
     </div>
-    <p class="data-binding__description">Lega proprietà HTML/DOM a valori del componente</p>
+    <p class="data-binding__description">
+      Lega proprietà HTML/DOM a valori del componente.
+      <!-- Nota: [src]="imgLogoSrc" è DIVERSO da src="{{ imgLogoSrc }}"
+           - [src] usa property binding: aggiorna la proprietà DOM nativa (sicuro, efficiente)
+           - src="{{ }}" usa string interpolation sull'attributo HTML (può causare
+             richieste HTTP temporanee con URL non valido durante il rendering iniziale) -->
+      <em>Usa sempre <code>[attr]</code> per attributi DOM, non l'interpolazione!</em>
+    </p>
 
     <div class="data-binding__image-demo">
       <div class="data-binding__image-wrapper">
+        <!-- [src] e [alt] sono property binding: Angular assegna direttamente
+             element.src e element.alt (proprietà DOM), non attributi HTML.
+             Questo è più efficiente e sicuro per URL dinamici. -->
         <img [src]="imgLogoSrc" [alt]="text" class="data-binding__image" />
         <div class="data-binding__image-path"><strong>Path:</strong> {{ imgLogoSrc }}</div>
       </div>
       <code class="data-binding__example-code">[src]="imgLogoSrc"</code>
     </div>
+
+    <!-- ANTI-PATTERN BOX -->
+    <div class="data-binding__antipattern-box">
+      <h4>⚠️ Anti-pattern: usare l'interpolazione per gli attributi</h4>
+      <code>&lt;img src="{{ '{{' }} imgLogoSrc {{ '}}' }}"&gt;</code>
+      <p>
+        <strong>Problema:</strong> il browser fa una richiesta HTTP con il literal
+        <code>{{ '{{' }} imgLogoSrc {{ '}}' }}</code> prima che Angular lo sostituisca,
+        causando un errore 404 temporaneo e un potenziale flash di contenuto rotto.
+      </p>
+      <p>
+        <strong>Soluzione:</strong> usa sempre <code>[src]="imgLogoSrc"</code>
+        per attributi che contengono URL, percorsi, o valori dinamici.
+      </p>
+    </div>
   </div>
 
-  <!-- EVENT BINDING -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- 3. EVENT BINDING ( )                                                -->
+  <!-- One-way binding: DOM Event → TypeScript Component Method           -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
   <div class="data-binding__section">
     <div class="data-binding__section-header">
       <svg
@@ -106,9 +205,19 @@
       </svg>
       <h2>3. Event Binding <code>( )</code></h2>
     </div>
-    <p class="data-binding__description">Ascolta eventi DOM e chiama metodi del componente</p>
+    <p class="data-binding__description">
+      Ascolta eventi DOM e chiama metodi del componente.
+      <!-- Nota: (click) è la direzione opposta rispetto a [property]:
+           - [property]: componente → DOM
+           - (event):   DOM → componente
+           Questa asimmetria è intenzionale e rende il flusso dati esplicito e leggibile. -->
+      <em>Flusso dati: DOM Event → Componente TypeScript (azione)</em>
+    </p>
 
     <div class="data-binding__actions">
+      <!-- (click)="onClick()" → Angular registra un event listener per il click
+           e chiama il metodo onClick() del componente quando viene emesso.
+           Puoi accedere all'evento nativo con: (click)="onClick($event)" -->
       <button class="data-binding__btn data-binding__btn--primary" (click)="onClick()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -148,5 +257,19 @@
       </button>
     </div>
     <code class="data-binding__example-code">(click)="onClick()"</code>
+
+    <!-- ANTI-PATTERN BOX -->
+    <div class="data-binding__antipattern-box">
+      <h4>⚠️ Anti-pattern: logica inline nell'event binding</h4>
+      <code>(click)="imgLogo = '/path.png'; count++; saveToStorage()"</code>
+      <p>
+        <strong>Problema:</strong> logica complessa nel template è difficile da testare,
+        leggere, e riutilizzare. Il template dovrebbe descrivere la struttura, non la logica.
+      </p>
+      <p>
+        <strong>Soluzione:</strong> sposta tutta la logica nel componente TypeScript
+        (<code>(click)="onClick()"</code>) e mantieni i metodi piccoli e testabili.
+      </p>
+    </div>
   </div>
 </div>
