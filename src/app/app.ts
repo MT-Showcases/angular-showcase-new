@@ -15,5 +15,5 @@ import { NotificationToast } from './components/notification-toast/notification-
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('angular-showroom');
+  protected readonly title = signal('angular-showcase');
 }
