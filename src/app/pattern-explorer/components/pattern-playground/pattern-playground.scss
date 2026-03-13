@@ -1,166 +1,9 @@
-/**
- * PatternPlayground Component Styles
- *
- * Educational local-state playground that visualizes signal-driven filters.
- * Includes chips, toggles, list summaries, contributor tips, and interactive pattern labs.
- */
-
 @use 'globals' as *;
 
-// ═══ MAIN CONTAINER ═══
 .pattern-playground {
   padding: rem(18);
-  border: rem(1) solid $neutral-lighter;
   border-radius: rem(14);
   background: $white;
-
-  &__header {
-    margin-bottom: rem(12);
-  }
-
-  &__title {
-    margin: 0 0 rem(6);
-    font-size: rem(18);
-    color: $neutral-darkest;
-  }
-
-  &__text {
-    margin: 0;
-    line-height: rem(22);
-    color: $neutral-darker;
-  }
-
-  &__controls {
-    @include flex(flex-start, flex-start, column);
-    gap: rem(10);
-    margin: rem(14) 0;
-  }
-
-  &__chips {
-    @include flex(flex-start, center);
-    gap: rem(8);
-    flex-wrap: wrap;
-  }
-
-  &__chip,
-  &__toggle,
-  &__lab-tab {
-    border: rem(1) solid $neutral-lighter;
-    border-radius: rem(999);
-    padding: rem(8) rem(12);
-    font-size: rem(13);
-    background: $neutral-bg;
-    color: $neutral-darker;
-    transition: $transition;
-
-    &:hover {
-      border-color: $primary;
-      color: $primary;
-    }
-  }
-
-  &__chip {
-    text-transform: capitalize;
-
-    &--active {
-      border-color: $primary;
-      background: $blue-bg-lighter;
-      color: $primary;
-      font-weight: 700;
-    }
-  }
-
-  &__counter {
-    margin: 0 0 rem(10);
-    color: $neutral-darker;
-  }
-
-  &__list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    border: rem(1) solid $neutral-lightest;
-    border-radius: rem(10);
-    overflow: hidden;
-  }
-
-  &__item {
-    @include flex(space-between, center);
-    gap: rem(10);
-    padding: rem(12);
-    border-bottom: rem(1) solid $neutral-lightest;
-
-    &:last-child {
-      border-bottom: 0;
-    }
-
-    &--empty {
-      justify-content: center;
-      color: $neutral;
-      font-style: italic;
-    }
-  }
-
-  &__item-title {
-    font-weight: 600;
-    color: $neutral-darkest;
-  }
-
-  &__item-meta {
-    font-size: rem(12);
-    text-transform: capitalize;
-    color: $neutral;
-  }
-
-  &__tips {
-    margin-top: rem(12);
-    padding: rem(12);
-    border-radius: rem(10);
-    background: $blue-bg-lighter;
-  }
-
-  &__tips-title {
-    margin: 0 0 rem(8);
-    color: $blue-darker;
-    font-size: rem(14);
-  }
-
-  &__tips-list {
-    margin: 0;
-    padding-left: rem(18);
-  }
-
-  &__tips-item {
-    margin-bottom: rem(8);
-    color: $neutral-darker;
-    line-height: rem(21);
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &__labs {
-    margin-top: rem(18);
-    padding-top: rem(14);
-    border-top: rem(1) solid $neutral-lightest;
-  }
-
-  &__labs-header {
-    margin-bottom: rem(10);
-  }
-
-  &__labs-title {
-    margin: 0 0 rem(6);
-    font-size: rem(18);
-    color: $neutral-darkest;
-  }
-
-  &__labs-text {
-    margin: 0;
-    color: $neutral-darker;
-    line-height: rem(21);
-  }
 
   &__lab-tabs {
     @include flex(flex-start, stretch, column);
@@ -173,6 +16,17 @@
     gap: rem(3);
     text-align: left;
     border-radius: rem(12);
+    border: rem(1) solid $neutral-lighter;
+    padding: rem(8) rem(12);
+    font-size: rem(13);
+    background: $neutral-bg;
+    color: $neutral-darker;
+    transition: $transition;
+
+    &:hover {
+      border-color: $primary;
+      color: $primary;
+    }
 
     &--active {
       border-color: $primary;
@@ -192,27 +46,17 @@
   }
 
   &__lab-panel {
-    border: rem(1) solid $neutral-lightest;
     border-radius: rem(12);
-    padding: rem(12);
-    background: $neutral-bg;
+    padding: rem(12) 0;
   }
 }
 
 // Tablet and up (min-width: 768px)
 @include media-min-breakpoint(md) {
   .pattern-playground {
-    &__controls {
-      @include flex(space-between, center);
-    }
-
-    &__title,
-    &__labs-title {
-      font-size: rem(20);
-    }
-
     &__lab-tabs {
       @include flex(flex-start, stretch);
+      flex-direction: row;
       flex-wrap: wrap;
     }
 

@@ -6,6 +6,8 @@
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: !!item.exact }"
       class="nav-link"
+      [attr.title]="item.label"
+      [attr.aria-label]="item.label"
       (click)="closeDropdown()"
     >
       <app-icon [name]="item.icon" class="nav-icon" />
@@ -19,6 +21,8 @@
       <button
         class="nav-link dropdown-trigger"
         [class.active]="isGroupActive(group)"
+        [attr.title]="group.label"
+        [attr.aria-label]="group.label"
         (click)="toggleDropdown(group.label)"
         type="button"
       >

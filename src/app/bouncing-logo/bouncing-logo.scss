@@ -113,35 +113,27 @@
   }
 }
 
-// Dark fade at bottom to improve control readability
+// Dark fade no longer needed because controls are in normal flow
 .logo-controls-backdrop {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 150px;
-  z-index: 9998;
-  pointer-events: none; // Doesn't block interactions with logos
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+  display: none;
 }
 
-// Logo controls (fixed at bottom right)
+// Logo controls shown as a toolbar row below page content
 .logo-controls {
   width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 9998;
+  position: relative;
+  z-index: 10;
 
   display: flex;
   gap: 12px;
+  justify-content: center;
+  align-items: center;
 
   padding: 12px;
 
-  @media screen and (min-width: 768px) {
-    justify-content: flex-end;
-
-    padding: 16px;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   &__button {

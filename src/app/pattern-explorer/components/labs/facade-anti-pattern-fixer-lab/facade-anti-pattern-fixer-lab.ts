@@ -1,12 +1,8 @@
-// COMPONENT TYPE: Presentational Lab
-// SECTION: Pattern Explorer
-//
-// ROLE:
-// - Train contributors to spot facade anti-patterns and choose better boundaries
-// - Provide instant correctness feedback with local signal state
-// - Reinforce semantic API design for component consumption
+// GoF Pattern: Template Method — keep fixed lab lifecycle while customizing scenario evaluation logic.
 
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { NotificationService } from '../../../../services/notification.service';
+import { BasePatternLab } from '../base-pattern-lab';
 
 interface FacadeScenario {
   id: string;
@@ -21,7 +17,10 @@ interface FacadeScenario {
   templateUrl: './facade-anti-pattern-fixer-lab.html',
   styleUrl: './facade-anti-pattern-fixer-lab.scss',
 })
-export class FacadeAntiPatternFixerLab {
+export class FacadeAntiPatternFixerLab extends BasePatternLab {
+  private readonly notificationService = inject(NotificationService);
+  private hasAnnouncedCompletion = false;
+
   private readonly scenarios: FacadeScenario[] = [
     {
       id: 'raw-http',
@@ -63,9 +62,13 @@ export class FacadeAntiPatternFixerLab {
 
   readonly solvedCount = computed(() => {
     const picks = this.selectedFixes();
-
     return this.scenarios.filter((scenario) => picks[scenario.id] === scenario.correctFix).length;
   });
+
+  constructor() {
+    super();
+    this.init();
+  }
 
   get antiPatternScenarios(): FacadeScenario[] {
     return this.scenarios;
@@ -76,17 +79,34 @@ export class FacadeAntiPatternFixerLab {
       ...current,
       [scenarioId]: option,
     }));
+    this.run();
   }
 
   isCorrectSelection(scenario: FacadeScenario): boolean {
     return this.selectedFixes()[scenario.id] === scenario.correctFix;
   }
 
-  reset(): void {
+  init(): void {
+    this.hasAnnouncedCompletion = false;
     this.selectedFixes.set({
       'raw-http': null,
       'selector-leak': null,
       'verb-naming': null,
     });
+  }
+
+  run(): void {
+    if (this.score() === this.scenarios.length && !this.hasAnnouncedCompletion) {
+      this.hasAnnouncedCompletion = true;
+      this.notificationService.push('Facade Fixer lab completed 🚀', 'success');
+    }
+  }
+
+  score(): number {
+    return this.solvedCount();
+  }
+
+  override reset(): void {
+    super.reset();
   }
 }

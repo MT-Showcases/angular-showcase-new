@@ -1,0 +1,9 @@
+<!-- GoF Pattern: Observer — subscribed toast list updates automatically when service emits. -->
+<section class="notification-toast" aria-live="polite" aria-label="Notifications">
+  @for (notification of notifications$ | async; track notification.id) {
+  <article class="notification-toast__item" [class]="'notification-toast__item notification-toast__item--' + notification.type">
+    <span>{{ notification.message }}</span>
+    <button type="button" class="notification-toast__close" (click)="dismiss(notification.id)">×</button>
+  </article>
+  }
+</section>

@@ -1,12 +1,8 @@
-// COMPONENT TYPE: Presentational Lab
-// SECTION: Pattern Explorer
-//
-// ROLE:
-// - Provide an interactive exercise to practice Container/Presentational boundaries
-// - Let contributors classify responsibilities into smart or dumb component ownership
-// - Offer immediate feedback through signal-driven scoring
+// GoF Pattern: Template Method — specialize lab lifecycle steps while reusing base reset flow.
 
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { NotificationService } from '../../../../services/notification.service';
+import { BasePatternLab } from '../base-pattern-lab';
 
 type Ownership = 'smart' | 'dumb';
 
@@ -23,7 +19,10 @@ interface RefactorTask {
   templateUrl: './smart-dumb-refactor-lab.html',
   styleUrl: './smart-dumb-refactor-lab.scss',
 })
-export class SmartDumbRefactorLab {
+export class SmartDumbRefactorLab extends BasePatternLab {
+  private readonly notificationService = inject(NotificationService);
+  private hasAnnouncedCompletion = false;
+
   private readonly tasks: RefactorTask[] = [
     {
       id: 'fetch-users',
@@ -60,7 +59,6 @@ export class SmartDumbRefactorLab {
 
   readonly solvedCount = computed(() => {
     const selectionMap = this.selections();
-
     return this.tasks.filter((task) => selectionMap[task.id] === task.recommendedOwner).length;
   });
 
@@ -78,6 +76,11 @@ export class SmartDumbRefactorLab {
     return 'Keep iterating. Favor orchestration in smart components and rendering in dumb ones.';
   });
 
+  constructor() {
+    super();
+    this.init();
+  }
+
   get refactorTasks(): RefactorTask[] {
     return this.tasks;
   }
@@ -87,18 +90,39 @@ export class SmartDumbRefactorLab {
       ...current,
       [taskId]: owner,
     }));
+    this.run();
   }
 
   isCorrect(task: RefactorTask): boolean {
     return this.selections()[task.id] === task.recommendedOwner;
   }
 
-  resetLab(): void {
+  init(): void {
+    this.hasAnnouncedCompletion = false;
     this.selections.set({
       'fetch-users': null,
       'emit-card-click': null,
       'route-guards': null,
       'render-avatar': null,
     });
+  }
+
+  run(): void {
+    if (this.score() === this.tasks.length && !this.hasAnnouncedCompletion) {
+      this.hasAnnouncedCompletion = true;
+      this.notificationService.push('Smart/Dumb Refactor lab completed 🎉', 'success');
+    }
+  }
+
+  score(): number {
+    return this.solvedCount();
+  }
+
+  override reset(): void {
+    super.reset();
+  }
+
+  resetLab(): void {
+    this.reset();
   }
 }

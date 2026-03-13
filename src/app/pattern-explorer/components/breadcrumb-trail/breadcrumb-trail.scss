@@ -1,10 +1,8 @@
 @use 'globals' as *;
 
 .breadcrumb-trail {
-  padding: rem(10) rem(14);
-  border-radius: rem(10);
-  background: $neutral-bg;
-  border: rem(1) solid $neutral-lighter;
+  padding: rem(5) 0;
+  background: transparent;
 
   &__meta {
     margin: 0 0 rem(8);
@@ -19,6 +17,7 @@
     @include flex(flex-start, center);
     gap: rem(8);
     flex-wrap: wrap;
+    font-size: rem(12);
   }
 
   &__item {

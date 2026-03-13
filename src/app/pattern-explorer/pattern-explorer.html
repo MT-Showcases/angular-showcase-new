@@ -4,48 +4,102 @@
 ></app-page-header>
 
 <section class="pattern-explorer">
-  <app-breadcrumb-trail [items]="breadcrumbItems()" />
+  <p class="pattern-explorer__breadcrumb">Pattern Explorer &gt; {{ activeTabLabel() }}</p>
 
-  <p class="pattern-explorer__intro">
-    This area demonstrates three recurring Angular patterns working together inside one educational
-    feature.
-  </p>
+  <div class="tabs" role="tablist" aria-label="Pattern Explorer tabs">
+    <button
+      type="button"
+      class="tab"
+      role="tab"
+      [class.active]="activeTab() === 'panoramica'"
+      [attr.aria-selected]="activeTab() === 'panoramica'"
+      (click)="setActiveTab('panoramica')"
+    >
+      Panoramica
+    </button>
+    <button
+      type="button"
+      class="tab"
+      role="tab"
+      [class.active]="activeTab() === 'approfondimento'"
+      [attr.aria-selected]="activeTab() === 'approfondimento'"
+      (click)="setActiveTab('approfondimento')"
+    >
+      Approfondimento
+    </button>
+    <button
+      type="button"
+      class="tab"
+      role="tab"
+      [class.active]="activeTab() === 'lab'"
+      [attr.aria-selected]="activeTab() === 'lab'"
+      (click)="setActiveTab('lab')"
+    >
+      Lab interattivi
+    </button>
+  </div>
 
-  <app-search-bar
-    [(query)]="searchQuery"
-    [results]="filteredPatterns()"
-    (resultSelected)="onSearchResultSelected($event)"
-  />
+  @if (activeTab() === 'panoramica') {
+  <div class="content-section">
+    <div class="pattern-explorer__toolbar">
+      <app-search-bar
+        [(query)]="searchQuery"
+        [results]="filteredPatterns()"
+        (resultSelected)="onSearchResultSelected($event)"
+      />
+    </div>
 
-  <app-pattern-list
-    [patterns]="filteredPatterns()"
-    [selectedPatternId]="selectedPatternId()"
-    (selectPattern)="onSelectPattern($event)"
-  />
+    <section class="pattern-grid" aria-label="Pattern cards">
+      @for (pattern of filteredPatterns(); track pattern.id) {
+      <button type="button" class="pattern-card" (click)="onSelectPattern(pattern.id)">
+        <div class="pattern-card__header">
+          <h3 class="pattern-card__title">{{ pattern.title }}</h3>
+          <span class="pattern-card__level">{{ pattern.level }}</span>
+        </div>
+        <p class="pattern-card__summary">{{ pattern.summary }}</p>
+        <span class="pattern-card__category">{{ pattern.category }}</span>
+      </button>
+      }
+    </section>
+  </div>
+  }
 
-  <section class="pattern-explorer__selection">
-    <h2 class="pattern-explorer__selection-title">Currently selected pattern</h2>
-    @if (selectedPattern(); as pattern) {
-    <p class="pattern-explorer__selection-summary">
-      <strong>{{ pattern.title }}</strong> — {{ pattern.summary }}
-    </p>
+  @if (activeTab() === 'approfondimento') {
+  <div class="content-section">
+    @if (!selectedPattern()) {
+    <p class="pattern-explorer__empty">Select a pattern from Panoramica</p>
     } @else {
-    <p class="pattern-explorer__selection-summary">Select a pattern card to inspect details.</p>
+    <article class="pattern-detail">
+      <h3 class="pattern-detail__title">{{ selectedPattern()!.title }}</h3>
+      <p class="pattern-detail__text">{{ selectedPattern()!.whyItMatters }}</p>
+
+      <div class="pattern-detail__columns">
+        <section>
+          <h4>Implementation Checklist</h4>
+          <ul>
+            @for (point of selectedPattern()!.checklist; track point) {
+            <li>{{ point }}</li>
+            }
+          </ul>
+        </section>
+
+        <section>
+          <h4>Common Anti-Patterns</h4>
+          <ul>
+            @for (antiPattern of selectedPattern()!.antiPatterns; track antiPattern) {
+            <li>{{ antiPattern }}</li>
+            }
+          </ul>
+        </section>
+      </div>
+    </article>
     }
-  </section>
+  </div>
+  }
 
-  <app-pattern-playground [patterns]="patterns()" />
+  @if (activeTab() === 'lab') {
+  <div class="content-section">
+    <app-pattern-playground [patterns]="patterns()" />
+  </div>
+  }
 </section>
-
-<app-depth-modal
-  [isOpen]="isDepthModalOpen()"
-  [pattern]="selectedPattern()"
-  (closeModal)="onCloseModal()"
-  (openDepthPanel)="onOpenDepthPanel()"
-></app-depth-modal>
-
-<app-depth-side-panel
-  [isOpen]="isDepthPanelOpen()"
-  [pattern]="selectedPattern()"
-  (closePanel)="onCloseDepthPanel()"
-></app-depth-side-panel>

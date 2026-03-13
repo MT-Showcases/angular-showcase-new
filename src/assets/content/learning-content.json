@@ -406,6 +406,155 @@
           "difficulty": "hard"
         }
       ]
+    },
+    {
+      "id": "gof-observer",
+      "title": "Observer Pattern in Angular",
+      "summary": "The Observer pattern is foundational in Angular, implemented via RxJS Observables, EventEmitter, and modern Signals.",
+      "tags": ["gof", "design-patterns", "rxjs", "signals", "events"],
+      "depthLevels": ["intro", "guided", "applied", "mastery"],
+      "relatedTopics": [
+        { "topicId": "signals", "relation": "supports" },
+        { "topicId": "rxjs-signal-interop", "relation": "supports" }
+      ],
+      "examples": [
+        {
+          "id": "observer-analogy",
+          "title": "Newspaper Subscription",
+          "format": "analogy",
+          "prompt": "How does the Observer pattern work in a real-world scenario?",
+          "solution": "A newspaper publisher (Subject) sends updates to all subscribers (Observers) whenever a new edition is ready. Subscribers don't check the mailbox every minute; they are notified when the paper arrives.",
+          "difficulty": "easy"
+        },
+        {
+          "id": "observer-exercise",
+          "title": "Signal-based Observer",
+          "format": "exercise",
+          "prompt": "Implement a shared state service using a Signal that multiple components 'observe' and react to using effect().",
+          "solution": "Create a service with a private writable signal and a public readonly signal. Use effect(() => { ... }) in components to react to changes.",
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "id": "gof-strategy",
+      "title": "Strategy Pattern via DI",
+      "summary": "Decouple algorithms from their usage by swapping implementations through Angular's Dependency Injection system.",
+      "tags": ["gof", "design-patterns", "di", "architecture"],
+      "depthLevels": ["guided", "applied", "mastery"],
+      "relatedTopics": [
+        { "topicId": "dependency-injection", "relation": "prerequisite" }
+      ],
+      "examples": [
+        {
+          "id": "strategy-snippet",
+          "title": "Interface Swapping",
+          "format": "snippet",
+          "prompt": "Define a Logger interface and provide different implementations (ConsoleLogger vs NoOpLogger) using DI tokens.",
+          "solution": "export abstract class Logger { abstract log(msg: string): void; } ... providers: [{ provide: Logger, useClass: isProd ? NoOpLogger : ConsoleLogger }]",
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "id": "gof-decorator",
+      "title": "Decorator Pattern in Directives",
+      "summary": "Extend or modify the behavior of elements or components without changing their source code using Directives and Interceptors.",
+      "tags": ["gof", "design-patterns", "directives", "interceptors"],
+      "depthLevels": ["applied", "mastery"],
+      "relatedTopics": [
+        { "topicId": "resilient-http-data-layer", "relation": "supports" }
+      ],
+      "examples": [
+        {
+          "id": "decorator-exercise",
+          "title": "Tooltip Directive",
+          "format": "exercise",
+          "prompt": "Create a directive that 'decorates' an HTML element by adding a hover-triggered tooltip without modifying the host component.",
+          "solution": "Use @Directive({ selector: '[appTooltip]' }) and HostListener to manage visibility of a dynamically created tooltip element.",
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "id": "gof-factory",
+      "title": "Factory Pattern with useFactory",
+      "summary": "Centralize object creation logic, especially when initialization depends on runtime conditions or other dependencies.",
+      "tags": ["gof", "design-patterns", "di", "providers"],
+      "depthLevels": ["applied", "mastery"],
+      "relatedTopics": [
+        { "topicId": "dependency-injection", "relation": "prerequisite" }
+      ],
+      "examples": [
+        {
+          "id": "factory-snippet",
+          "title": "Conditional Provider",
+          "format": "snippet",
+          "prompt": "Use useFactory to provide a different configuration service based on a 'runtime-feature-flag' signal or cookie.",
+          "solution": "{ provide: CONFIG, useFactory: (flag) => flag ? new NewConfig() : new OldConfig(), deps: [FEATURE_FLAG_TOKEN] }",
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "id": "gof-singleton",
+      "title": "Singleton Pattern (providedIn: 'root')",
+      "summary": "Ensure a class has only one instance and provide a global point of access, managed natively by Angular's root injector.",
+      "tags": ["gof", "design-patterns", "di", "services"],
+      "depthLevels": ["intro", "guided"],
+      "relatedTopics": [
+        { "topicId": "dependency-injection", "relation": "prerequisite" }
+      ],
+      "examples": [
+        {
+          "id": "singleton-analogy",
+          "title": "Single Source of Truth",
+          "format": "analogy",
+          "prompt": "Why use providedIn: 'root'?",
+          "solution": "It's like a building's main water supply. There is only one pump, and everyone in the building gets water from that same source, ensuring consistent pressure (state) for everyone.",
+          "difficulty": "easy"
+        }
+      ]
+    },
+    {
+      "id": "gof-proxy",
+      "title": "Proxy Pattern via Interceptors",
+      "summary": "Control access to a resource (like an API) by intercepting requests/responses to add logging, auth, or caching.",
+      "tags": ["gof", "design-patterns", "http", "interceptors"],
+      "depthLevels": ["applied", "mastery"],
+      "relatedTopics": [
+        { "topicId": "resilient-http-data-layer", "relation": "supports" }
+      ],
+      "examples": [
+        {
+          "id": "proxy-snippet",
+          "title": "Auth Interceptor",
+          "format": "snippet",
+          "prompt": "Implement an interceptor that 'proxies' every HTTP request to add an Authorization header.",
+          "solution": "intercept(req, next) { const authReq = req.clone({ setHeaders: { Authorization: 'Bearer ' + token } }); return next(authReq); }",
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "id": "gof-template-method",
+      "title": "Template Method Pattern",
+      "summary": "Define the skeleton of an algorithm in an abstract base class, letting subclasses override specific steps (like lifecycle hooks).",
+      "tags": ["gof", "design-patterns", "oop", "lifecycle"],
+      "depthLevels": ["applied", "mastery"],
+      "relatedTopics": [
+        { "topicId": "standalone-architecture", "relation": "supports" }
+      ],
+      "examples": [
+        {
+          "id": "template-method-exercise",
+          "title": "Abstract Base List",
+          "format": "exercise",
+          "prompt": "Create an abstract BaseListComponent that defines a refresh() template method calling an abstract fetchData() method.",
+          "solution": "Subclasses implement fetchData(), while BaseListComponent handles the 'refresh' workflow (loading state, error handling, etc.).",
+          "difficulty": "hard"
+        }
+      ]
     }
   ]
 }

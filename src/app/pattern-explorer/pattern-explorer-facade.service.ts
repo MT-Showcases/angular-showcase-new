@@ -1,3 +1,4 @@
+// GoF Pattern: Singleton — single instance via Angular DI root scope.
 // COMPONENT TYPE: Facade Service
 // SECTION: Pattern Explorer
 //

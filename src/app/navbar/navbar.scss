@@ -150,19 +150,22 @@
   }
 }
 
-// Mobile - Solo icone
+// Mobile - icon-first with horizontal scroll to avoid cramped overlap
 @media (max-width: 768px) {
   .nav {
-    padding: 12px;
-    gap: 4px;
-    justify-content: space-between;
+    padding: 10px;
+    gap: 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: visible;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
 
     .nav-link,
     .nav-dropdown .dropdown-trigger {
       padding: 10px;
-      min-width: 44px;
-      flex: 1;
-      max-width: 60px;
+      min-width: 56px;
+      flex: 0 0 56px;
       justify-content: center;
 
       .nav-label {
@@ -170,8 +173,8 @@
       }
 
       .nav-icon {
-        width: 24px;
-        height: 24px;
+        width: 22px;
+        height: 22px;
       }
 
       .dropdown-arrow {
@@ -184,34 +187,15 @@
     }
 
     .nav-dropdown {
+      position: relative;
+
       .dropdown-menu {
-        left: 50%;
-        transform: translateX(-50%) translateY(-10px);
+        left: 0;
+        transform: translateY(-10px);
         min-width: 180px;
-
-        &.open {
-          transform: translateX(-50%) translateY(0);
-        }
-
-        .dropdown-item {
-          .dropdown-label {
-            display: block;
-          }
-        }
       }
 
       &.open .dropdown-menu {
-        transform: translateX(-50%) translateY(0);
-      }
-
-      // Last element - align right
-      &:last-child .dropdown-menu {
-        left: auto;
-        right: 0;
-        transform: translateY(-10px);
-      }
-
-      &:last-child.open .dropdown-menu {
         transform: translateY(0);
       }
     }

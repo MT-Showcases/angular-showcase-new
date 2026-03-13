@@ -1,55 +1,162 @@
-/**
- * PatternExplorer Container Styles
- *
- * Route-level composition for pattern-learning sections.
- * Provides vertical rhythm and subtle section framing.
- */
-
 @use 'globals' as *;
 
-// ═══ MAIN CONTAINER ═══
 .pattern-explorer {
-  @include flex(flex-start, stretch, column);
-  gap: rem(16);
-  padding: rem(16);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 0 2rem;
 
-  &__intro {
-    margin: 0;
-    padding: rem(14);
-    border-radius: rem(12);
-    background: $neutral-bg;
+  &__breadcrumb {
+    margin: 0 0 0.75rem;
     color: $neutral-darker;
-    line-height: rem(23);
+    font-size: rem(14);
   }
 
-  &__selection {
-    border-radius: rem(12);
-    border: rem(1) dashed $neutral-lighter;
-    padding: rem(14);
+  &__toolbar {
+    margin-bottom: 1rem;
+  }
+
+  &__empty {
+    margin: 0;
+    padding: 1rem;
+    border: 1px dashed $neutral-lighter;
+    border-radius: 0.75rem;
+    color: $neutral-darker;
     background: $white;
-  }
-
-  &__selection-title {
-    margin: 0 0 rem(6);
-    font-size: rem(16);
-    color: $neutral-darkest;
-  }
-
-  &__selection-summary {
-    margin: 0;
-    color: $neutral-darker;
-    line-height: rem(23);
   }
 }
 
-// Tablet and up (min-width: 768px)
-@include media-min-breakpoint(md) {
-  .pattern-explorer {
-    padding: rem(24);
-    gap: rem(20);
+.tabs {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 
-    &__selection-title {
-      font-size: rem(18);
+  .tab {
+    border: 1px solid #d5cff7;
+    border-radius: 999px;
+    padding: 0.55rem 1rem;
+    background: #ffffff;
+    color: #5b4bb7;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #f3f0ff;
     }
+
+    &.active {
+      background: #6d4aff;
+      color: #ffffff;
+      border-color: #6d4aff;
+      box-shadow: 0 4px 10px rgba(109, 74, 255, 0.25);
+    }
+  }
+}
+
+.content-section {
+  animation: fadeIn 0.25s ease-in;
+}
+
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.pattern-card {
+  text-align: left;
+  width: 100%;
+  border: 1px solid $neutral-lighter;
+  border-radius: 0.9rem;
+  background: $white;
+  padding: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    border-color: #c4b5fd;
+    box-shadow: 0 10px 18px rgba(46, 32, 108, 0.1);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1rem;
+    color: $neutral-darkest;
+  }
+
+  &__level {
+    font-size: 0.75rem;
+    text-transform: capitalize;
+    color: #6d4aff;
+    font-weight: 700;
+  }
+
+  &__summary {
+    margin: 0 0 0.75rem;
+    color: $neutral-darker;
+    line-height: 1.4;
+  }
+
+  &__category {
+    color: $neutral-darker;
+    font-size: 0.875rem;
+  }
+}
+
+.pattern-detail {
+  border: 1px solid $neutral-lighter;
+  border-radius: 0.9rem;
+  background: $white;
+  padding: 1rem;
+
+  &__title {
+    margin: 0 0 0.5rem;
+    color: $neutral-darkest;
+  }
+
+  &__text {
+    margin: 0 0 1rem;
+    color: $neutral-darker;
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+
+    h4 {
+      margin: 0 0 0.5rem;
+      color: $neutral-darkest;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: $neutral-darker;
+    }
+
+    li {
+      margin-bottom: 0.3rem;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

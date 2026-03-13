@@ -1,3 +1,4 @@
+// GoF Pattern: Strategy — define stable model contracts used by runtime-selectable algorithms.
 // COMPONENT TYPE: Utility
 // SECTION: Pattern Explorer
 //
@@ -30,7 +31,7 @@ export interface PatternCard {
   exercises: string[];
 }
 
-export type PatternLabId = 'smart-dumb-refactor' | 'signal-vs-observable' | 'facade-fixer';
+export type PatternLabId = 'smart-dumb' | 'signal-vs-observable' | 'facade-fixer';
 
 export interface PatternPlaygroundState {
   selectedLevel: PatternLevel;

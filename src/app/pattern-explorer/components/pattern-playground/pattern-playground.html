@@ -1,105 +1,22 @@
-<section class="pattern-playground" aria-label="Signals local state playground">
-  <header class="pattern-playground__header">
-    <h3 class="pattern-playground__title">Signals Local State Playground</h3>
-    <p class="pattern-playground__text">
-      This panel keeps UI interactions local with <code>signal()</code> and derives filtered data via
-      <code>computed()</code>.
-    </p>
-  </header>
-
-  <div class="pattern-playground__controls">
-    <div class="pattern-playground__chips">
-      @for (level of levels; track level) {
-      <button
-        type="button"
-        class="pattern-playground__chip"
-        [class.pattern-playground__chip--active]="selectedLevel() === level"
-        (click)="updateLevel(level)"
-      >
-        {{ level }}
-      </button>
-      }
-    </div>
-
-    <button
-      type="button"
-      class="pattern-playground__toggle"
-      (click)="toggleContributorTips()"
-    >
-      {{ showContributorTips() ? 'Hide' : 'Show' }} contributor tips
-    </button>
+<!-- GoF Pattern: Factory Method — instantiate selected lab dynamically through a centralized creator. -->
+<section class="pattern-playground" aria-label="Interactive pattern labs">
+  <div class="pattern-playground__lab-panel" role="tabpanel">
+    <ng-container *ngComponentOutlet="activeLabComponent()"></ng-container>
   </div>
 
-  <p class="pattern-playground__counter">
-    Visible patterns: <strong>{{ filteredPatterns().length }}</strong>
-  </p>
-
-  <ul class="pattern-playground__list">
-    @for (pattern of filteredPatterns(); track pattern.id) {
-    <li class="pattern-playground__item">
-      <span class="pattern-playground__item-title">{{ pattern.title }}</span>
-      <span class="pattern-playground__item-meta">{{ pattern.level }} · {{ pattern.category }}</span>
-    </li>
-    } @empty {
-    <li class="pattern-playground__item pattern-playground__item--empty">
-      No patterns match this level filter.
-    </li>
+  <div class="pattern-playground__lab-tabs" role="tablist" aria-label="Pattern lab selector">
+    @for (lab of labTabs; track lab.id) {
+    <button
+      type="button"
+      role="tab"
+      class="pattern-playground__lab-tab"
+      [attr.aria-selected]="activeLabId() === lab.id"
+      [class.pattern-playground__lab-tab--active]="activeLabId() === lab.id"
+      (click)="selectLab(lab.id)"
+    >
+      <span class="pattern-playground__lab-tab-title">{{ lab.label }}</span>
+      <span class="pattern-playground__lab-tab-summary">{{ lab.summary }}</span>
+    </button>
     }
-  </ul>
-
-  @if (showContributorTips()) {
-  <aside class="pattern-playground__tips">
-    <h4 class="pattern-playground__tips-title">Contributor tips</h4>
-    <ul class="pattern-playground__tips-list">
-      <li class="pattern-playground__tips-item">
-        Keep local interactions in signals unless they are reused across multiple routes.
-      </li>
-      <li class="pattern-playground__tips-item">
-        Prefer computed signals for counters, labels, and filtered arrays.
-      </li>
-      <li class="pattern-playground__tips-item">
-        If state starts coordinating remote data, introduce or extend a facade boundary.
-      </li>
-    </ul>
-  </aside>
-  }
-
-  <section class="pattern-playground__labs" aria-label="Interactive pattern labs">
-    <header class="pattern-playground__labs-header">
-      <h4 class="pattern-playground__labs-title">Interactive Pattern Labs</h4>
-      <p class="pattern-playground__labs-text">
-        Practice architecture decisions through guided micro-exercises.
-      </p>
-    </header>
-
-    <div class="pattern-playground__lab-tabs" role="tablist" aria-label="Pattern lab selector">
-      @for (lab of labTabs; track lab.id) {
-      <button
-        type="button"
-        role="tab"
-        class="pattern-playground__lab-tab"
-        [attr.aria-selected]="activeLabId() === lab.id"
-        [class.pattern-playground__lab-tab--active]="activeLabId() === lab.id"
-        (click)="selectLab(lab.id)"
-      >
-        <span class="pattern-playground__lab-tab-title">{{ lab.label }}</span>
-        <span class="pattern-playground__lab-tab-summary">{{ lab.summary }}</span>
-      </button>
-      }
-    </div>
-
-    <div class="pattern-playground__lab-panel" role="tabpanel">
-      @if (activeLabId() === 'smart-dumb-refactor') {
-      <app-smart-dumb-refactor-lab />
-      }
-
-      @if (activeLabId() === 'signal-vs-observable') {
-      <app-signal-vs-observable-lab />
-      }
-
-      @if (activeLabId() === 'facade-fixer') {
-      <app-facade-anti-pattern-fixer-lab />
-      }
-    </div>
-  </section>
+  </div>
 </section>

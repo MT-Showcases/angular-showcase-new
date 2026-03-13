@@ -1,3 +1,4 @@
+// GoF Pattern: Singleton — single instance via Angular DI root scope.
 // COMPONENT TYPE: Facade Service
 // SECTION: UI State Management
 //
@@ -19,7 +20,7 @@
 // - Supports two content types: 'external' (iframe) and 'component' (dynamic)
 // - Always expose Observable, not BehaviorSubject directly
 
-import { Injectable, signal, Type } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 // PATTERN: Modal content type definition

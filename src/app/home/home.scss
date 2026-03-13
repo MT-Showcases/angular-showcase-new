@@ -12,7 +12,12 @@
 .home {
   max-width: rem(1200);
   margin: 0 auto;
-  padding: rem(16);\n\n  // More padding on tablets and up\n  @include media-min-breakpoint(md) {\n    padding: rem(20);\n  }
+  padding: rem(16);
+
+  // More padding on tablets and up
+  @include media-min-breakpoint(md) {
+    padding: rem(20);
+  }
 
   // ─── HERO SECTION ───
   // Centered title and subtitle
@@ -57,15 +62,19 @@
   // Responsive grid of feature cards
   &__features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(rem(260), 1fr));
+    grid-template-columns: 1fr;
     gap: rem(20);
     margin-bottom: rem(48);
 
-    // Larger gap on desktop
     @include media-min-breakpoint(md) {
-      grid-template-columns: repeat(auto-fit, minmax(rem(280), 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: rem(24);
       margin-bottom: rem(60);
+    }
+
+    // 7 cards become 4 + 3 rows instead of 3 + 3 + 1 orphan
+    @include media-min-breakpoint(lg) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     // Staggered animation for cards
