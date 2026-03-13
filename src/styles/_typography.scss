@@ -228,3 +228,11 @@ $font-weight-bold: 700; // .bold
 .text-justify {
   text-align: justify;
 }
+
+// WHY: su mobile alcuni snippet di codice scendono sotto 12px e diventano
+// difficili da leggere. Applichiamo una soglia minima globale per code/pre/code-block.
+@media (max-width: 768px) {
+  :where(code, pre, .code-block) {
+    font-size: max(0.75rem, 1em);
+  }
+}

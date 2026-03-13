@@ -18,7 +18,7 @@
     backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 32px;
-    margin-bottom: 32px;
+    margin-bottom: 2rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     transition: all 0.3s ease;
@@ -495,6 +495,14 @@
   .signals-container {
     max-width: 1200px;
     width: 100%;
+
+    .section {
+      padding: 40px;
+    }
+
+    .computed-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
   }
 
   .pedagogy-grid,
