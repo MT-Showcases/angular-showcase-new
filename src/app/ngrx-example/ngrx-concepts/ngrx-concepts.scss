@@ -1,3 +1,56 @@
+// ═══ TOC ═══
+.toc {
+  position: sticky;
+  top: 1rem;
+  float: right;
+  width: 220px;
+  margin: 0 0 2rem 2rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  z-index: 10;
+
+  &__title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 0.75rem;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    a {
+      font-size: 0.85rem;
+      color: #2563eb;
+      text-decoration: none;
+      display: block;
+      padding: 0.2rem 0;
+      border-radius: 0.25rem;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #1d4ed8;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  @media (max-width: 900px) {
+    float: none;
+    width: auto;
+    position: static;
+    margin: 0 0 1.5rem;
+  }
+}
+
 .intro-section {
   background: linear-gradient(135deg, #667eea 0, #764ba2 100%);
   color: #fff;
@@ -98,42 +151,27 @@
     }
   }
 }
-.best-practices {
-  background: linear-gradient(135deg, #f093fb 0, #f5576c 100%);
-  color: #fff;
+
+// ═══ WCAG-FIXED Best Practices ═══
+.best-practices-section {
+  background: #fdf4ff;
+  color: #581c87;
   padding: 2.5rem;
   border-radius: 1rem;
-  box-shadow: 0 10px 25px -5px rgba(240, 147, 251, 0.3);
+  border: 2px solid #e9d5ff;
+  box-shadow: 0 4px 12px rgba(88, 28, 135, 0.08);
+
   h2 {
     font-size: 1.8rem;
     margin: 0 0 2rem;
     text-align: center;
+    color: #581c87;
   }
+
   .practices-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
-  }
-  .practice {
-    background: rgba(255, 255, 255, 0.15);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    h4 {
-      font-size: 1.2rem;
-      margin: 0 0 1rem;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      li {
-        padding: 0.4rem 0;
-        opacity: 0.95;
-        font-size: 0.95rem;
-      }
-    }
   }
 }
 
@@ -294,95 +332,6 @@
   }
 }
 
-// ═══ CENTRALIZED STORE SECTION ═══
-.centralized-store-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #fff;
-  padding: 2.5rem;
-  border-radius: 1rem;
-  margin: 3rem 0;
-  box-shadow: 0 10px 25px -5px rgba(102, 126, 234, 0.3);
-
-  h2 {
-    font-size: 1.8rem;
-    margin: 0 0 1rem;
-  }
-
-  > p {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    opacity: 0.95;
-    margin-bottom: 2rem;
-  }
-
-  .setup-steps {
-    display: grid;
-    gap: 1.5rem;
-
-    .setup-step {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-
-      h3 {
-        font-size: 1.2rem;
-        margin: 0 0 1rem;
-        color: #fbbf24;
-      }
-    }
-  }
-
-  .comparison-note {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 2px solid rgba(255, 255, 255, 0.3);
-
-    h3 {
-      font-size: 1.4rem;
-      margin-bottom: 1.5rem;
-      text-align: center;
-    }
-
-    .comparison-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .comparison-item {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-
-      h4 {
-        font-size: 1.1rem;
-        margin: 0 0 1rem;
-        color: #fbbf24;
-      }
-
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        li {
-          padding: 0.4rem 0;
-          opacity: 0.95;
-          font-size: 0.95rem;
-          &::before {
-            content: '• ';
-            opacity: 0.7;
-          }
-        }
-      }
-    }
-  }
-}
-
 // ═══ PATTERN GUIDE SECTION ═══
 .pattern-guide-section {
   margin: 3rem 0;
@@ -422,8 +371,6 @@
       margin: 0;
     }
   }
-
-
 
   .guide-summary {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
@@ -535,8 +482,7 @@
     grid-template-columns: 1fr;
   }
 
-  .store-patterns .patterns-comparison,
-  .centralized-store-section .comparison-grid {
+  .store-patterns .patterns-comparison {
     grid-template-columns: 1fr;
   }
 

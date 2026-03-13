@@ -30,6 +30,11 @@ import { BehaviorSubject } from 'rxjs';
 import { PageHeader } from '../page-header/page-header';
 import { CodeBlock } from '../components/code-block/code-block';
 import { MessageDemo } from './message-demo/message-demo';
+import {
+  SectionHeaderComponent,
+  AntipatternBoxComponent,
+  ComparisonGridComponent,
+} from '../components/shared';
 
 interface Message {
   text: string;
@@ -51,7 +56,7 @@ interface Message {
 @Component({
   selector: 'app-behavior-subject',
   standalone: true,
-  imports: [CommonModule, PageHeader, CodeBlock, MessageDemo],
+  imports: [CommonModule, PageHeader, CodeBlock, MessageDemo, SectionHeaderComponent, AntipatternBoxComponent, ComparisonGridComponent],
   templateUrl: './behavior-subject.html',
   styleUrl: './behavior-subject.scss'
 })
