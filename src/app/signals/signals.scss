@@ -350,3 +350,121 @@
     }
   }
 }
+
+// ══════════════════════════════════════════════
+// PEDAGOGY STYLES (added for educational sections)
+// ══════════════════════════════════════════════
+
+.section--pedagogy {
+  border-left: 4px solid #667eea;
+}
+
+.section--antipattern {
+  border-left: 4px solid #e53e3e;
+
+  .code-block--danger {
+    background: rgba(229, 62, 62, 0.05);
+    border: 1px solid rgba(229, 62, 62, 0.2);
+  }
+}
+
+.section--comparison {
+  border-left: 4px solid #805ad5;
+}
+
+.pedagogy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pedagogy-card {
+  border-radius: 12px;
+  padding: 16px;
+
+  &__title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  &__list {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  &--green {
+    background: rgba(72, 187, 120, 0.08);
+    border: 1px solid rgba(72, 187, 120, 0.3);
+  }
+
+  &--blue {
+    background: rgba(102, 126, 234, 0.08);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+  }
+
+  &--purple {
+    background: rgba(128, 90, 213, 0.08);
+    border: 1px solid rgba(128, 90, 213, 0.3);
+    margin-top: 16px;
+  }
+}
+
+.section__text--note {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #555;
+  font-style: italic;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 20px 0;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.comparison-card {
+  border-radius: 12px;
+  padding: 20px;
+
+  &__title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  &__subtitle {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 12px;
+  }
+
+  &__list {
+    margin: 0 0 12px;
+    padding-left: 18px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  &--signals {
+    background: rgba(102, 126, 234, 0.06);
+    border: 1px solid rgba(102, 126, 234, 0.25);
+  }
+
+  &--rxjs {
+    background: rgba(128, 90, 213, 0.06);
+    border: 1px solid rgba(128, 90, 213, 0.25);
+  }
+}

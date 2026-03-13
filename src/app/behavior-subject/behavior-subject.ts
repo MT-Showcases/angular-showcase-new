@@ -1,3 +1,29 @@
+/**
+ * PATTERN: BehaviorSubject per stato condiviso (RxJS)
+ *
+ * WHY: BehaviorSubject è un Subject che mantiene sempre l'ultimo valore emesso.
+ *   È perfetto per rappresentare "lo stato attuale" di qualcosa — un nuovo subscriber
+ *   riceve immediatamente il valore corrente, senza aspettare il prossimo .next().
+ *   Ideale per service che condividono stato tra più componenti.
+ *
+ * QUANDO USARLO:
+ *   - Stato condiviso tra componenti via service (es. AuthService, CartService)
+ *   - Quando i subscriber devono ricevere subito il valore corrente
+ *   - App di medie dimensioni che non giustificano NgRx
+ *   - Stato con logica di trasformazione (pipe, map, filter)
+ *
+ * ALTERNATIVA:
+ *   - Signals (Angular 17+) → per stato locale al componente, più semplice
+ *   - NgRx Store → per applicazioni enterprise con DevTools e time-travel debug
+ *   - Subject semplice → per eventi one-shot (click, notifiche) senza stato iniziale
+ *
+ * ANTI-PATTERN:
+ *   - ❌ Esporre il BehaviorSubject direttamente → usa asObservable() per impedire
+ *     che i consumer chiamino .next() dall'esterno (rompe l'encapsulation)
+ *   - ❌ Usare .value sincrono invece di subscribe → va contro il paradigma reattivo
+ *   - ❌ Dimenticare unsubscribe → usa async pipe o takeUntilDestroyed()
+ *   - ❌ Mutare oggetti nel valore → crea sempre nuove referenze (immutabilità)
+ */
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';

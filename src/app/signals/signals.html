@@ -4,6 +4,64 @@
 ></app-page-header>
 
 <div class="signals-container">
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SEZIONE PEDAGOGICA — Perché Signals?                               -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section section--pedagogy">
+    <h3 class="section__title">🎓 Perché i Signals?</h3>
+    <p class="section__text">
+      Prima di Angular 17, lo stato reattivo si gestiva principalmente con RxJS Observable e BehaviorSubject.
+      I <strong>Signals</strong> sono un'alternativa più semplice per lo <em>stato locale</em>:
+      niente subscription, niente unsubscription, aggiornamenti automatici della UI.
+    </p>
+    <div class="pedagogy-grid">
+      <div class="pedagogy-card pedagogy-card--green">
+        <h4 class="pedagogy-card__title">✅ Usa Signals quando...</h4>
+        <ul class="pedagogy-card__list">
+          <li>Lo stato è <strong>locale</strong> al componente</li>
+          <li>Hai valori <strong>derivati</strong> (computed) da aggiornare automaticamente</li>
+          <li>Vuoi evitare la complessità di RxJS per casi semplici</li>
+          <li>Lavori con Angular 17+ in zone-less mode</li>
+        </ul>
+      </div>
+      <div class="pedagogy-card pedagogy-card--blue">
+        <h4 class="pedagogy-card__title">⚡ Usa RxJS quando...</h4>
+        <ul class="pedagogy-card__list">
+          <li>Gestisci <strong>stream asincroni</strong> (HTTP, WebSocket)</li>
+          <li>Hai bisogno di operatori complessi (debounce, switchMap, combineLatest)</li>
+          <li>Lo stato va <strong>condiviso tra componenti</strong> via service</li>
+          <li>Lavori con NgRx Effects</li>
+        </ul>
+      </div>
+    </div>
+    <p class="section__text section__text--note">
+      💡 <strong>Pro tip:</strong> Puoi usare <code>toSignal()</code> e <code>toObservable()</code>
+      per convertire tra i due mondi. Non sono in competizione — si completano!
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- ANTI-PATTERN BOX                                                   -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section section--antipattern">
+    <h3 class="section__title">🚫 Anti-Pattern: Loop Infinito</h3>
+    <p class="section__text">
+      Non modificare un signal all'interno del suo stesso <code>computed()</code> o <code>effect()</code>.
+      Questo causa un loop infinito e un errore a runtime.
+    </p>
+    <div class="code-block code-block--danger">
+      <code>// ❌ ANTI-PATTERN — loop infinito!</code><br/>
+      <code>count = signal(0);</code><br/>
+      <code>bad = computed(() => &#123;</code><br/>
+      <code>&nbsp;&nbsp;this.count.set(this.count() + 1); // ← NON fare questo!</code><br/>
+      <code>&nbsp;&nbsp;return this.count();</code><br/>
+      <code>&#125;);</code><br/>
+      <br/>
+      <code>// ✅ CORRETTO — computed è solo lettura</code><br/>
+      <code>doubled = computed(() => this.count() * 2);</code>
+    </div>
+  </section>
   <!-- ═══════════════════════════════════════════════════════════════════ -->
   <!-- 1. Writable Signal - Signal base modificabile                       -->
   <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -132,6 +190,82 @@
       <code>&nbsp;&nbsp;console.log('Count:', this.count());</code><br />
       <code>{{ '}' }});</code>
     </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SIGNALS vs RxJS — Confronto                                        -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section section--comparison">
+    <h3 class="section__title">⚖️ Signals vs RxJS — Quando usare cosa?</h3>
+
+    <div class="comparison-grid">
+      <div class="comparison-card comparison-card--signals">
+        <h4 class="comparison-card__title">🔵 Signals</h4>
+        <p class="comparison-card__subtitle">Stato locale, valori derivati, UI reattiva semplice</p>
+        <div class="code-block">
+          <code>// Stato locale del componente</code><br/>
+          <code>count = signal(0);</code><br/>
+          <code>doubled = computed(() => this.count() * 2);</code><br/>
+          <br/>
+          <code>// Nessuna subscription!</code><br/>
+          <code>increment() &#123; this.count.update(v => v + 1); &#125;</code><br/>
+          <br/>
+          <code>// Side effect automatico</code><br/>
+          <code>effect(() => localStorage.setItem('count', this.count()));</code>
+        </div>
+        <ul class="comparison-card__list">
+          <li>✅ Semplice da usare</li>
+          <li>✅ Nessun memory leak (no unsubscribe)</li>
+          <li>✅ Ottimo per stato locale</li>
+          <li>✅ computed() è memoized automaticamente</li>
+          <li>❌ Non adatto per stream asincroni</li>
+          <li>❌ Nessun operatore (debounce, switchMap...)</li>
+        </ul>
+      </div>
+
+      <div class="comparison-card comparison-card--rxjs">
+        <h4 class="comparison-card__title">🟣 RxJS Observable</h4>
+        <p class="comparison-card__subtitle">Stream asincroni, HTTP, WebSocket, operatori complessi</p>
+        <div class="code-block">
+          <code>// HTTP con operatori</code><br/>
+          <code>search$ = this.searchTerm$.pipe(</code><br/>
+          <code>&nbsp;&nbsp;debounceTime(300),</code><br/>
+          <code>&nbsp;&nbsp;distinctUntilChanged(),</code><br/>
+          <code>&nbsp;&nbsp;switchMap(term => this.api.search(term))</code><br/>
+          <code>);</code><br/>
+          <br/>
+          <code>// Conversione verso Signal</code><br/>
+          <code>searchResults = toSignal(this.search$, &#123; initialValue: [] &#125;);</code>
+        </div>
+        <ul class="comparison-card__list">
+          <li>✅ Perfetto per HTTP e WebSocket</li>
+          <li>✅ Operatori potenti (pipe, switchMap...)</li>
+          <li>✅ Composizione di stream multipli</li>
+          <li>✅ Integrazione con NgRx Effects</li>
+          <li>❌ Richiede subscription/unsubscription</li>
+          <li>❌ Curva di apprendimento più ripida</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pedagogy-card pedagogy-card--purple">
+      <h4 class="pedagogy-card__title">🔗 Il Ponte: toSignal() e toObservable()</h4>
+      <p>Angular 16+ permette di convertire tra i due mondi in modo fluido:</p>
+      <div class="code-block">
+        <code>import &#123; toSignal, toObservable &#125; from '@angular/core/rxjs-interop';</code><br/>
+        <br/>
+        <code>// Observable → Signal (gestione automatica unsubscribe)</code><br/>
+        <code>posts = toSignal(this.postsService.getPosts(), &#123; initialValue: [] &#125;);</code><br/>
+        <br/>
+        <code>// Signal → Observable (per operatori RxJS)</code><br/>
+        <code>count$ = toObservable(this.count);</code>
+      </div>
+    </div>
+
+    <p class="section__text section__text--note">
+      → <strong>Approfondisci nel Pattern Explorer</strong> come combinare Signals e RxJS
+      nei pattern Facade e Observer per applicazioni scalabili.
+    </p>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->

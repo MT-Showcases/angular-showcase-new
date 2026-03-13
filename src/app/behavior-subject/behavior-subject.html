@@ -4,6 +4,52 @@
 </app-page-header>
 
 <div class="container">
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SEZIONE PEDAGOGICA — Perché BehaviorSubject?                       -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section class="intro-section intro-section--pedagogy">
+    <h2>🎓 Perché BehaviorSubject?</h2>
+    <p>
+      BehaviorSubject è lo strumento ideale per gestire <strong>stato condiviso</strong> in Angular
+      senza introdurre NgRx. Pensa a un service con BehaviorSubject come a un "mini-store" leggero:
+      ogni componente che si sottoscrive riceve sempre lo stato attuale — mai uno stato vuoto.
+    </p>
+
+    <div class="pedagogy-grid">
+      <div class="pedagogy-card pedagogy-card--green">
+        <h4 class="pedagogy-card__title">✅ BehaviorSubject vs Signals — quando scegliere?</h4>
+        <table class="mini-table">
+          <thead>
+            <tr><th>Scenario</th><th>Scegli</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Stato locale al componente</td><td>⚡ Signals</td></tr>
+            <tr><td>Stato condiviso tra componenti</td><td>🔵 BehaviorSubject</td></tr>
+            <tr><td>Stream HTTP con operatori</td><td>🔵 BehaviorSubject/Observable</td></tr>
+            <tr><td>Stato globale enterprise</td><td>🟣 NgRx</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pedagogy-card pedagogy-card--red">
+        <h4 class="pedagogy-card__title">🚫 Anti-Pattern: Subject esposto</h4>
+        <div class="code-block">
+          <code>// ❌ SBAGLIATO — consumer può chiamare .next() dall'esterno</code><br/>
+          <code>public userSubject = new BehaviorSubject&lt;User&gt;(null);</code><br/>
+          <br/>
+          <code>// ✅ CORRETTO — solo il service controlla lo stato</code><br/>
+          <code>private userSubject = new BehaviorSubject&lt;User&gt;(null);</code><br/>
+          <code>public user$ = this.userSubject.asObservable();</code>
+        </div>
+      </div>
+    </div>
+
+    <p class="section__text section__text--note">
+      → <strong>Approfondisci nel Pattern Explorer</strong> il pattern Observer e Facade
+      per capire come strutturare services con BehaviorSubject in applicazioni scalabili.
+    </p>
+  </section>
+
   <!-- Introduzione -->
   <section class="intro-section">
     <h2>Cos'è un BehaviorSubject?</h2>

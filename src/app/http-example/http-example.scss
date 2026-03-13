@@ -401,3 +401,68 @@ pre {
     }
   }
 }
+
+// ══════════════════════════════════════════════
+// PEDAGOGY STYLES
+// ══════════════════════════════════════════════
+.section--pedagogy {
+  border-left: 4px solid #667eea;
+}
+
+.section--antipattern {
+  border-left: 4px solid #e53e3e;
+
+  .code-block--danger {
+    background: rgba(229, 62, 62, 0.05);
+    border: 1px solid rgba(229, 62, 62, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 12px;
+  }
+}
+
+.pedagogy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pedagogy-card {
+  border-radius: 12px;
+  padding: 16px;
+
+  &__title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  &__note {
+    font-size: 13px;
+    color: #c53030;
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  &--green {
+    background: rgba(72, 187, 120, 0.08);
+    border: 1px solid rgba(72, 187, 120, 0.3);
+  }
+
+  &--red {
+    background: rgba(229, 62, 62, 0.06);
+    border: 1px solid rgba(229, 62, 62, 0.2);
+  }
+}
+
+.section__text--note {
+  font-size: 14px;
+  color: #555;
+  font-style: italic;
+  margin-top: 12px;
+}

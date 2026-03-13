@@ -1,28 +1,29 @@
+/**
+ * PATTERN: Service Facade + HttpClient
+ *
+ * WHY: Il componente non deve sapere come funziona l'API. Il Service Facade
+ *   nasconde i dettagli HTTP (URL, headers, parsing, retry) dietro un'interfaccia
+ *   semplice e testabile. Il componente parla solo col service.
+ *
+ * QUANDO USARLO:
+ *   - Qualsiasi chiamata HTTP in Angular → sempre tramite un service
+ *   - Quando più componenti usano gli stessi dati (es. PostsService)
+ *   - Quando vuoi aggiungere caching, retry o error handling centralizzato
+ *
+ * ALTERNATIVA:
+ *   - NgRx Effects → per dati globali con state management avanzato
+ *   - toSignal(http.get()) → per casi semplici one-shot senza CRUD
+ *   - Resource API (Angular 19+) → per async data loading dichiarativo
+ *
+ * ANTI-PATTERN:
+ *   - ❌ Iniettare HttpClient direttamente nel componente
+ *   - ❌ Non gestire gli stati loading/error → UX scadente
+ *   - ❌ Subscribe infiniti senza unsubscribe (qui OK perché HTTP è one-shot)
+ *   - ❌ Logica di trasformazione dati nel componente → spostala nel service
+ */
+
 // COMPONENT TYPE: Container
 // SECTION: HTTP and Async Operations
-//
-// ROLE:
-// - Demonstrate HttpClient usage with Service Facade pattern
-// - Show complete CRUD operations (GET, POST, PUT, DELETE)
-// - Handle loading states, errors, and data management
-//
-// PATTERNS USED:
-// - Service Facade pattern (PostsService abstracts HTTP details)
-// - Signals for reactive state management
-// - Modern inject() function for dependency injection
-// - Observable subscription with manual state updates
-//
-// WHY: Facade abstracts away the HTTP implementation, making components simpler and testable.
-// QUANDO USARLO: To decouple components from direct API requests, providing a single data access point.
-// ALTERNATIVA: Direct HttpClient injection (anti-pattern) or State Management (NgRx) for shared global data.
-//
-// ANTI-PATTERN: Injecting HttpClient directly in components; not unsubscribing from infinite observables.
-//
-// NOTES FOR CONTRIBUTORS:
-// - Keep HTTP logic in services, not in components
-// - Use signals for state (loading, error, data)
-// - Show code examples with CodeBlock component
-// - Handle all async states (loading, success, error)
 
 import { Component, signal, inject } from '@angular/core';
 import { PostsService, Post } from '../../services/posts.service';

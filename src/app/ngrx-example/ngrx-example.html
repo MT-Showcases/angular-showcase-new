@@ -4,6 +4,73 @@
     subtitle="Redux pattern per Angular: gestione centralizzata dello stato applicativo"
   />
 
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SEZIONE PEDAGOGICA — Quando usare NgRx?                            -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section class="pedagogy-section">
+    <h2 class="pedagogy-section__title">🎓 NgRx vs BehaviorSubject vs Signals</h2>
+    <p class="pedagogy-section__intro">
+      Scegliere lo strumento giusto per la gestione dello stato è una delle decisioni più importanti
+      in un'applicazione Angular. Ecco una guida rapida:
+    </p>
+    <div class="state-comparison">
+      <div class="state-option state-option--signals">
+        <h3>⚡ Signals</h3>
+        <p><strong>Stato locale al componente</strong></p>
+        <ul>
+          <li>Contatori, form, UI toggles</li>
+          <li>Valori derivati con computed()</li>
+          <li>Nessun boilerplate</li>
+        </ul>
+        <code class="state-option__code">count = signal(0);</code>
+      </div>
+      <div class="state-option state-option--behavior">
+        <h3>🔵 BehaviorSubject</h3>
+        <p><strong>Stato condiviso leggero</strong></p>
+        <ul>
+          <li>AuthService, CartService</li>
+          <li>Pochi componenti, pochi dati</li>
+          <li>RxJS operators (pipe, map)</li>
+        </ul>
+        <code class="state-option__code">private state$ = new BehaviorSubject(init);</code>
+      </div>
+      <div class="state-option state-option--ngrx state-option--highlighted">
+        <h3>🟣 NgRx (questo)</h3>
+        <p><strong>Stato globale enterprise</strong></p>
+        <ul>
+          <li>App grandi, team grandi</li>
+          <li>Time-travel debugging</li>
+          <li>Actions, Reducers, Effects, Selectors</li>
+        </ul>
+        <code class="state-option__code">store.dispatch(increment());</code>
+      </div>
+    </div>
+
+    <div class="antipattern-box">
+      <h3 class="antipattern-box__title">🚫 Anti-Pattern: Stato locale in NgRx</h3>
+      <div class="antipattern-columns">
+        <div>
+          <p>❌ <strong>Sbagliato</strong> — metti il dropdown open/close nel NgRx store:</p>
+          <code>// In store: isDropdownOpen: boolean</code><br/>
+          <code>store.dispatch(toggleDropdown());</code>
+        </div>
+        <div>
+          <p>✅ <strong>Corretto</strong> — usa una variabile locale:</p>
+          <code>// Nel componente</code><br/>
+          <code>isDropdownOpen = signal(false);</code>
+        </div>
+      </div>
+      <p class="antipattern-box__note">
+        Regola pratica: se lo stato non viene mai letto da un altro componente, non appartiene allo store.
+      </p>
+    </div>
+
+    <p class="pedagogy-section__link">
+      → <strong>Approfondisci nel Pattern Explorer</strong> i pattern Facade e Command
+      che ispirano l'architettura NgRx.
+    </p>
+  </section>
+
   <!-- Navigation Tabs -->
   <div class="tabs">
     <button

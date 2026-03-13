@@ -4,6 +4,68 @@
 />
 
 <div class="http-container">
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- SEZIONE PEDAGOGICA — Perché il Service Facade?                     -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section section--pedagogy">
+    <h2 class="section__title">🎓 Perché il Service Facade Pattern?</h2>
+    <p>
+      In Angular, la regola d'oro è: <strong>i componenti gestiscono la UI, i services gestiscono i dati</strong>.
+      Il pattern <em>Service Facade</em> va un passo oltre: il service nasconde completamente
+      i dettagli dell'API ai componenti. Se l'API cambia, modifichi solo il service.
+    </p>
+
+    <div class="pedagogy-grid">
+      <div class="pedagogy-card pedagogy-card--green">
+        <h4 class="pedagogy-card__title">✅ Con Service Facade</h4>
+        <div class="code-block">
+          <code>// Componente — semplice e testabile</code><br/>
+          <code>private posts = inject(PostsService);</code><br/>
+          <code>loadPosts() &#123;</code><br/>
+          <code>&nbsp;&nbsp;this.posts.getPosts().subscribe(...);</code><br/>
+          <code>&#125;</code>
+        </div>
+      </div>
+      <div class="pedagogy-card pedagogy-card--red">
+        <h4 class="pedagogy-card__title">❌ Anti-Pattern: HttpClient diretto</h4>
+        <div class="code-block">
+          <code>// Componente — accoppiato all'API, non testabile!</code><br/>
+          <code>private http = inject(HttpClient);</code><br/>
+          <code>loadPosts() &#123;</code><br/>
+          <code>&nbsp;&nbsp;this.http.get&lt;Post[]&gt;('https://api/posts').subscribe(...);</code><br/>
+          <code>&#125;</code>
+        </div>
+        <p class="pedagogy-card__note">
+          ⚠️ Se l'URL cambia, devi modificare <em>ogni componente</em>. Se aggiungi caching,
+          lo devi aggiungere ovunque. Non testabile senza mock di HttpClient.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Anti-pattern box -->
+  <section class="section section--antipattern">
+    <h2 class="section__title">🚫 Anti-Pattern: Subscribe senza cleanup</h2>
+    <p>
+      Gli Observable HTTP sono <strong>one-shot</strong> (si completano dopo la risposta),
+      quindi non richiedono unsubscribe. Ma attenzione agli Observable infiniti (es. interval, WebSocket):
+    </p>
+    <div class="code-block code-block--danger">
+      <code>// ❌ ANTI-PATTERN — memory leak con Observable infiniti</code><br/>
+      <code>ngOnInit() &#123;</code><br/>
+      <code>&nbsp;&nbsp;interval(1000).subscribe(v => this.counter = v); // ← mai completato!</code><br/>
+      <code>&#125;</code><br/>
+      <br/>
+      <code>// ✅ CORRETTO — usa takeUntilDestroyed() o async pipe</code><br/>
+      <code>counter$ = interval(1000).pipe(takeUntilDestroyed());</code><br/>
+      <code>// In template: usa async pipe con counter$</code>
+    </div>
+    <p class="section__text section__text--note">
+      → <strong>Approfondisci nel Pattern Explorer</strong> il pattern Observer e come
+      gestire correttamente i lifecycle degli Observable in Angular.
+    </p>
+  </section>
+
   <!-- Sezione spiegazione Service Facade -->
   <section class="section section--explanation">
     <h2 class="section__title">🏛️ Cos'è un Service Facade?</h2>

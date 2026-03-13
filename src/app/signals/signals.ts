@@ -1,28 +1,30 @@
+/**
+ * PATTERN: Angular Signals — Reactive Primitives
+ *
+ * WHY: Signals sono primitivi reattivi che tracciano automaticamente le dipendenze.
+ *   A differenza di RxJS, non richiedono subscription/unsubscription e si integrano
+ *   nativamente con il change detection di Angular (zone-less ready).
+ *
+ * QUANDO USARLO:
+ *   - Stato locale del componente (contatori, form, UI state)
+ *   - Valori derivati con computed() (es. totale carrello, filtri)
+ *   - Side effects semplici con effect() (logging, localStorage, analytics)
+ *   - Quando vuoi eliminare la complessità di RxJS per casi semplici
+ *
+ * ALTERNATIVA:
+ *   - RxJS BehaviorSubject → stato condiviso tra componenti via service
+ *   - RxJS Observable → stream asincroni, HTTP, WebSocket, operatori complessi
+ *   - NgRx → stato globale di applicazioni enterprise con DevTools
+ *
+ * ANTI-PATTERN:
+ *   - ❌ Modificare un signal dentro computed() → causa loop infinito
+ *   - ❌ Chiamare .set()/.update() dentro effect() sullo stesso signal → loop
+ *   - ❌ Usare Signals per stream asincroni (HTTP) → usa RxJS + toSignal()
+ *   - ❌ Condividere stato tra componenti via Signal locale → usa service
+ */
+
 // COMPONENT TYPE: Container
 // SECTION: Angular Signals
-//
-// ROLE:
-// - Demonstrate Angular Signals API through interactive examples
-// - Show writable signals, computed signals, and effects
-// - Provide practical example with shopping cart
-//
-// PATTERNS USED:
-// - Standalone component with Signals API
-// - Educational code organization with clear section markers
-// - Reactive state management with signals (no services needed for this demo)
-// - Computed signals for derived state (automatic recalculation)
-//
-// WHY: Angular Signals provide a reactive primitive for state management that automatically tracks dependencies.
-// QUANDO USARLO: Local component state, derived calculations, side effects. 
-// ALTERNATIVA: RxJS BehaviorSubject for global/complex state; NgRx for enterprise state.
-//
-// ANTI-PATTERN: Updating signals inside computed() or effect() which can cause infinite loops.
-//
-// NOTES FOR CONTRIBUTORS:
-// - Keep examples simple and focused on signal concepts
-// - Use clear section markers (═══) for educational clarity
-// - Add new signal patterns as separate, well-labeled sections
-// - Avoid introducing complex state management (keep it educational)
 
 import { Component, signal, computed, effect } from '@angular/core';
 import { PageHeader } from '../page-header/page-header';
