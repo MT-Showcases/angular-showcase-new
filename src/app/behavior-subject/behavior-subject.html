@@ -1,14 +1,36 @@
-<app-page-header
+<app-section-header
   title="BehaviorSubject"
-  subtitle="Gestione dello stato reattivo in RxJS">
-</app-page-header>
+  subtitle="Gestione dello stato reattivo in RxJS — pattern, anti-pattern e demo interattive"
+  breadcrumb="State Management > BehaviorSubject">
+</app-section-header>
+
+<!-- ═══ TOC STICKY ═══ -->
+<nav class="toc" aria-label="Sommario pagina">
+  <h3 class="toc__title">📋 Sommario</h3>
+  <ul class="toc__list">
+    <li><a href="#section-why">Perché BehaviorSubject?</a></li>
+    <li><a href="#section-intro">Cos'è un BehaviorSubject?</a></li>
+    <li><a href="#section-base">Esempio Base</a></li>
+    <li><a href="#section-comparison">Vs Subject</a></li>
+    <li><a href="#section-access">Accesso al Valore</a></li>
+    <li><a href="#section-demo1">Demo 1: Messaggio</a></li>
+    <li><a href="#section-demo2">Demo 2: Contatore</a></li>
+    <li><a href="#section-demo3">Demo 3: Lista Messaggi</a></li>
+    <li><a href="#section-demo4">Demo 4: Stato Utente</a></li>
+    <li><a href="#section-auth">Auth Service</a></li>
+    <li><a href="#section-cart">Carrello</a></li>
+    <li><a href="#section-best-practices">Best Practices</a></li>
+    <li><a href="#section-when">Quando Usarlo?</a></li>
+    <li><a href="#section-summary">Riepilogo</a></li>
+  </ul>
+</nav>
 
 <div class="container">
 
   <!-- ═══════════════════════════════════════════════════════════════════ -->
   <!-- SEZIONE PEDAGOGICA — Perché BehaviorSubject?                       -->
   <!-- ═══════════════════════════════════════════════════════════════════ -->
-  <section class="intro-section intro-section--pedagogy">
+  <section id="section-why" class="intro-section intro-section--pedagogy">
     <h2>🎓 Perché BehaviorSubject?</h2>
     <p>
       BehaviorSubject è lo strumento ideale per gestire <strong>stato condiviso</strong> in Angular
@@ -16,33 +38,30 @@
       ogni componente che si sottoscrive riceve sempre lo stato attuale — mai uno stato vuoto.
     </p>
 
-    <div class="pedagogy-grid">
-      <div class="pedagogy-card pedagogy-card--green">
-        <h4 class="pedagogy-card__title">✅ BehaviorSubject vs Signals — quando scegliere?</h4>
-        <table class="mini-table">
-          <thead>
-            <tr><th>Scenario</th><th>Scegli</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Stato locale al componente</td><td>⚡ Signals</td></tr>
-            <tr><td>Stato condiviso tra componenti</td><td>🔵 BehaviorSubject</td></tr>
-            <tr><td>Stream HTTP con operatori</td><td>🔵 BehaviorSubject/Observable</td></tr>
-            <tr><td>Stato globale enterprise</td><td>🟣 NgRx</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="pedagogy-card pedagogy-card--red">
-        <h4 class="pedagogy-card__title">🚫 Anti-Pattern: Subject esposto</h4>
-        <div class="code-block">
-          <code>// ❌ SBAGLIATO — consumer può chiamare .next() dall'esterno</code><br/>
-          <code>public userSubject = new BehaviorSubject&lt;User&gt;(null);</code><br/>
-          <br/>
-          <code>// ✅ CORRETTO — solo il service controlla lo stato</code><br/>
-          <code>private userSubject = new BehaviorSubject&lt;User&gt;(null);</code><br/>
-          <code>public user$ = this.userSubject.asObservable();</code>
-        </div>
-      </div>
-    </div>
+    <app-comparison-grid
+      leftTitle="✅ Quando scegliere"
+      rightTitle="❌ Quando evitarlo"
+      [leftItems]="[
+        'Stato condiviso tra componenti → BehaviorSubject',
+        'Stream HTTP con operatori → BehaviorSubject/Observable',
+        'Stato globale enterprise → NgRx'
+      ]"
+      [rightItems]="[
+        'Stato locale al componente → usa Signals',
+        'Evento one-shot (click, alert) → usa Subject',
+        'WebSocket messages → usa Subject'
+      ]">
+    </app-comparison-grid>
+
+    <app-antipattern-box
+      title="Anti-Pattern: Subject esposto direttamente"
+      description="Non esporre mai il BehaviorSubject pubblicamente — i consumer potrebbero chiamare .next() dall'esterno rompendo l'encapsulation."
+      [items]="[
+        '❌ SBAGLIATO: public userSubject = new BehaviorSubject<User>(null);',
+        '✅ CORRETTO: private userSubject = new BehaviorSubject<User>(null);',
+        '✅ CORRETTO: public user$ = this.userSubject.asObservable();'
+      ]">
+    </app-antipattern-box>
 
     <p class="section__text section__text--note">
       → <strong>Approfondisci nel Pattern Explorer</strong> il pattern Observer e Facade
@@ -51,7 +70,7 @@
   </section>
 
   <!-- Introduzione -->
-  <section class="intro-section">
+  <section id="section-intro" class="intro-section">
     <h2>Cos'è un BehaviorSubject?</h2>
     <p>
       Un <strong>BehaviorSubject</strong> è un tipo speciale di Subject in RxJS che:
@@ -65,7 +84,7 @@
   </section>
 
   <!-- Esempio Base -->
-  <section class="example-section">
+  <section id="section-base" class="example-section">
     <h2>Esempio Base</h2>
     <app-code-block [code]="basicExample" language="typescript"></app-code-block>
 
@@ -80,7 +99,7 @@
   </section>
 
   <!-- Differenza con Subject -->
-  <section class="example-section">
+  <section id="section-comparison" class="example-section">
     <h2>Differenza tra Subject e BehaviorSubject</h2>
     <app-code-block [code]="comparisonExample" language="typescript"></app-code-block>
 
@@ -120,7 +139,7 @@
   </section>
 
   <!-- Accesso al Valore Corrente -->
-  <section class="example-section">
+  <section id="section-access" class="example-section">
     <h2>Accesso al Valore Corrente</h2>
     <app-code-block [code]="valueAccessExample" language="typescript"></app-code-block>
 
@@ -131,15 +150,14 @@
   </section>
 
   <!-- Demo Interattiva: Messaggio -->
-  <section class="demo-section">
+  <section id="section-demo1" class="demo-section">
     <h2>Demo 1: Gestione Messaggio</h2>
     <p>Questo esempio mostra come un BehaviorSubject mantiene e aggiorna un valore.</p>
-
     <app-message-demo />
   </section>
 
   <!-- Demo Interattiva: Contatore -->
-  <section class="demo-section">
+  <section id="section-demo2" class="demo-section">
     <h2>Demo 2: Contatore Reattivo</h2>
     <p>Un contatore gestito da BehaviorSubject - il valore è sempre accessibile e sincronizzato.</p>
 
@@ -169,7 +187,7 @@
   </section>
 
   <!-- Demo Interattiva: Storia Messaggi -->
-  <section class="demo-section">
+  <section id="section-demo3" class="demo-section">
     <h2>Demo 3: Gestione Lista Messaggi</h2>
     <p>BehaviorSubject con array di oggetti - ideale per gestire collezioni.</p>
 
@@ -204,7 +222,7 @@
   </section>
 
   <!-- Demo Interattiva: Stato Utente -->
-  <section class="demo-section">
+  <section id="section-demo4" class="demo-section">
     <h2>Demo 4: Stato Utente</h2>
     <p>Esempio pratico di gestione dello stato di autenticazione.</p>
 
@@ -244,21 +262,21 @@
   </section>
 
   <!-- Caso d'Uso Pratico: Auth Service -->
-  <section class="example-section">
+  <section id="section-auth" class="example-section">
     <h2>Caso d'Uso: Authentication Service</h2>
     <p>Un esempio reale di come usare BehaviorSubject per gestire l'autenticazione.</p>
     <app-code-block [code]="practicalExample" language="typescript"></app-code-block>
   </section>
 
   <!-- Caso d'Uso Pratico: State Management -->
-  <section class="example-section">
+  <section id="section-cart" class="example-section">
     <h2>Caso d'Uso: Gestione Carrello</h2>
     <p>BehaviorSubject per gestire lo stato del carrello e-commerce.</p>
     <app-code-block [code]="stateManagementExample" language="typescript"></app-code-block>
   </section>
 
   <!-- Best Practices -->
-  <section class="best-practices">
+  <section id="section-best-practices" class="best-practices">
     <h2>Best Practices</h2>
 
     <div class="practice-grid">
@@ -287,7 +305,7 @@
   </section>
 
   <!-- Quando Usare -->
-  <section class="when-to-use">
+  <section id="section-when" class="when-to-use">
     <h2>Quando Usare BehaviorSubject?</h2>
 
     <div class="use-cases">
@@ -317,7 +335,7 @@
   </section>
 
   <!-- Riepilogo -->
-  <section class="summary">
+  <section id="section-summary" class="summary">
     <h2>Riepilogo</h2>
     <div class="summary-content">
       <p><strong>BehaviorSubject</strong> è perfetto quando hai bisogno di:</p>
