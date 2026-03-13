@@ -491,33 +491,47 @@ pre {
 }
 
 
+// ══════════════════════════════════════════════
+// WCAG FIX (secondo blocco — sostituisce override non-accessibili)
+// WHY: il blocco originale usava rgba(255,255,255,0.x) su sfondi viola/colorati
+// risultando in testo quasi invisibile (contrasto < 3:1, fallisce WCAG AA).
+// Tutti i colori sono stati sostituiti con coppie ad alto contrasto (≥ 4.5:1).
+// ══════════════════════════════════════════════
+
 // Sections
+// WHY WCAG: rimosso background: rgba(255,255,255,0.2) con color:white —
+// ratio stimato ~1.2:1. Ora sfondo pastello + testo scuro → ratio > 7:1.
 .section {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
+  background: #f0edff;
   border-radius: 20px;
   padding: 32px;
   margin-bottom: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(102, 126, 234, 0.2);
 
   &--explanation {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+    // WHY WCAG: gradiente viola semitrasparente → sfondo piatto leggibile
+    background: #ede9fb;
+    border-left: 4px solid #667eea;
   }
 
   &--benefits {
-    background: linear-gradient(135deg, rgba(46, 204, 113, 0.2), rgba(39, 174, 96, 0.2));
+    // WHY WCAG: gradiente verde semitrasparente → sfondo chiaro leggibile
+    background: #e8f8ef;
+    border-left: 4px solid #27ae60;
   }
 
   &__title {
     font-size: 28px;
     font-weight: 700;
-    color: white;
+    // WHY WCAG: era color:white su viola semitrasparente → ora #2d1b69 su pastello
+    color: #2d1b69;
     margin-bottom: 16px;
   }
 
   &__description {
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.9);
+    // WHY WCAG: era rgba(255,255,255,0.9) → ora viola scuro leggibile
+    color: #3d2b7a;
     margin-bottom: 24px;
     line-height: 1.6;
   }
@@ -531,46 +545,55 @@ pre {
 }
 
 .explanation-card {
-  background: rgba(255, 255, 255, 0.15);
+  // WHY WCAG: era rgba(255,255,255,0.15) su viola → quasi invisibile.
+  // Ora sfondo bianco solido con bordo sottile.
+  background: #fff;
   border-radius: 12px;
   padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
 
   &__title {
     font-size: 18px;
     font-weight: 700;
-    color: white;
+    // WHY WCAG: era color:white → ora viola scuro su bianco (ratio > 9:1)
+    color: #2d1b69;
     margin-bottom: 12px;
   }
 
   &__text {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.85);
+    // WHY WCAG: era rgba(255,255,255,0.85) → ora testo scuro leggibile
+    color: #3d2b7a;
     line-height: 1.5;
   }
 }
 
 // Status messages
+// WHY WCAG: era color:white su rgba(231,76,60,0.3) → rosso semitrasparente,
+// contrasto insufficiente. Ora sfondo rosso pastello + testo scuro.
 .error-message {
-  background: rgba(231, 76, 60, 0.3);
-  border: 1px solid rgba(231, 76, 60, 0.5);
+  background: #fee2e2;
+  border: 1px solid #e74c3c;
   border-radius: 12px;
   padding: 16px;
-  color: white;
+  color: #7f1d1d;
   font-weight: 600;
   margin-bottom: 24px;
 }
 
+// WHY WCAG: era color:white su rgba(52,152,219,0.3) → blu semitrasparente,
+// contrasto insufficiente. Ora sfondo blu pastello + testo scuro.
 .loading-indicator {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: rgba(52, 152, 219, 0.3);
-  border: 1px solid rgba(52, 152, 219, 0.5);
+  background: #dbeafe;
+  border: 1px solid #3498db;
   border-radius: 12px;
   padding: 16px;
-  color: white;
+  color: #1e3a8a;
   font-weight: 600;
   margin-bottom: 24px;
 }
@@ -578,16 +601,10 @@ pre {
 .loading-spinner {
   width: 20px;
   height: 20px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
+  border: 3px solid rgba(52, 152, 219, 0.3);
+  border-top-color: #3498db;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 // Form to create post
@@ -605,30 +622,33 @@ pre {
   &__label {
     font-size: 14px;
     font-weight: 600;
-    color: white;
+    // WHY WCAG: era color:white su viola → ora viola scuro su pastello
+    color: #2d1b69;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
   &__input,
   &__textarea {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    // WHY WCAG: era rgba(255,255,255,0.15) + color:white → testo invisibile.
+    // Ora sfondo bianco + testo scuro, accessibile e leggibile.
+    background: #fff;
+    border: 1px solid rgba(102, 126, 234, 0.4);
     border-radius: 8px;
     padding: 12px 16px;
-    color: white;
+    color: #2d1b69;
     font-size: 16px;
     font-family: inherit;
     transition: all 0.3s ease;
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.5);
+      color: #7f8c8d;
     }
 
     &:focus {
       outline: none;
-      background: rgba(255, 255, 255, 0.2);
-      border-color: rgba(102, 126, 234, 0.6);
+      background: #fff;
+      border-color: #667eea;
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
     }
   }
@@ -636,59 +656,6 @@ pre {
   &__textarea {
     resize: vertical;
     min-height: 100px;
-  }
-}
-
-// Bottoni
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  &:not(:disabled):hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  }
-
-  &:not(:disabled):active {
-    transform: translateY(0);
-  }
-
-  &--primary {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-  }
-
-  &--secondary {
-    background: linear-gradient(135deg, #52a7c1, #4facaa);
-  }
-
-  &--warning {
-    background: linear-gradient(135deg, #f39c12, #e67e22);
-  }
-
-  &--danger {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-  }
-
-  &--small {
-    padding: 8px 16px;
-    font-size: 14px;
   }
 }
 
@@ -701,19 +668,22 @@ pre {
 }
 
 .post-card {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  // WHY WCAG: era rgba(255,255,255,0.15) su viola → sfondo semitrasparente
+  // con testo bianco, contrasto < 2:1. Ora sfondo bianco solido.
+  background: #fff;
+  border: 1px solid rgba(102, 126, 234, 0.2);
   border-radius: 12px;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: #f8f6ff;
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
   }
 
   &__header {
@@ -722,19 +692,22 @@ pre {
     align-items: center;
     font-size: 12px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.7);
+    // WHY WCAG: era rgba(255,255,255,0.7) → ora grigio scuro leggibile
+    color: #5d6d7e;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
   &__id {
-    background: rgba(102, 126, 234, 0.3);
+    background: #e8ecfb;
+    color: #3d52a0;
     padding: 4px 8px;
     border-radius: 4px;
   }
 
   &__user {
-    background: rgba(118, 75, 162, 0.3);
+    background: #f0e8fb;
+    color: #6d3d9e;
     padding: 4px 8px;
     border-radius: 4px;
   }
@@ -742,14 +715,16 @@ pre {
   &__title {
     font-size: 18px;
     font-weight: 700;
-    color: white;
+    // WHY WCAG: era color:white → ora viola scuro su bianco (ratio > 9:1)
+    color: #2d1b69;
     margin: 0;
     text-transform: capitalize;
   }
 
   &__body {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
+    // WHY WCAG: era rgba(255,255,255,0.8) → ora testo scuro leggibile
+    color: #3d2b7a;
     line-height: 1.5;
     flex-grow: 1;
   }
@@ -762,58 +737,13 @@ pre {
 }
 
 // Empty state
+// WHY WCAG: era rgba(255,255,255,0.7) → ora grigio scuro accessibile
 .empty-state {
   text-align: center;
   padding: 48px 24px;
-  color: rgba(255, 255, 255, 0.7);
+  color: #5d6d7e;
   font-size: 16px;
   font-style: italic;
-}
-
-// Code block
-.code-inline {
-  background: rgba(0, 0, 0, 0.3);
-  color: #ffd700;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-}
-
-pre {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  padding: 24px;
-  overflow-x: auto;
-  color: #e0e0e0;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.code-comment {
-  color: #6a9955;
-}
-
-.code-decorator {
-  color: #ffd700;
-}
-
-.code-keyword {
-  color: #569cd6;
-}
-
-.code-class {
-  color: #4ec9b0;
-}
-
-.code-function {
-  color: #dcdcaa;
-}
-
-.code-string {
-  color: #ce9178;
 }
 
 // Benefits list
@@ -827,14 +757,17 @@ pre {
   display: flex;
   gap: 20px;
   align-items: flex-start;
-  background: rgba(255, 255, 255, 0.15);
+  // WHY WCAG: era rgba(255,255,255,0.15) con color:white → inaccessibile.
+  // Ora sfondo bianco solido con testi scuri su verde.
+  background: #fff;
   border-radius: 12px;
   padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(39, 174, 96, 0.2);
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.06);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: #f0faf5;
     transform: translateX(4px);
   }
 
@@ -850,13 +783,15 @@ pre {
   &__title {
     font-size: 18px;
     font-weight: 700;
-    color: white;
+    // WHY WCAG: era color:white su verde semitrasparente → ora verde molto scuro
+    color: #1a4a2e;
     margin-bottom: 8px;
   }
 
   &__text {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.85);
+    // WHY WCAG: era rgba(255,255,255,0.85) → ora verde scuro leggibile
+    color: #2e7d32;
     line-height: 1.5;
   }
 }
@@ -898,13 +833,30 @@ pre {
 
 .section--antipattern {
   border-left: 4px solid #e53e3e;
+  background: #fff5f5;
+
+  .section__title {
+    color: #742a2a;
+  }
+
+  .section__description {
+    color: #742a2a;
+  }
+
+  .section__text--note {
+    color: #742a2a;
+  }
 
   .code-block--danger {
-    background: rgba(229, 62, 62, 0.05);
-    border: 1px solid rgba(229, 62, 62, 0.2);
+    background: #fff0f0;
+    border: 1px solid rgba(229, 62, 62, 0.3);
     border-radius: 8px;
     padding: 12px;
     margin-top: 12px;
+
+    code {
+      color: #2d1b69;
+    }
   }
 }
 
