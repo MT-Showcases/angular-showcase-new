@@ -17,9 +17,15 @@
 // The template receives only signals — presentational blocks have zero logic.
 // When you add a new tab or filter, modify this container, not the templates.
 
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+// WHY MatTabsModule: i tab Material gestiscono automaticamente accessibilità (ARIA roles),
+// keyboard navigation e animazioni. Non dobbiamo reimplementarle da zero — DRY + a11y gratis.
+import { MatTabsModule } from '@angular/material/tabs';
 import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
+// WHY PedagogyCardComponent: componente shared riusabile che evita la duplicazione
+// di div .pedagogy-box in tutto il progetto (DRY principle).
+import { PedagogyCardComponent } from '../components/shared/pedagogy-card/pedagogy-card.component';
 import { PatternExplorerFacadeService } from './pattern-explorer-facade.service';
 import { SearchBar } from '../components/search-bar/search-bar';
 import { PatternPlayground } from './components/pattern-playground/pattern-playground';
@@ -33,7 +39,20 @@ type PatternExplorerTab = 'panoramica' | 'approfondimento' | 'lab';
 
 @Component({
   selector: 'app-pattern-explorer',
-  imports: [CommonModule, SectionHeaderComponent, SearchBar, PatternPlayground, PatternList, CodeBlock],
+  // WHY OnPush: questa è una container component guidata da signals. Con OnPush,
+  // Angular esegue change detection SOLO quando un signal cambia o un @Input cambia
+  // reference. Questo riduce drasticamente i cicli di CD su pagine complesse.
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    MatTabsModule,
+    SectionHeaderComponent,
+    PedagogyCardComponent,
+    SearchBar,
+    PatternPlayground,
+    PatternList,
+    CodeBlock,
+  ],
   templateUrl: './pattern-explorer.html',
   styleUrl: './pattern-explorer.scss',
 })
@@ -77,6 +96,17 @@ export class PatternExplorer implements OnInit {
     }
   });
 
+  // WHY tabIndex computed: mat-tab-group usa indici numerici, ma internamente
+  // lavoriamo con nomi stringa per leggibilità. Questo computed fa il bridge
+  // senza duplicare lo state — single source of truth.
+  tabIndex = computed<number>(() => {
+    switch (this.activeTab()) {
+      case 'panoramica': return 0;
+      case 'approfondimento': return 1;
+      case 'lab': return 2;
+    }
+  });
+
   // ─────────────────────────────────────────────────────────────────────────
   // DEPTH-LEVEL COMPUTED SIGNALS
   // PEDAGOGICAL NOTE:
@@ -114,9 +144,9 @@ export class PatternExplorer implements OnInit {
   });
 
   /**
-   * PEDAGOGICAL NOTE: ngOnInit is the right lifecycle hook to trigger side effects
-   * (HTTP calls) because it runs after Angular has resolved all @Inputs.
-   * We do NOT call load() in the constructor to respect DI and testability conventions.
+   * PEDAGOGICAL NOTE: ngOnInit è il lifecycle hook corretto per i side effect
+   * (chiamate HTTP) perché gira dopo che Angular ha risolto tutti gli @Input.
+   * Evitiamo il constructor per rispettare le convenzioni DI e testabilità.
    */
   ngOnInit(): void {
     this.learningContent.load();
@@ -124,6 +154,13 @@ export class PatternExplorer implements OnInit {
 
   setActiveTab(tab: PatternExplorerTab): void {
     this.activeTab.set(tab);
+  }
+
+  // WHY onTabIndexChange: mat-tab-group emette un indice numerico su (selectedIndexChange).
+  // Convertiamo qui invece che nel template per mantenere la logica nel controller.
+  onTabIndexChange(index: number): void {
+    const tabs: PatternExplorerTab[] = ['panoramica', 'approfondimento', 'lab'];
+    this.activeTab.set(tabs[index] ?? 'panoramica');
   }
 
   onSelectPattern(patternId: string): void {
@@ -148,8 +185,8 @@ export class PatternExplorer implements OnInit {
    * Detect whether an example's solution looks like a code snippet
    * (starts with a decorator, keyword, or backtick) rather than plain prose.
    *
-   * PEDAGOGICAL NOTE: We avoid a flag in the data model to keep the JSON schema simple.
-   * This heuristic is intentionally conservative: if in doubt, render as text.
+   * PEDAGOGICAL NOTE: Evitiamo un flag nel data model per mantenere il JSON schema semplice.
+   * Questa euristica è volutamente conservativa: se c'è dubbio, renderiamo come testo.
    */
   isCodeSnippet(text: string): boolean {
     if (!text) return false;
