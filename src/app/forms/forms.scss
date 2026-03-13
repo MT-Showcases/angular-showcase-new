@@ -1,5 +1,7 @@
 :host {
   display: block;
+  // WHY: display:block necessario per gli elementi Angular custom element
+  // ANTI-PATTERN: omettere display:block causa layout collassato in alcuni browser
   min-height: 100vh;
 }
 
@@ -10,7 +12,6 @@
     max-width: 1200px;
     margin: 2rem auto;
     padding: 2rem;
-    background: #ffffff;
     border-radius: 1rem;
     box-sizing: border-box;
     width: min(1200px, calc(100% - 2rem));

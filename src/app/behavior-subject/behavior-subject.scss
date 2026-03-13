@@ -1,5 +1,7 @@
 :host {
   display: block;
+  // WHY: display:block necessario per gli elementi Angular custom element
+  // ANTI-PATTERN: omettere display:block causa layout collassato in alcuni browser
   min-height: 100vh;
 }
 
@@ -9,9 +11,6 @@
   margin: 2rem auto;
   padding: 2rem;
   animation: fadeIn 0.6s ease-out;
-  // WHY background bianco: isola il contenuto dal gradient viola globale di styles.scss.
-  // Senza questo, le sezioni interne ereditano il viola e il testo bianco diventa illeggibile.
-  background: #ffffff;
   border-radius: 1rem;
   color: #1a1a2e;
 }

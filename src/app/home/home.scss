@@ -10,6 +10,8 @@
 
 :host {
   display: block;
+  // WHY: display:block necessario per gli elementi Angular custom element
+  // ANTI-PATTERN: omettere display:block causa layout collassato in alcuni browser
   min-height: 100vh;
 }
 
