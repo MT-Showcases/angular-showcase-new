@@ -24,14 +24,16 @@ describe('PedagogyCardComponent', () => {
   });
 
   it('should apply the correct variant class', () => {
-    component.variant = 'warning';
+    fixture.componentRef.setInput('title', 'Test');
+    fixture.componentRef.setInput('variant', 'warning');
     fixture.detectChanges();
     const card = fixture.debugElement.query(By.css('mat-card'));
     expect(card.nativeElement.classList).toContain('pedagogy-card--warning');
   });
 
   it('should render mat-icon when icon input is provided', () => {
-    component.icon = 'info';
+    fixture.componentRef.setInput('title', 'Test');
+    fixture.componentRef.setInput('icon', 'info');
     fixture.detectChanges();
     const icon = fixture.debugElement.query(By.css('mat-icon'));
     expect(icon).toBeTruthy();
@@ -39,7 +41,7 @@ describe('PedagogyCardComponent', () => {
   });
 
   it('should NOT render mat-icon when icon is not provided', () => {
-    component.icon = undefined;
+    fixture.componentRef.setInput('icon', '');
     fixture.detectChanges();
     const icon = fixture.debugElement.query(By.css('mat-icon'));
     expect(icon).toBeNull();

@@ -24,21 +24,23 @@ describe('SectionHeaderComponent', () => {
   });
 
   it('should render subtitle when provided', () => {
-    component.subtitle = 'A descriptive subtitle';
+    fixture.componentRef.setInput('title', 'Test');
+    fixture.componentRef.setInput('subtitle', 'A descriptive subtitle');
     fixture.detectChanges();
     const subtitle = fixture.debugElement.query(By.css('.section-header__subtitle'));
     expect(subtitle.nativeElement.textContent.trim()).toBe('A descriptive subtitle');
   });
 
   it('should render breadcrumb when provided', () => {
-    component.breadcrumb = 'Home > Patterns';
+    fixture.componentRef.setInput('title', 'Test');
+    fixture.componentRef.setInput('breadcrumb', 'Home > Patterns');
     fixture.detectChanges();
     const breadcrumb = fixture.debugElement.query(By.css('.section-header__breadcrumb'));
     expect(breadcrumb.nativeElement.textContent.trim()).toBe('Home > Patterns');
   });
 
   it('should NOT render subtitle element when subtitle is not provided', () => {
-    component.subtitle = undefined;
+    fixture.componentRef.setInput('subtitle', '');
     fixture.detectChanges();
     const subtitle = fixture.debugElement.query(By.css('.section-header__subtitle'));
     expect(subtitle).toBeNull();

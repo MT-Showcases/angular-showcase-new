@@ -34,7 +34,7 @@ import { CommonModule } from '@angular/common';
   template: `
     <header class="section-header">
       <!-- Breadcrumb opzionale per contesto di navigazione -->
-      @if (breadcrumb) {
+      @if (breadcrumb !== '') {
         <nav class="section-header__breadcrumb" aria-label="breadcrumb">
           <span class="mat-body-2">{{ breadcrumb }}</span>
         </nav>
@@ -48,7 +48,7 @@ import { CommonModule } from '@angular/common';
       -->
       <h1 class="section-header__title mat-headline-4">{{ title }}</h1>
 
-      @if (subtitle) {
+      @if (subtitle !== '') {
         <p class="section-header__subtitle mat-body-1">{{ subtitle }}</p>
       }
 
@@ -60,13 +60,13 @@ import { CommonModule } from '@angular/common';
 })
 export class SectionHeaderComponent {
   /** Titolo principale della sezione — corrisponde semanticamente a h1 */
-  @Input({ required: true }) title!: string;
+  @Input({ required: true }) title: string = '';
 
   /**
    * Sottotitolo descrittivo opzionale.
    * WHY optional: non tutte le sezioni richiedono descrizione aggiuntiva.
    */
-  @Input() subtitle?: string;
+  @Input() subtitle: string = '';
 
   /**
    * Testo breadcrumb opzionale (es: "Home > Pattern > Singleton").
@@ -74,5 +74,5 @@ export class SectionHeaderComponent {
    * attivi, usa un componente BreadcrumbComponent dedicato e proiettalo
    * via ng-content invece di aggiungere complessità qui.
    */
-  @Input() breadcrumb?: string;
+  @Input() breadcrumb: string = '';
 }

@@ -37,7 +37,7 @@ import { MatListModule } from '@angular/material/list';
         <!-- WHY mat-icon 'warning': rinforzo visivo immediato del pericolo -->
         <mat-icon mat-card-avatar class="antipattern-box__icon">warning</mat-icon>
         <mat-card-title class="antipattern-box__title">{{ title }}</mat-card-title>
-        @if (description) {
+        @if (description !== '') {
           <mat-card-subtitle>{{ description }}</mat-card-subtitle>
         }
       </mat-card-header>
@@ -64,7 +64,7 @@ import { MatListModule } from '@angular/material/list';
 })
 export class AntipatternBoxComponent {
   /** Titolo dell'anti-pattern (es: "Non fare questo in OnInit") */
-  @Input({ required: true }) title!: string;
+  @Input({ required: true }) title: string = '';
 
   /**
    * Lista di anti-pattern specifici da evitare.
@@ -74,5 +74,5 @@ export class AntipatternBoxComponent {
   @Input() items: string[] = [];
 
   /** Descrizione opzionale che contestualizza il problema */
-  @Input() description?: string;
+  @Input() description: string = '';
 }

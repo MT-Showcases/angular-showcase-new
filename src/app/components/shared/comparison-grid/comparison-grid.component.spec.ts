@@ -26,8 +26,10 @@ describe('ComparisonGridComponent', () => {
   });
 
   it('should render correct number of items in each column', () => {
-    component.leftItems = ['Item L1', 'Item L2'];
-    component.rightItems = ['Item R1'];
+    fixture.componentRef.setInput('leftTitle', 'Title L');
+    fixture.componentRef.setInput('rightTitle', 'Title R');
+    fixture.componentRef.setInput('leftItems', ['Item L1', 'Item L2']);
+    fixture.componentRef.setInput('rightItems', ['Item R1']);
     fixture.detectChanges();
 
     const cards = fixture.debugElement.queryAll(By.css('mat-card'));

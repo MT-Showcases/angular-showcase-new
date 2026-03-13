@@ -77,10 +77,10 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class ComparisonGridComponent {
   /** Titolo colonna sinistra (es: "✅ Pattern corretto") */
-  @Input({ required: true }) leftTitle!: string;
+  @Input({ required: true }) leftTitle: string = '';
 
   /** Titolo colonna destra (es: "❌ Anti-pattern") */
-  @Input({ required: true }) rightTitle!: string;
+  @Input({ required: true }) rightTitle: string = '';
 
   /**
    * Item colonna sinistra.

@@ -33,7 +33,7 @@ import { MatIconModule } from '@angular/material/icon';
   template: `
     <mat-card [class]="'pedagogy-card pedagogy-card--' + variant">
       <mat-card-header>
-        @if (icon) {
+        @if (icon !== '') {
           <mat-icon mat-card-avatar [class]="'pedagogy-card__icon pedagogy-card__icon--' + variant">
             {{ icon }}
           </mat-icon>
@@ -51,13 +51,13 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class PedagogyCardComponent {
   /** Titolo della card pedagogica */
-  @Input({ required: true }) title!: string;
+  @Input({ required: true }) title: string = '';
 
   /**
    * Icona Material (nome stringa, es: 'info', 'lightbulb', 'warning')
    * WHY optional: non tutti i contesti richiedono un'icona visiva.
    */
-  @Input() icon?: string;
+  @Input() icon: string = '';
 
   /**
    * Variante visiva della card.

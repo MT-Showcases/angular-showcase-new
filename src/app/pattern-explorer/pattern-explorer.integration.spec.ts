@@ -16,26 +16,32 @@ describe('PatternExplorer integration flow', () => {
     fixture.detectChanges();
   });
 
-  it('should render initial selection and open depth modal when a pattern card is clicked', () => {
+  it('should render initial selection and change state when a pattern card is clicked', () => {
     const host: HTMLElement = fixture.nativeElement;
 
-    const selectionSummaryBefore = host.querySelector('.pattern-explorer__selection-summary')?.textContent;
-    expect(selectionSummaryBefore).toContain('Container + Presentational Split');
+    // The component uses <p class="pattern-explorer__breadcrumb"> for breadcrumb/summary
+    const breadcrumbBefore = host.querySelector('.pattern-explorer__breadcrumb')?.textContent;
+    expect(breadcrumbBefore).toContain('Panoramica');
+
+    // The first pattern is 'Container + Presentational Split'
+    const activePatternTitle = host.querySelector('.pattern-detail__title')?.textContent;
+    expect(activePatternTitle).toContain('Container + Presentational Split');
 
     const cards = host.querySelectorAll<HTMLButtonElement>('.pattern-list__card');
     expect(cards.length).toBeGreaterThan(1);
 
+    // Click on the second card (Facade Service Boundary)
     cards[1].click();
     fixture.detectChanges();
 
     expect(component.selectedPatternId()).toBe('facade-service');
-    expect(component.isDepthModalOpen()).toBeTrue();
 
-    const modalTitle = host.querySelector('.depth-modal__title')?.textContent;
-    expect(modalTitle).toContain('Facade Service Boundary');
+    // When a pattern is selected, it switches to the 'Approfondimento' tab
+    const breadcrumbAfter = host.querySelector('.pattern-explorer__breadcrumb')?.textContent;
+    expect(breadcrumbAfter).toContain('Approfondimento');
 
-    const selectionSummaryAfter = host.querySelector('.pattern-explorer__selection-summary')?.textContent;
-    expect(selectionSummaryAfter).toContain('Facade Service Boundary');
+    const detailedTitle = host.querySelector('.pattern-detail__title')?.textContent;
+    expect(detailedTitle).toContain('Facade Service Boundary');
 
     const activeCard = host.querySelector('.pattern-list__card--active');
     expect(activeCard?.textContent).toContain('Facade Service Boundary');

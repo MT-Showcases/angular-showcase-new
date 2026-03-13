@@ -13,11 +13,18 @@ describe('PatternExplorerFacadeService', () => {
   it('should provide the expected educational pattern cards', () => {
     const cards = service.getPatternCards();
 
-    expect(cards.length).toBe(3);
+    expect(cards.length).toBe(10);
     expect(cards.map((card) => card.id)).toEqual([
       'container-presentational',
       'facade-service',
       'signals-local-state',
+      'smart-dumb-io',
+      'http-loading-state',
+      'ngrx-store-pattern',
+      'onpush-change-detection',
+      'di-advanced',
+      'rxjs-operators',
+      'signal-forms',
     ]);
   });
 
