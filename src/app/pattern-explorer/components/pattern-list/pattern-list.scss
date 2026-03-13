@@ -19,6 +19,11 @@
     gap: rem(12);
   }
 
+  &__item {
+    @include flex(flex-start, stretch, column);
+    gap: rem(10);
+  }
+
   &__card {
     @include flex(flex-start, stretch, column);
     gap: rem(10);
@@ -35,6 +40,11 @@
       border-color: $primary;
       box-shadow: 0 rem(8) rem(20) rgba(45, 99, 255, 0.12);
       transform: translateY(rem(-2));
+    }
+
+    &:focus-visible {
+      outline: rem(2) solid $primary;
+      outline-offset: rem(2);
     }
 
     &--active {
@@ -69,6 +79,34 @@
     line-height: rem(22);
   }
 
+  &__progress {
+    @include flex(space-between, center);
+    gap: rem(10);
+  }
+
+  &__progress-step {
+    font-size: rem(12);
+    font-weight: 700;
+    color: $primary;
+  }
+
+  &__progress-track {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: rem(6);
+  }
+
+  &__progress-dot {
+    height: rem(6);
+    border-radius: rem(999);
+    background: $neutral-lighter;
+
+    &--done {
+      background: $primary;
+    }
+  }
+
   &__card-category {
     @include flex(flex-start, center);
     gap: rem(6);
@@ -88,6 +126,12 @@
     border-radius: rem(14);
     border: rem(1) solid $neutral-lighter;
     background: $white;
+
+    &--inline {
+      margin-top: rem(-4);
+      border-top-left-radius: rem(8);
+      border-top-right-radius: rem(8);
+    }
   }
 
   &__detail-title {
@@ -140,7 +184,7 @@
 @include media-min-breakpoint(md) {
   .pattern-list {
     &__grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
 
     &__detail-columns {

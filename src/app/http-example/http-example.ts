@@ -12,6 +12,12 @@
 // - Modern inject() function for dependency injection
 // - Observable subscription with manual state updates
 //
+// WHY: Facade abstracts away the HTTP implementation, making components simpler and testable.
+// QUANDO USARLO: To decouple components from direct API requests, providing a single data access point.
+// ALTERNATIVA: Direct HttpClient injection (anti-pattern) or State Management (NgRx) for shared global data.
+//
+// ANTI-PATTERN: Injecting HttpClient directly in components; not unsubscribing from infinite observables.
+//
 // NOTES FOR CONTRIBUTORS:
 // - Keep HTTP logic in services, not in components
 // - Use signals for state (loading, error, data)

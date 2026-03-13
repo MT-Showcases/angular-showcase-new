@@ -83,6 +83,13 @@ export class Navbar {
       ],
     },
     {
+      label: 'Patterns',
+      icon: 'blocks',
+      items: [
+        { label: 'GoF Reference', route: '/patterns/gof-reference', icon: 'blocks' }
+      ]
+    },
+    {
       label: 'Examples',
       icon: 'users',
       items: [

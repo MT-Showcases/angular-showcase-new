@@ -10,6 +10,18 @@ interface Message {
   timestamp: Date;
 }
 
+/**
+ * PATTERN: BehaviorSubject per stato condiviso
+ *
+ * WHY: BehaviorSubject mantiene l'ultimo valore emesso, perfetto per stato
+ * che deve essere disponibile immediatamente ai nuovi subscriber.
+ *
+ * QUANDO USARLO: Stato semplice condiviso tra componenti senza NgRx.
+ * ALTERNATIVA: Signals (Angular 17+) per stato locale; NgRx per stato complesso.
+ *
+ * ANTI-PATTERN: Non esporre il Subject direttamente — usa asObservable()
+ * per evitare che i consumer possano fare .next() dall'esterno.
+ */
 @Component({
   selector: 'app-behavior-subject',
   standalone: true,

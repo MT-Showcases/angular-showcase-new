@@ -28,9 +28,25 @@ export class PatternList {
   @Input({ required: true }) patterns: PatternCard[] = [];
   @Input({ required: true }) selectedPatternId = '';
 
+  // UX NOTE:
+  // We keep disclosure mode configurable so mobile can use inline-accordion expansion,
+  // while desktop can pair the same list with a dedicated right-side detail panel.
+  @Input() showInlineDetail = false;
+
   @Output() selectPattern = new EventEmitter<string>();
+  @Output() closePattern = new EventEmitter<void>();
 
   onSelectPattern(patternId: string): void {
     this.selectPattern.emit(patternId);
+  }
+
+  onCardKeydown(event: KeyboardEvent, patternId: string): void {
+    // Accessibility:
+    // - Enter/Space on buttons already trigger click natively in browsers.
+    // - Escape is *not* native for buttons, so we handle it to close disclosure quickly.
+    if (event.key === 'Escape' && this.selectedPatternId === patternId) {
+      event.preventDefault();
+      this.closePattern.emit();
+    }
   }
 }

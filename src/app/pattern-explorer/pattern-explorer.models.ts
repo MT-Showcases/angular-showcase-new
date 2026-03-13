@@ -20,7 +20,19 @@ export type PatternLevel = 'beginner' | 'intermediate' | 'advanced';
 export interface PatternCard {
   id: string;
   title: string;
-  category: 'Container/Presentational' | 'Facade Service' | 'Signals Local State';
+  // PEDAGOGICAL NOTE: Category is a union type, not a free string.
+  // Adding a new category forces you to provide pattern cards — this is intentional.
+  // It keeps the UI filter consistent and prevents orphan categories.
+  category:
+    | 'Container/Presentational'
+    | 'Facade Service'
+    | 'Signals Local State'
+    | 'State Management'
+    | 'Change Detection'
+    | 'Dependency Injection'
+    | 'RxJS Patterns'
+    | 'HTTP & Data Layer'
+    | 'Forms';
   summary: string;
   whyItMatters: string;
   fullContent: string;
@@ -31,7 +43,16 @@ export interface PatternCard {
   exercises: string[];
 }
 
-export type PatternLabId = 'smart-dumb' | 'signal-vs-observable' | 'facade-fixer';
+// PEDAGOGICAL NOTE: Each lab id maps to an interactive exercise component.
+// When adding a new lab, create the component first, then register the id here.
+export type PatternLabId =
+  | 'smart-dumb'
+  | 'signal-vs-observable'
+  | 'facade-fixer'
+  | 'ngrx-flow'
+  | 'onpush-detector'
+  | 'rxjs-pipeline'
+  | 'signal-form';
 
 export interface PatternPlaygroundState {
   selectedLevel: PatternLevel;

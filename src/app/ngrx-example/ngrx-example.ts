@@ -11,6 +11,12 @@
 // - Signal-based tab selection
 // - Composition of multiple demo components
 //
+// WHY: NgRx separates application state into a predictable store accessible globally.
+// QUANDO USARLO: Complex data flows, extensive sharing of state across deeply nested components.
+// ALTERNATIVA: BehaviorSubject/Signals for simpler apps or isolated state.
+//
+// ANTI-PATTERN: Putting all component local state in the global NgRx store.
+//
 // NOTES FOR CONTRIBUTORS:
 // - Keep this component as a coordinator only
 // - Complex NgRx logic lives in child components

@@ -4,13 +4,14 @@ import { PageHeader } from '../page-header/page-header';
 import { PatternExplorerFacadeService } from './pattern-explorer-facade.service';
 import { SearchBar } from '../components/search-bar/search-bar';
 import { PatternPlayground } from './components/pattern-playground/pattern-playground';
-import { PatternCard } from './pattern-explorer.models';
+import { PatternCard, PatternLevel } from './pattern-explorer.models';
+import { PatternList } from './components/pattern-list/pattern-list';
 
 type PatternExplorerTab = 'panoramica' | 'approfondimento' | 'lab';
 
 @Component({
   selector: 'app-pattern-explorer',
-  imports: [CommonModule, PageHeader, SearchBar, PatternPlayground],
+  imports: [CommonModule, PageHeader, SearchBar, PatternPlayground, PatternList],
   templateUrl: './pattern-explorer.html',
   styleUrl: './pattern-explorer.scss',
 })
@@ -21,17 +22,17 @@ export class PatternExplorer {
   selectedPatternId = signal(this.patterns()[0]?.id ?? '');
   searchQuery = signal('');
   activeTab = signal<PatternExplorerTab>('panoramica');
+  selectedLevel = signal<'all' | PatternLevel>('all');
 
   filteredPatterns = computed(() => {
     const query = this.searchQuery().trim().toLowerCase();
-
-    if (!query) {
-      return this.patterns();
-    }
+    const levelFilter = this.selectedLevel();
 
     return this.patterns().filter((pattern) => {
-      const haystack = `${pattern.title} ${pattern.category} ${pattern.level}`.toLowerCase();
-      return haystack.includes(query);
+      const matchesQuery =
+        !query || `${pattern.title} ${pattern.category} ${pattern.level}`.toLowerCase().includes(query);
+      const matchesLevel = levelFilter === 'all' || pattern.level === levelFilter;
+      return matchesQuery && matchesLevel;
     });
   });
 
@@ -61,5 +62,14 @@ export class PatternExplorer {
 
   onSearchResultSelected(result: PatternCard | { id: string }): void {
     this.onSelectPattern(result.id);
+  }
+
+  onFilterLevel(level: 'all' | PatternLevel): void {
+    this.selectedLevel.set(level);
+  }
+
+  clearSelectedPattern(): void {
+    this.selectedPatternId.set('');
+    this.activeTab.set('panoramica');
   }
 }

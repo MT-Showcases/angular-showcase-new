@@ -12,6 +12,12 @@
 // - Reactive state management with signals (no services needed for this demo)
 // - Computed signals for derived state (automatic recalculation)
 //
+// WHY: Angular Signals provide a reactive primitive for state management that automatically tracks dependencies.
+// QUANDO USARLO: Local component state, derived calculations, side effects. 
+// ALTERNATIVA: RxJS BehaviorSubject for global/complex state; NgRx for enterprise state.
+//
+// ANTI-PATTERN: Updating signals inside computed() or effect() which can cause infinite loops.
+//
 // NOTES FOR CONTRIBUTORS:
 // - Keep examples simple and focused on signal concepts
 // - Use clear section markers (═══) for educational clarity

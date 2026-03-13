@@ -1,28 +1,78 @@
 <section class="pattern-list" aria-label="Pattern cards">
-  <div class="pattern-list__grid">
-    @for (pattern of patterns; track pattern.id) {
-    <button
-      type="button"
-      class="pattern-list__card"
-      [class.pattern-list__card--active]="selectedPatternId === pattern.id"
-      (click)="onSelectPattern(pattern.id)"
-    >
-      <div class="pattern-list__card-header">
-        <span class="pattern-list__card-title">{{ pattern.title }}</span>
-        <span class="pattern-list__card-level">{{ pattern.level }}</span>
-      </div>
+  <div class="pattern-list__grid" role="list">
+    @for (pattern of patterns; track pattern.id; let index = $index) {
+    <article class="pattern-list__item" role="listitem">
+      <button
+        type="button"
+        class="pattern-list__card"
+        [class.pattern-list__card--active]="selectedPatternId === pattern.id"
+        [attr.aria-label]="'Apri pattern ' + pattern.title + ', livello ' + pattern.level"
+        [attr.aria-expanded]="showInlineDetail ? selectedPatternId === pattern.id : null"
+        (click)="onSelectPattern(pattern.id)"
+        (keydown)="onCardKeydown($event, pattern.id)"
+      >
+        <div class="pattern-list__card-header">
+          <span class="pattern-list__card-title">{{ pattern.title }}</span>
+          <span class="pattern-list__card-level">{{ pattern.level }}</span>
+        </div>
 
-      <p class="pattern-list__card-summary">{{ pattern.summary }}</p>
+        <p class="pattern-list__card-summary">{{ pattern.summary }}</p>
 
-      <span class="pattern-list__card-category">
-        <app-icon name="blocks" />
-        {{ pattern.category }}
-      </span>
-    </button>
+        <div class="pattern-list__progress" [attr.aria-label]="'Step ' + (index + 1) + ' di ' + patterns.length + ' nel learning path'">
+          <span class="pattern-list__progress-step">Step {{ index + 1 }}/{{ patterns.length }}</span>
+          <div
+            class="pattern-list__progress-track"
+            [style.grid-template-columns]="'repeat(' + patterns.length + ', 1fr)'"
+            aria-hidden="true"
+          >
+            @for (_ of patterns; track $index; let stepIndex = $index) {
+            <span
+              class="pattern-list__progress-dot"
+              [class.pattern-list__progress-dot--done]="stepIndex <= index"
+            ></span>
+            }
+          </div>
+        </div>
+
+        <span class="pattern-list__card-category">
+          <app-icon name="blocks" />
+          {{ pattern.category }}
+        </span>
+      </button>
+
+      @if (showInlineDetail && selectedPatternId === pattern.id) {
+      <article class="pattern-list__detail pattern-list__detail--inline" aria-live="polite">
+        <h3 class="pattern-list__detail-title">{{ pattern.title }}</h3>
+        <p class="pattern-list__detail-text">{{ pattern.whyItMatters }}</p>
+
+        <div class="pattern-list__detail-columns">
+          <div class="pattern-list__detail-column">
+            <h4 class="pattern-list__detail-subtitle">Implementation Checklist</h4>
+            <ul class="pattern-list__detail-list">
+              @for (point of pattern.checklist; track point) {
+              <li class="pattern-list__detail-item">{{ point }}</li>
+              }
+            </ul>
+          </div>
+
+          <div class="pattern-list__detail-column">
+            <h4 class="pattern-list__detail-subtitle">Common Anti-Patterns</h4>
+            <ul class="pattern-list__detail-list">
+              @for (antiPattern of pattern.antiPatterns; track antiPattern) {
+              <li class="pattern-list__detail-item pattern-list__detail-item--danger">
+                {{ antiPattern }}
+              </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </article>
+      }
+    </article>
     }
   </div>
 
-  @if (patterns.length) {
+  @if (!showInlineDetail && patterns.length) {
   <article class="pattern-list__detail" aria-live="polite">
     @for (pattern of patterns; track pattern.id) {
       @if (selectedPatternId === pattern.id) {

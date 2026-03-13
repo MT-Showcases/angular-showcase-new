@@ -65,6 +65,15 @@ export const routes: Routes = [
     component: PatternExplorer,
   },
   {
+    path: 'patterns',
+    children: [
+      {
+        path: 'gof-reference',
+        loadComponent: () => import('./patterns/gof-reference/gof-reference').then(m => m.GofReference)
+      }
+    ]
+  },
+  {
     path: 'examples',
     children: [
       {
