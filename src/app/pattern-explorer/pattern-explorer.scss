@@ -188,6 +188,7 @@
       // regardless of the md breakpoint override in pattern-list.scss
       .pattern-list__grid {
         grid-template-columns: 1fr;
+        gap: rem(6);
       }
     }
   }
