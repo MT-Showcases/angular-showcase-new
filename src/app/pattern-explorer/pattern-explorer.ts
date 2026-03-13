@@ -19,7 +19,7 @@
 
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PageHeader } from '../page-header/page-header';
+import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
 import { PatternExplorerFacadeService } from './pattern-explorer-facade.service';
 import { SearchBar } from '../components/search-bar/search-bar';
 import { PatternPlayground } from './components/pattern-playground/pattern-playground';
@@ -33,7 +33,7 @@ type PatternExplorerTab = 'panoramica' | 'approfondimento' | 'lab';
 
 @Component({
   selector: 'app-pattern-explorer',
-  imports: [CommonModule, PageHeader, SearchBar, PatternPlayground, PatternList, CodeBlock],
+  imports: [CommonModule, SectionHeaderComponent, SearchBar, PatternPlayground, PatternList, CodeBlock],
   templateUrl: './pattern-explorer.html',
   styleUrl: './pattern-explorer.scss',
 })

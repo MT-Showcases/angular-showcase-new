@@ -53,12 +53,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { PageHeader } from '../page-header/page-header';
+import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
 import { Icon } from '../components/icon/icon';
 
 @Component({
   selector: 'app-forms',
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, PageHeader, Icon],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, SectionHeaderComponent, Icon],
   templateUrl: './forms.html',
   styleUrl: './forms.scss',
 })

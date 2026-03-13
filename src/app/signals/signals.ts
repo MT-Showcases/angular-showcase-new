@@ -27,11 +27,11 @@
 // SECTION: Angular Signals
 
 import { Component, signal, computed, effect } from '@angular/core';
-import { PageHeader } from '../page-header/page-header';
+import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
 
 @Component({
   selector: 'app-signals',
-  imports: [PageHeader],
+  imports: [SectionHeaderComponent],
   templateUrl: './signals.html',
   styleUrl: './signals.scss',
 })

@@ -18,13 +18,13 @@
 // - This is a demo page, not a route in main navigation
 
 import { Component } from '@angular/core';
-import { PageHeader } from '../page-header/page-header';
+import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
 import { CodeBlock } from '../components/code-block/code-block';
 
 @Component({
   selector: 'app-code-block-demo',
   standalone: true,
-  imports: [PageHeader, CodeBlock],
+  imports: [SectionHeaderComponent, CodeBlock],
   templateUrl: './code-block-demo.html',
   styleUrls: ['./code-block-demo.scss'],
 })

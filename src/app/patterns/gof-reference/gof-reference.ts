@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PageHeader } from '../../page-header/page-header';
+import { SectionHeaderComponent } from '../../components/shared/section-header/section-header.component';
 
 @Component({
   selector: 'app-gof-reference',
   standalone: true,
-  imports: [CommonModule, PageHeader],
+  imports: [CommonModule, SectionHeaderComponent],
   templateUrl: './gof-reference.html',
   styleUrls: ['./gof-reference.scss']
 })

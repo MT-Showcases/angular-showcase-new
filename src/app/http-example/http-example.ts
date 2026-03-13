@@ -27,12 +27,12 @@
 
 import { Component, signal, inject } from '@angular/core';
 import { PostsService, Post } from '../../services/posts.service';
-import { PageHeader } from '../page-header/page-header';
+import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
 import { CodeBlock } from '../components/code-block/code-block';
 
 @Component({
   selector: 'app-http-example',
-  imports: [PageHeader, CodeBlock],
+  imports: [SectionHeaderComponent, CodeBlock],
   templateUrl: './http-example.html',
   styleUrl: './http-example.scss',
 })

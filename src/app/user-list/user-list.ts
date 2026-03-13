@@ -25,12 +25,12 @@ import { User } from '../../types/users';
 import { UserCard } from './user-card/user-card';
 import { FormsModule } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
-import { PageHeader } from '../page-header/page-header';
+import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
 import { Icon } from '../components/icon/icon';
 
 @Component({
   selector: 'app-user-list',
-  imports: [CommonModule, UserCard, FormsModule, PageHeader, Icon],
+  imports: [CommonModule, UserCard, FormsModule, SectionHeaderComponent, Icon],
   templateUrl: './user-list.html',
   styleUrl: './user-list.scss',
 })
