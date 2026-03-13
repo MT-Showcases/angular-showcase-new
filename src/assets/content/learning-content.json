@@ -72,22 +72,6 @@
           "prompt": "Why should a component call a facade instead of HttpClient directly?",
           "solution": "The component is the diner, facade is the waiter, and HttpClient is the kitchen. The diner should not walk into the kitchen.",
           "difficulty": "easy"
-        },
-        {
-          "id": "svc-facade-snippet",
-          "title": "Typed facade API",
-          "format": "snippet",
-          "prompt": "Create a method that returns strongly typed concepts from local JSON.",
-          "solution": "Use HttpClient.get<LearningContent>() and expose computed/signal selectors.",
-          "difficulty": "medium"
-        },
-        {
-          "id": "svc-facade-exercise",
-          "title": "Refactor component orchestration",
-          "format": "exercise",
-          "prompt": "Move loading/error/empty-state logic from a component into a facade. Add one public load() API and at least two computed selectors.",
-          "solution": "Extract imperative orchestration into facade methods, keep view layer declarative, and expose readonly signals for rendering states.",
-          "difficulty": "hard"
         }
       ]
     },
@@ -111,11 +95,6 @@
           "topicId": "svc-facade",
           "relation": "supports",
           "note": "Facade state can be expressed as signals."
-        },
-        {
-          "topicId": "rxjs-signal-interop",
-          "relation": "extends",
-          "note": "Use interop utilities to bridge observables and signals."
         }
       ],
       "examples": [
@@ -150,11 +129,6 @@
           "topicId": "svc-facade",
           "relation": "extends",
           "note": "Facades depend on DI for transport and repositories."
-        },
-        {
-          "topicId": "standalone-architecture",
-          "relation": "supports",
-          "note": "Provider scoping is central in standalone apps."
         }
       ],
       "examples": [
@@ -165,594 +139,13 @@
           "prompt": "How can DI help replace mock JSON with a real backend later?",
           "solution": "Depend on an abstract repository token and provide a different implementation by environment.",
           "difficulty": "hard"
-        },
-        {
-          "id": "di-exercise",
-          "title": "Create a repository token",
-          "format": "exercise",
-          "prompt": "Define an InjectionToken<LearningRepository> and provide one in-memory and one HTTP implementation. Toggle them by environment provider config.",
-          "solution": "Expose shared interface, register useClass/useFactory providers, and inject token in facade without touching component code.",
-          "difficulty": "hard"
-        }
-      ]
-    },
-    {
-      "id": "standalone-architecture",
-      "title": "Standalone Architecture and Feature Boundaries",
-      "summary": "Organize apps using standalone components, route-level providers, and explicit feature boundaries.",
-      "tags": [
-        "standalone",
-        "architecture",
-        "routing",
-        "providers"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "route-level-code-splitting",
-          "relation": "supports",
-          "note": "Standalone route declarations simplify lazy loading."
-        },
-        {
-          "topicId": "dependency-injection",
-          "relation": "prerequisite",
-          "note": "You need provider scope fundamentals first."
-        }
-      ],
-      "examples": [
-        {
-          "id": "standalone-snippet",
-          "title": "Feature route providers",
-          "format": "snippet",
-          "prompt": "Define a standalone route that provides a feature-scoped facade and API base URL.",
-          "solution": "Use a route with providers: [FeatureFacade, { provide: API_URL, useValue: ... }].",
-          "difficulty": "medium"
-        },
-        {
-          "id": "standalone-exercise",
-          "title": "Extract a bounded feature",
-          "format": "exercise",
-          "prompt": "Take one existing page and split it into a standalone feature with its own routes, providers, and shared public barrel.",
-          "solution": "Move implementation details into feature folder, expose only route and public types, and verify imports remain one-way.",
-          "difficulty": "hard"
-        }
-      ]
-    },
-    {
-      "id": "rxjs-signal-interop",
-      "title": "RxJS + Signals Interop",
-      "summary": "Combine stream-based workflows with signal-driven UI state without double subscriptions.",
-      "tags": [
-        "rxjs",
-        "signals",
-        "interop",
-        "reactivity"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "signals",
-          "relation": "prerequisite",
-          "note": "Start from signal fundamentals."
-        },
-        {
-          "topicId": "resilient-http-data-layer",
-          "relation": "supports",
-          "note": "HTTP streams often feed UI signals."
-        }
-      ],
-      "examples": [
-        {
-          "id": "interop-case",
-          "title": "Observable pipeline to signal",
-          "format": "case-study",
-          "prompt": "You have a debounced search Observable. How do you expose results as signal state in a component?",
-          "solution": "Use toSignal(searchResults$) for read path, keep side effects in RxJS pipeline, and avoid duplicate local subscribe().",
-          "difficulty": "medium"
-        },
-        {
-          "id": "interop-exercise",
-          "title": "Bi-directional bridge",
-          "format": "exercise",
-          "prompt": "Create a search box where user input is a signal but API calls are RxJS. Add cancellation and loading state.",
-          "solution": "Convert signal to observable for switchMap, then map final stream back to signal via toSignal.",
-          "difficulty": "hard"
-        }
-      ]
-    },
-    {
-      "id": "route-level-code-splitting",
-      "title": "Route-Level Code Splitting and Prefetch Strategy",
-      "summary": "Use lazy routes, deferrable chunks, and selective prefetching to balance performance and UX.",
-      "tags": [
-        "performance",
-        "routing",
-        "lazy-loading",
-        "bundles"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "standalone-architecture",
-          "relation": "prerequisite",
-          "note": "Standalone routes make split points explicit."
-        },
-        {
-          "topicId": "deferrable-views",
-          "relation": "extends",
-          "note": "Deferring non-critical blocks complements route splitting."
-        }
-      ],
-      "examples": [
-        {
-          "id": "code-splitting-snippet",
-          "title": "Lazy route with preload hint",
-          "format": "snippet",
-          "prompt": "Add a lazy feature route and mark it as prefetch candidate after first interaction.",
-          "solution": "Use loadComponent/loadChildren and metadata consumed by a custom preloading strategy.",
-          "difficulty": "medium"
-        },
-        {
-          "id": "code-splitting-exercise",
-          "title": "Measure and tune",
-          "format": "exercise",
-          "prompt": "Split one heavy route into separate chunks and measure initial bundle delta before/after. Document any regressions.",
-          "solution": "Record baseline bundle stats, apply lazy boundaries, compare startup TTI/LCP and adjust preloading accordingly.",
-          "difficulty": "hard"
-        }
-      ]
-    },
-    {
-      "id": "deferrable-views",
-      "title": "Deferrable Views for Progressive Rendering",
-      "summary": "Render critical UI first and defer secondary blocks using trigger-based loading.",
-      "tags": [
-        "performance",
-        "ux",
-        "defer",
-        "rendering"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "route-level-code-splitting",
-          "relation": "supports",
-          "note": "Both reduce initial JavaScript pressure."
-        },
-        {
-          "topicId": "signals",
-          "relation": "supports",
-          "note": "Signals help model loaded/deferred states in templates."
-        }
-      ],
-      "examples": [
-        {
-          "id": "defer-analogy",
-          "title": "Magazine fold analogy",
-          "format": "analogy",
-          "prompt": "Why defer below-the-fold content?",
-          "solution": "You print the cover first so users can start reading immediately; long articles can arrive a moment later.",
-          "difficulty": "easy"
-        },
-        {
-          "id": "defer-exercise",
-          "title": "Add defer blocks",
-          "format": "exercise",
-          "prompt": "Wrap a non-critical widget in @defer with loading and placeholder states. Use viewport or idle trigger and compare perceived speed.",
-          "solution": "Implement @defer with @placeholder/@loading, verify main content paints first, and ensure deferred state remains accessible.",
-          "difficulty": "medium"
-        }
-      ]
-    },
-    {
-      "id": "zoneless-change-detection",
-      "title": "Zoneless Change Detection with Signal-First Patterns",
-      "summary": "Design deterministic UI updates without Zone.js by leaning on explicit reactivity.",
-      "tags": [
-        "performance",
-        "change-detection",
-        "signals",
-        "architecture"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "signals",
-          "relation": "prerequisite",
-          "note": "Signals are the primary update mechanism in zoneless setups."
-        },
-        {
-          "topicId": "rxjs-signal-interop",
-          "relation": "supports",
-          "note": "Interop avoids hidden async change propagation."
-        }
-      ],
-      "examples": [
-        {
-          "id": "zoneless-case",
-          "title": "Event-driven updates",
-          "format": "case-study",
-          "prompt": "A component updates after async calls only. What must be explicit when Zone.js is removed?",
-          "solution": "All state transitions must flow through reactive primitives/signals observed by the template, with no reliance on patched async APIs.",
-          "difficulty": "hard"
-        },
-        {
-          "id": "zoneless-exercise",
-          "title": "Migrate one feature",
-          "format": "exercise",
-          "prompt": "Pick one feature and remove implicit mutation patterns. Convert state to signals/computed and verify UI updates still occur deterministically.",
-          "solution": "Replace mutable local fields with signal state, isolate effects, and ensure template reads only reactive values.",
-          "difficulty": "hard"
-        }
-      ]
-    },
-    {
-      "id": "dynamic-component-composition",
-      "title": "Dynamic Component Composition",
-      "summary": "Compose runtime UIs with typed contracts for plugin-like sections and context-aware rendering.",
-      "tags": [
-        "dynamic-components",
-        "composition",
-        "architecture",
-        "extensibility"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "standalone-architecture",
-          "relation": "supports",
-          "note": "Standalone components simplify dynamic registration."
-        },
-        {
-          "topicId": "dependency-injection",
-          "relation": "supports",
-          "note": "Injection tokens can register dynamic blocks safely."
-        }
-      ],
-      "examples": [
-        {
-          "id": "dynamic-snippet",
-          "title": "Typed dynamic outlet",
-          "format": "snippet",
-          "prompt": "Define a typed config model that maps widget IDs to component classes and input schemas.",
-          "solution": "Use a discriminated union for widget config and strongly typed component input contracts.",
-          "difficulty": "medium"
-        },
-        {
-          "id": "dynamic-exercise",
-          "title": "Add pluggable section",
-          "format": "exercise",
-          "prompt": "Implement a dashboard section registry where adding a new widget requires no dashboard template edits.",
-          "solution": "Introduce registry token, iterate over configs, and render via ngComponentOutlet/dynamic APIs with validated inputs.",
-          "difficulty": "hard"
-        }
-      ]
-    },
-    {
-      "id": "resilient-http-data-layer",
-      "title": "Resilient HTTP Data Layer",
-      "summary": "Centralize retries, timeout, mapping, and error normalization to keep UI logic clean and robust.",
-      "tags": [
-        "http",
-        "resilience",
-        "rxjs",
-        "architecture"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "svc-facade",
-          "relation": "prerequisite",
-          "note": "Facades consume normalized data-layer outputs."
-        },
-        {
-          "topicId": "rxjs-signal-interop",
-          "relation": "supports",
-          "note": "Stream operators power retries, fallback, and cancellation."
-        }
-      ],
-      "examples": [
-        {
-          "id": "http-snippet",
-          "title": "Normalize API errors",
-          "format": "snippet",
-          "prompt": "Wrap HttpClient errors into a domain-safe Result type with retry/backoff for idempotent requests.",
-          "solution": "Use pipe(catchError, retryWhen/backoff) and map to a typed Result union consumed by facades.",
-          "difficulty": "medium"
-        },
-        {
-          "id": "http-exercise",
-          "title": "Design request policy",
-          "format": "exercise",
-          "prompt": "Implement one interceptor or data-access utility that applies timeout, correlation ID, and user-friendly error mapping for all feature APIs.",
-          "solution": "Create shared policy layer, expose typed success/error contracts, and ensure UI receives predictable failure states.",
-          "difficulty": "hard"
-        }
-      ]
-    },
-    {
-      "id": "gof-observer",
-      "title": "Observer Pattern in Angular",
-      "summary": "The Observer pattern is foundational in Angular, implemented via RxJS Observables, EventEmitter, and modern Signals.",
-      "tags": [
-        "gof",
-        "design-patterns",
-        "rxjs",
-        "signals",
-        "events"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "signals",
-          "relation": "supports"
-        },
-        {
-          "topicId": "rxjs-signal-interop",
-          "relation": "supports"
-        }
-      ],
-      "examples": [
-        {
-          "id": "observer-analogy",
-          "title": "Newspaper Subscription",
-          "format": "analogy",
-          "prompt": "How does the Observer pattern work in a real-world scenario?",
-          "solution": "A newspaper publisher (Subject) sends updates to all subscribers (Observers) whenever a new edition is ready. Subscribers don't check the mailbox every minute; they are notified when the paper arrives.",
-          "difficulty": "easy"
-        },
-        {
-          "id": "observer-exercise",
-          "title": "Signal-based Observer",
-          "format": "exercise",
-          "prompt": "Implement a shared state service using a Signal that multiple components 'observe' and react to using effect().",
-          "solution": "Create a service with a private writable signal and a public readonly signal. Use effect(() => { ... }) in components to react to changes.",
-          "difficulty": "medium"
-        }
-      ]
-    },
-    {
-      "id": "gof-strategy",
-      "title": "Strategy Pattern via DI",
-      "summary": "Decouple algorithms from their usage by swapping implementations through Angular's Dependency Injection system.",
-      "tags": [
-        "gof",
-        "design-patterns",
-        "di",
-        "architecture"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "dependency-injection",
-          "relation": "prerequisite"
-        }
-      ],
-      "examples": [
-        {
-          "id": "strategy-snippet",
-          "title": "Interface Swapping",
-          "format": "snippet",
-          "prompt": "Define a Logger interface and provide different implementations (ConsoleLogger vs NoOpLogger) using DI tokens.",
-          "solution": "export abstract class Logger { abstract log(msg: string): void; } ... providers: [{ provide: Logger, useClass: isProd ? NoOpLogger : ConsoleLogger }]",
-          "difficulty": "medium"
-        }
-      ]
-    },
-    {
-      "id": "gof-decorator",
-      "title": "Decorator Pattern in Directives",
-      "summary": "Extend or modify the behavior of elements or components without changing their source code using Directives and Interceptors.",
-      "tags": [
-        "gof",
-        "design-patterns",
-        "directives",
-        "interceptors"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "resilient-http-data-layer",
-          "relation": "supports"
-        }
-      ],
-      "examples": [
-        {
-          "id": "decorator-exercise",
-          "title": "Tooltip Directive",
-          "format": "exercise",
-          "prompt": "Create a directive that 'decorates' an HTML element by adding a hover-triggered tooltip without modifying the host component.",
-          "solution": "Use @Directive({ selector: '[appTooltip]' }) and HostListener to manage visibility of a dynamically created tooltip element.",
-          "difficulty": "medium"
-        }
-      ]
-    },
-    {
-      "id": "gof-factory",
-      "title": "Factory Pattern with useFactory",
-      "summary": "Centralize object creation logic, especially when initialization depends on runtime conditions or other dependencies.",
-      "tags": [
-        "gof",
-        "design-patterns",
-        "di",
-        "providers"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "dependency-injection",
-          "relation": "prerequisite"
-        }
-      ],
-      "examples": [
-        {
-          "id": "factory-snippet",
-          "title": "Conditional Provider",
-          "format": "snippet",
-          "prompt": "Use useFactory to provide a different configuration service based on a 'runtime-feature-flag' signal or cookie.",
-          "solution": "{ provide: CONFIG, useFactory: (flag) => flag ? new NewConfig() : new OldConfig(), deps: [FEATURE_FLAG_TOKEN] }",
-          "difficulty": "hard"
-        }
-      ]
-    },
-    {
-      "id": "gof-singleton",
-      "title": "Singleton Pattern (providedIn: 'root')",
-      "summary": "Ensure a class has only one instance and provide a global point of access, managed natively by Angular's root injector.",
-      "tags": [
-        "gof",
-        "design-patterns",
-        "di",
-        "services"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "dependency-injection",
-          "relation": "prerequisite"
-        }
-      ],
-      "examples": [
-        {
-          "id": "singleton-analogy",
-          "title": "Single Source of Truth",
-          "format": "analogy",
-          "prompt": "Why use providedIn: 'root'?",
-          "solution": "It's like a building's main water supply. There is only one pump, and everyone in the building gets water from that same source, ensuring consistent pressure (state) for everyone.",
-          "difficulty": "easy"
-        }
-      ]
-    },
-    {
-      "id": "gof-proxy",
-      "title": "Proxy Pattern via Interceptors",
-      "summary": "Control access to a resource (like an API) by intercepting requests/responses to add logging, auth, or caching.",
-      "tags": [
-        "gof",
-        "design-patterns",
-        "http",
-        "interceptors"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "resilient-http-data-layer",
-          "relation": "supports"
-        }
-      ],
-      "examples": [
-        {
-          "id": "proxy-snippet",
-          "title": "Auth Interceptor",
-          "format": "snippet",
-          "prompt": "Implement an interceptor that 'proxies' every HTTP request to add an Authorization header.",
-          "solution": "intercept(req, next) { const authReq = req.clone({ setHeaders: { Authorization: 'Bearer ' + token } }); return next(authReq); }",
-          "difficulty": "medium"
-        }
-      ]
-    },
-    {
-      "id": "gof-template-method",
-      "title": "Template Method Pattern",
-      "summary": "Define the skeleton of an algorithm in an abstract base class, letting subclasses override specific steps (like lifecycle hooks).",
-      "tags": [
-        "gof",
-        "design-patterns",
-        "oop",
-        "lifecycle"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "standalone-architecture",
-          "relation": "supports"
-        }
-      ],
-      "examples": [
-        {
-          "id": "template-method-exercise",
-          "title": "Abstract Base List",
-          "format": "exercise",
-          "prompt": "Create an abstract BaseListComponent that defines a refresh() template method calling an abstract fetchData() method.",
-          "solution": "Subclasses implement fetchData(), while BaseListComponent handles the 'refresh' workflow (loading state, error handling, etc.).",
-          "difficulty": "hard"
         }
       ]
     },
     {
       "id": "smart-dumb-io",
-      "title": "Smart/Dumb Components with Input/Output",
-      "summary": "Smart components own data and logic; dumb components receive @Input and emit @Output. This hard boundary maximizes reusability and testability.",
+      "title": "Smart/Dumb Components with @Input/@Output",
+      "summary": "Smart components own data and logic; dumb components receive data via @Input and emit events via @Output. This hard boundary maximizes reusability and testability.",
       "tags": [
         "architecture",
         "components",
@@ -767,16 +160,6 @@
       ],
       "relatedTopics": [
         {
-          "topicId": "svc-facade",
-          "relation": "supports",
-          "note": "Facades feed data to smart components."
-        },
-        {
-          "topicId": "signals",
-          "relation": "supports",
-          "note": "Signals can replace Input/Output in some patterns."
-        },
-        {
           "topicId": "onpush-change-detection",
           "relation": "extends",
           "note": "Dumb components should always use OnPush."
@@ -784,35 +167,35 @@
       ],
       "examples": [
         {
-          "id": "smart-dumb-analogy",
+          "id": "smart-dumb-intro",
           "title": "Manager and Worker",
           "format": "analogy",
           "prompt": "Why separate smart from dumb components?",
-          "solution": "The manager (smart) decides WHAT work to do and WHO does it. Workers (dumb) only know HOW to do their specific task. A worker never calls a client directly — the manager handles all coordination.",
+          "solution": "The manager (smart) decides WHAT work to do and WHO does it. Workers (dumb) only know HOW to do their specific task. A worker never calls a service directly — the manager handles all coordination.",
           "difficulty": "easy"
         },
         {
-          "id": "smart-dumb-snippet",
+          "id": "smart-dumb-guided",
           "title": "Typed Input/Output contract",
           "format": "snippet",
           "prompt": "Create a UserCard dumb component with typed inputs and outputs.",
-          "solution": "@Component({ changeDetection: ChangeDetectionStrategy.OnPush })\nexport class UserCard {\n  user = input.required<User>();  // Signal input (Angular 17+)\n  delete = output<string>();      // Typed output\n  edit = output<User>();\n}",
+          "solution": "@Component({ changeDetection: ChangeDetectionStrategy.OnPush })\nexport class UserCard {\n  user = input.required<User>();\n  delete = output<string>();\n}",
           "difficulty": "medium"
         },
         {
-          "id": "smart-dumb-exercise",
+          "id": "smart-dumb-applied",
           "title": "Refactor mixed component",
           "format": "exercise",
           "prompt": "Take a component that fetches users AND renders a list. Split it into a smart UserListContainer and a dumb UserListView.",
-          "solution": "UserListContainer: inject(UserService), manage loading/error state, pass users to child. UserListView: @Input users, @Output selectUser — zero service imports.",
+          "solution": "UserListContainer injects UserService and passes users to child. UserListView has @Input users and @Output selectUser — zero service imports.",
           "difficulty": "hard"
         },
         {
-          "id": "smart-dumb-case",
+          "id": "smart-dumb-mastery",
           "title": "Reusability across features",
           "format": "case-study",
-          "prompt": "Your ProductCard component injects CartService to add items. Now you need ProductCard in a comparison page without a cart. What went wrong?",
-          "solution": "ProductCard should be dumb — it emits (addToCart) and the parent decides what to do. In the cart page, parent dispatches to CartService. In comparison page, parent ignores the event or shows a different action.",
+          "prompt": "Your ProductCard component injects CartService. Now you need ProductCard in a comparison page without a cart. What went wrong?",
+          "solution": "ProductCard should be dumb. It emits (addToCart). In the cart page, parent dispatches to CartService. In comparison page, parent ignores the event or shows a different action.",
           "difficulty": "hard"
         }
       ]
@@ -820,7 +203,7 @@
     {
       "id": "http-loading-state",
       "title": "HTTP + Loading State Pattern",
-      "summary": "Model every async operation as a state machine (idle, loading, success, error) using discriminated unions. Never leave the UI in an ambiguous state.",
+      "summary": "Model async operations as a state machine (idle, loading, success, error) to prevent ambiguous UI states.",
       "tags": [
         "http",
         "state-management",
@@ -838,49 +221,39 @@
           "topicId": "svc-facade",
           "relation": "prerequisite",
           "note": "Facades orchestrate loading state transitions."
-        },
-        {
-          "topicId": "resilient-http-data-layer",
-          "relation": "extends",
-          "note": "Add retry and backoff on top of loading states."
-        },
-        {
-          "topicId": "signals",
-          "relation": "supports",
-          "note": "Signals hold the LoadingState and drive template rendering."
         }
       ],
       "examples": [
         {
-          "id": "loading-analogy",
+          "id": "loading-intro",
           "title": "Traffic light analogy",
           "format": "analogy",
           "prompt": "Why model loading as a state machine?",
-          "solution": "A traffic light is always red, yellow, or green — never two at once, never none. LoadingState works the same: idle, loading, success, or error. Separate booleans (isLoading + hasError) can be true simultaneously — an impossible state that causes UI bugs.",
+          "solution": "A traffic light is always red, yellow, or green — never two at once. LoadingState works the same. Separate booleans (isLoading + hasError) can be true simultaneously, causing UI bugs.",
           "difficulty": "easy"
         },
         {
-          "id": "loading-snippet",
+          "id": "loading-guided",
           "title": "LoadingState<T> type",
           "format": "snippet",
           "prompt": "Define a type-safe loading state.",
-          "solution": "type LoadingState<T> =\n  | { status: 'idle' }\n  | { status: 'loading' }\n  | { status: 'success'; data: T }\n  | { status: 'error'; error: string };\n// Template: @switch (state().status) { @case ('loading') { <spinner/> } ... }",
+          "solution": "type LoadingState<T> = { status: 'idle' } | { status: 'loading' } | { status: 'success'; data: T } | { status: 'error'; error: string };",
           "difficulty": "medium"
         },
         {
-          "id": "loading-exercise",
+          "id": "loading-applied",
           "title": "Implement full loading flow",
           "format": "exercise",
-          "prompt": "Create a PostsFacade that exposes a LoadingState<Post[]> signal. Implement load(), handle HTTP errors, and show appropriate UI for each state.",
-          "solution": "loadPosts() sets state to loading, calls HTTP, pipes to success/error. Template uses @switch on status. Error state shows retry button that calls loadPosts() again.",
+          "prompt": "Create a PostsFacade that exposes a LoadingState<Post[]> signal and handles all states.",
+          "solution": "loadPosts() sets state to loading, calls HTTP, maps to success/error. Template uses @switch on status. Error state shows a retry button.",
           "difficulty": "hard"
         },
         {
-          "id": "loading-case",
+          "id": "loading-mastery",
           "title": "Boolean hell anti-pattern",
           "format": "case-study",
-          "prompt": "A component has isLoading = false, hasError = false, data = null. After a failed request, isLoading is still true because of a missing finally block. What happens?",
-          "solution": "The UI shows a spinner forever. With LoadingState<T>, this is impossible: setting status to 'error' automatically excludes 'loading'. The type system prevents the bug at compile time.",
+          "prompt": "isLoading is true, hasError is false, data is null. After a failed request, isLoading is still true. What happens?",
+          "solution": "The UI shows a spinner forever. With LoadingState<T>, this is impossible: setting status to 'error' automatically removes the 'loading' state.",
           "difficulty": "hard"
         }
       ]
@@ -888,7 +261,7 @@
     {
       "id": "ngrx-store",
       "title": "NgRx Store Pattern",
-      "summary": "Centralize shared state with the Redux pattern: Actions describe events, Reducers compute state, Selectors derive views. Predictable, debuggable, time-travel ready.",
+      "summary": "Centralize shared state with the Redux pattern: Actions describe events, Reducers compute state, Selectors derive views.",
       "tags": [
         "ngrx",
         "state-management",
@@ -906,57 +279,47 @@
           "topicId": "signals",
           "relation": "alternative",
           "note": "Use signals for local state, NgRx for shared/complex state."
-        },
-        {
-          "topicId": "svc-facade",
-          "relation": "supports",
-          "note": "Facades can wrap NgRx selectors and dispatches."
-        },
-        {
-          "topicId": "gof-observer",
-          "relation": "prerequisite",
-          "note": "NgRx is built on the Observer pattern (store.select is Observable)."
         }
       ],
       "examples": [
         {
-          "id": "ngrx-analogy",
+          "id": "ngrx-intro",
           "title": "Bank ledger analogy",
           "format": "analogy",
           "prompt": "How does NgRx manage state?",
-          "solution": "A bank ledger (Store) records every transaction (Action). The accountant (Reducer) applies each transaction to compute the new balance (State). The bank statement (Selector) shows you just the info you need. You never modify the ledger directly — you submit a transaction slip.",
+          "solution": "A bank ledger (Store) records every transaction (Action). The accountant (Reducer) computes the new balance. The statement (Selector) shows the data. You never modify the ledger directly.",
           "difficulty": "easy"
         },
         {
-          "id": "ngrx-snippet",
+          "id": "ngrx-guided",
           "title": "Counter feature with createFeature",
           "format": "snippet",
           "prompt": "Define a minimal NgRx feature with actions, reducer, and selectors.",
-          "solution": "// Actions\nexport const increment = createAction('[Counter] Increment');\nexport const decrement = createAction('[Counter] Decrement');\n// Feature\nexport const counterFeature = createFeature({\n  name: 'counter',\n  reducer: createReducer(0,\n    on(increment, state => state + 1),\n    on(decrement, state => state - 1)\n  )\n});\n// Auto-generated: counterFeature.selectCounterState",
+          "solution": "export const counterFeature = createFeature({ name: 'counter', reducer: createReducer(0, on(increment, state => state + 1)) });",
           "difficulty": "medium"
         },
         {
-          "id": "ngrx-exercise",
-          "title": "Add a todo feature",
+          "id": "ngrx-applied",
+          "title": "Add a priority feature",
           "format": "exercise",
-          "prompt": "Study src/app/store/todo/ in this project. Add a 'priority' property to todos with actions, reducer updates, and a selectHighPriorityTodos selector.",
-          "solution": "Define setPriority action with props<{id, priority}>. Update reducer with on(setPriority, ...). Create selector: selectHighPriorityTodos = createSelector(selectTodos, todos => todos.filter(t => t.priority === 'high')).",
+          "prompt": "Add a 'priority' property to todos with actions, reducer updates, and a selector.",
+          "solution": "Define setPriority action. Update reducer with on(setPriority). Create selector: createSelector(selectTodos, todos => todos.filter(t => t.priority === 'high')).",
           "difficulty": "hard"
         },
         {
-          "id": "ngrx-case",
+          "id": "ngrx-mastery",
           "title": "Store vs Signal decision",
           "format": "case-study",
-          "prompt": "Your app has a theme toggle (dark/light). Should it be in NgRx store or a signal?",
-          "solution": "Signal. Theme is simple, binary, and doesn't need time-travel debugging. NgRx adds boilerplate (action + reducer + selector) for no benefit. Rule of thumb: if state is shared across routes AND complex, use NgRx. Otherwise, signals.",
+          "prompt": "Your app has a theme toggle (dark/light). Store or signal?",
+          "solution": "Signal. Theme is simple and binary. NgRx adds boilerplate for no benefit. Rule: if state is shared across routes AND complex, use NgRx. Otherwise, signals.",
           "difficulty": "medium"
         }
       ]
     },
     {
       "id": "onpush-change-detection",
-      "title": "ChangeDetection: OnPush Strategy",
-      "summary": "Tell Angular to skip re-rendering unless @Input references change, events fire, or reactive primitives (signals/async pipe) emit.",
+      "title": "ChangeDetectionStrategy.OnPush",
+      "summary": "Optimize performance by telling Angular to skip re-rendering unless @Input references change, events fire, or signals emit.",
       "tags": [
         "performance",
         "change-detection",
@@ -973,126 +336,48 @@
         {
           "topicId": "signals",
           "relation": "supports",
-          "note": "Signals trigger OnPush correctly — the modern combo."
-        },
-        {
-          "topicId": "smart-dumb-io",
-          "relation": "extends",
-          "note": "All dumb components should use OnPush."
-        },
-        {
-          "topicId": "zoneless-change-detection",
-          "relation": "extends",
-          "note": "OnPush is a stepping stone toward fully zoneless apps."
+          "note": "Signals trigger OnPush correctly."
         }
       ],
       "examples": [
         {
-          "id": "onpush-analogy",
+          "id": "onpush-intro",
           "title": "Doorbell analogy",
           "format": "analogy",
-          "prompt": "What is the difference between Default and OnPush change detection?",
-          "solution": "Default: Angular checks every room in the house after any noise, even if nothing changed. OnPush: Angular only checks a room when the doorbell rings (input changed) or someone inside the room calls out (event/signal). Much less work for the same result.",
+          "prompt": "What is the difference between Default and OnPush?",
+          "solution": "Default: Angular checks every room after any noise. OnPush: Angular only checks a room when the doorbell rings (input changed) or someone inside calls out (event/signal).",
           "difficulty": "easy"
         },
         {
-          "id": "onpush-snippet",
-          "title": "OnPush + Signals combo",
+          "id": "onpush-guided",
+          "title": "OnPush + Signals",
           "format": "snippet",
-          "prompt": "Set up a component with OnPush that reacts to signal changes.",
-          "solution": "@Component({\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  template: `<p>Count: {{ count() }}</p><button (click)=\"increment()\">+1</button>`\n})\nexport class Counter {\n  count = signal(0);\n  increment() { this.count.update(n => n + 1); }\n  // Signal update triggers OnPush re-render automatically!\n}",
+          "prompt": "Set up an OnPush component that reacts to signal changes.",
+          "solution": "@Component({ changeDetection: ChangeDetectionStrategy.OnPush, template: `<p>{{ count() }}</p>` })\nexport class Counter { count = signal(0); }",
           "difficulty": "medium"
         },
         {
-          "id": "onpush-exercise",
+          "id": "onpush-applied",
           "title": "Find the mutation bug",
           "format": "exercise",
-          "prompt": "A component with OnPush receives items: Item[] as input. The parent does items.push(newItem). The child does not update. Fix it.",
-          "solution": "The parent must create a new array reference: this.items = [...this.items, newItem]. OnPush only detects reference changes, not mutations. This is why immutable patterns are essential with OnPush.",
+          "prompt": "A parent does items.push(newItem). The OnPush child does not update. Fix it.",
+          "solution": "The parent must create a new array reference: this.items = [...this.items, newItem]. OnPush only detects reference changes.",
           "difficulty": "medium"
         },
         {
-          "id": "onpush-case",
+          "id": "onpush-mastery",
           "title": "Performance profiling",
           "format": "case-study",
-          "prompt": "A dashboard with 50 card components re-renders all cards on every click. How do you diagnose and fix this?",
-          "solution": "Use Angular DevTools profiler to see change detection runs. Enable OnPush on all card components. Use trackBy in @for loops. Result: only the clicked card re-renders. Typical improvement: 50x fewer checks.",
+          "prompt": "A dashboard with 50 cards re-renders all cards on every click. Fix it.",
+          "solution": "Enable OnPush on all cards. Use trackBy in @for loops. Result: only the clicked card re-renders, vastly improving performance.",
           "difficulty": "hard"
         }
       ]
     },
     {
-      "id": "di-advanced-tokens",
-      "title": "Advanced DI: InjectionToken & Multi-Providers",
-      "summary": "Use InjectionToken for non-class dependencies and multi-providers for plugin-like extensibility.",
-      "tags": [
-        "di",
-        "injection-token",
-        "providers",
-        "architecture"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "dependency-injection",
-          "relation": "prerequisite",
-          "note": "Understand basic DI before advanced token patterns."
-        },
-        {
-          "topicId": "gof-factory",
-          "relation": "supports",
-          "note": "useFactory is a factory pattern applied to DI."
-        },
-        {
-          "topicId": "gof-strategy",
-          "relation": "supports",
-          "note": "Tokens enable strategy swapping at the provider level."
-        }
-      ],
-      "examples": [
-        {
-          "id": "di-token-analogy",
-          "title": "Hotel key card analogy",
-          "format": "analogy",
-          "prompt": "What is an InjectionToken?",
-          "solution": "A hotel key card (InjectionToken) opens a specific door (provides a specific value). The card itself is not the room — it is a unique identifier that the hotel system (Angular injector) uses to give you access to the right room (value).",
-          "difficulty": "easy"
-        },
-        {
-          "id": "di-token-snippet",
-          "title": "Typed InjectionToken with factory",
-          "format": "snippet",
-          "prompt": "Create a typed configuration token.",
-          "solution": "export const API_CONFIG = new InjectionToken<ApiConfig>('API_CONFIG', {\n  providedIn: 'root',\n  factory: () => ({\n    baseUrl: inject(IS_PRODUCTION) ? 'https://api.prod.com' : 'http://localhost:3000',\n    timeout: 5000\n  })\n});",
-          "difficulty": "medium"
-        },
-        {
-          "id": "di-multi-exercise",
-          "title": "Build a validator registry",
-          "format": "exercise",
-          "prompt": "Create a VALIDATORS multi-token. Each feature provides its own validators. A form component injects all validators and runs them.",
-          "solution": "const VALIDATORS = new InjectionToken<Validator[]>('VALIDATORS');\n// Feature A: { provide: VALIDATORS, useClass: EmailValidator, multi: true }\n// Feature B: { provide: VALIDATORS, useClass: PhoneValidator, multi: true }\n// Form: validators = inject(VALIDATORS); // [EmailValidator, PhoneValidator]",
-          "difficulty": "hard"
-        },
-        {
-          "id": "di-token-case",
-          "title": "Environment-based switching",
-          "format": "case-study",
-          "prompt": "Your app needs MockDataService in dev and RealDataService in production. How?",
-          "solution": "Define an abstract DataService token. In app.config.ts: provide with useClass pointing to the right implementation based on environment. Components inject DataService — they never know which implementation runs.",
-          "difficulty": "hard"
-        }
-      ]
-    },
-    {
-      "id": "rxjs-essential-operators",
+      "id": "rxjs-operators",
       "title": "RxJS Operators: switchMap, combineLatest, takeUntilDestroyed",
-      "summary": "Master the three operators that solve 90% of Angular async patterns: search cancellation, stream combination, and automatic cleanup.",
+      "summary": "Master the operators that solve common Angular async patterns: search cancellation, stream combination, and automatic cleanup.",
       "tags": [
         "rxjs",
         "operators",
@@ -1107,120 +392,42 @@
       ],
       "relatedTopics": [
         {
-          "topicId": "rxjs-signal-interop",
-          "relation": "extends",
-          "note": "Use toSignal() to bridge operator results into signals."
-        },
-        {
-          "topicId": "resilient-http-data-layer",
-          "relation": "supports",
-          "note": "Operators power retry, timeout, and error recovery."
-        },
-        {
           "topicId": "http-loading-state",
           "relation": "supports",
-          "note": "switchMap prevents stale loading states from race conditions."
+          "note": "switchMap prevents stale loading states."
         }
       ],
       "examples": [
         {
-          "id": "rxjs-analogy",
+          "id": "rxjs-intro",
           "title": "TV channel analogy",
           "format": "analogy",
           "prompt": "What does switchMap do?",
-          "solution": "switchMap is like changing TV channels. When you switch to channel 5, you stop watching channel 3 immediately. You don't wait for channel 3's show to finish. Similarly, switchMap cancels the previous HTTP request when a new search term arrives.",
+          "solution": "switchMap is like changing TV channels. You stop watching channel 3 immediately when you switch to 5. Similarly, switchMap cancels the previous HTTP request when a new search term arrives.",
           "difficulty": "easy"
         },
         {
-          "id": "rxjs-snippet",
+          "id": "rxjs-guided",
           "title": "Search with switchMap",
           "format": "snippet",
           "prompt": "Implement a typeahead search that cancels stale requests.",
-          "solution": "results$ = this.searchControl.valueChanges.pipe(\n  debounceTime(300),\n  distinctUntilChanged(),\n  switchMap(query => this.http.get<Result[]>(`/api/search?q=${query}`))\n);",
+          "solution": "this.searchCtrl.valueChanges.pipe(debounceTime(300), switchMap(q => this.http.get(`/api/search?q=${q}`)));",
           "difficulty": "medium"
         },
         {
-          "id": "rxjs-exercise",
-          "title": "Combine filters with data",
+          "id": "rxjs-applied",
+          "title": "Combine filters",
           "format": "exercise",
-          "prompt": "Combine category$ and sortOrder$ filters with a users$ HTTP stream so the UI updates when ANY filter changes.",
-          "solution": "combineLatest([category$, sortOrder$]).pipe(\n  switchMap(([cat, sort]) => http.get<User[]>(`/api/users?cat=${cat}&sort=${sort}`)),\n  takeUntilDestroyed()\n).subscribe(users => this.users.set(users));",
+          "prompt": "Combine category$ and sort$ filters with an HTTP stream.",
+          "solution": "combineLatest([category$, sort$]).pipe(switchMap(([cat, sort]) => http.get(`/api/items?c=${cat}&s=${sort}`)));",
           "difficulty": "hard"
         },
         {
-          "id": "rxjs-case",
+          "id": "rxjs-mastery",
           "title": "Memory leak diagnosis",
           "format": "case-study",
-          "prompt": "A component subscribes to a WebSocket in ngOnInit but never unsubscribes. After navigating away and back 10 times, there are 10 active subscriptions.",
-          "solution": "Add takeUntilDestroyed(this.destroyRef) to the pipe. Each time the component is destroyed, the subscription cleans up. Alternative: use toSignal() which auto-unsubscribes.",
-          "difficulty": "hard"
-        }
-      ]
-    },
-    {
-      "id": "signal-based-forms",
-      "title": "Signal-Based Forms (Angular 17+)",
-      "summary": "Model form state with signals: each field is a writable signal, validation is computed, and the form is reactive without ReactiveForms boilerplate.",
-      "tags": [
-        "forms",
-        "signals",
-        "validation",
-        "angular-17"
-      ],
-      "depthLevels": [
-        "intro",
-        "guided",
-        "applied",
-        "mastery"
-      ],
-      "relatedTopics": [
-        {
-          "topicId": "signals",
-          "relation": "prerequisite",
-          "note": "Understand signal basics before signal forms."
-        },
-        {
-          "topicId": "onpush-change-detection",
-          "relation": "supports",
-          "note": "Signal forms work perfectly with OnPush."
-        },
-        {
-          "topicId": "smart-dumb-io",
-          "relation": "supports",
-          "note": "Signal forms fit naturally in smart components."
-        }
-      ],
-      "examples": [
-        {
-          "id": "signal-form-analogy",
-          "title": "Spreadsheet analogy",
-          "format": "analogy",
-          "prompt": "How do signal-based forms work?",
-          "solution": "Each form field is a spreadsheet cell (writable signal). Validation rules are formulas (computed signals) that auto-recalculate when cells change. The Submit button is enabled/disabled by a formula that checks all validation cells.",
-          "difficulty": "easy"
-        },
-        {
-          "id": "signal-form-snippet",
-          "title": "Contact form with validation",
-          "format": "snippet",
-          "prompt": "Build a form with name and email fields using signals.",
-          "solution": "name = signal('');\nemail = signal('');\nnameError = computed(() => this.name().length < 2 ? 'Name too short' : null);\nemailError = computed(() => this.email().includes('@') ? null : 'Invalid email');\nisValid = computed(() => !this.nameError() && !this.emailError());",
-          "difficulty": "medium"
-        },
-        {
-          "id": "signal-form-exercise",
-          "title": "Form with autosave",
-          "format": "exercise",
-          "prompt": "Create a profile form with signal fields. Add an effect() that autosaves valid data to localStorage after 1 second of inactivity.",
-          "solution": "Use effect() to watch all field signals. Inside, clear previous timeout and set a new one. After 1s, if isValid() is true, save to localStorage. The effect auto-tracks dependencies.",
-          "difficulty": "hard"
-        },
-        {
-          "id": "signal-form-case",
-          "title": "When NOT to use signal forms",
-          "format": "case-study",
-          "prompt": "You need a dynamic form that adds/removes field groups (e.g., multiple addresses). Signal form or Reactive Form?",
-          "solution": "Reactive Forms. FormArray and FormGroup provide built-in dynamic add/remove with validation propagation. Signal forms would require manually managing arrays of signals. Use the right tool: signals for simple forms, ReactiveForms for complex dynamic forms.",
+          "prompt": "A component subscribes to a WebSocket but never unsubscribes, causing leaks on navigation.",
+          "solution": "Add takeUntilDestroyed(this.destroyRef) to the pipe. It automatically cleans up the subscription when the component is destroyed.",
           "difficulty": "hard"
         }
       ]
