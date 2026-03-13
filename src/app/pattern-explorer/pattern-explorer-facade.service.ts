@@ -35,6 +35,8 @@ export class PatternExplorerFacadeService {
         'Use a smart container to coordinate state and events, then delegate rendering to pure UI components.',
       whyItMatters:
         'This split keeps templates simple, improves testability, and makes visual components reusable in other flows.',
+      fullContent:
+        'At depth 3, this pattern is about strong boundaries: the container orchestrates route data, state changes, and side effects, while presentational components focus on rendering and semantic events. Keep business branching and data access in the container so visual components remain portable and easy to test.',
       level: 'beginner',
       checklist: [
         'Container owns orchestration and route-level decisions',
@@ -45,6 +47,11 @@ export class PatternExplorerFacadeService {
         'Fetching HTTP data directly in a reusable card component',
         'Large templates mixing rendering and business branching in one place',
       ],
+      relatedTopics: ['Smart vs Dumb Components', 'Single Responsibility Principle', 'Input/Output Contracts'],
+      exercises: [
+        'Move data-fetching out of a card component into a route container',
+        'Refactor a mixed component into one container and two presentational children',
+      ],
     },
     {
       id: 'facade-service',
@@ -54,6 +61,8 @@ export class PatternExplorerFacadeService {
         'A facade exposes business-friendly methods so components do not depend on store, HTTP, or transformation internals.',
       whyItMatters:
         'You can evolve implementation details (mock data, REST API, NgRx selectors) without rewriting every consuming component.',
+      fullContent:
+        'At depth 3, treat the facade as your domain-friendly API. Components should ask for meaningful operations, not transport-level calls. The facade can aggregate sources, normalize DTOs, and expose stable models. This decouples UI from backend shape churn and keeps architecture adaptable.',
       level: 'intermediate',
       checklist: [
         'Components call semantic methods like getPatternCards()',
@@ -64,6 +73,11 @@ export class PatternExplorerFacadeService {
         'Leaking backend DTO shapes directly into templates',
         'Duplicating fetch-and-map logic across multiple pages',
       ],
+      relatedTopics: ['Adapter Pattern', 'Service Layer', 'API Composition'],
+      exercises: [
+        'Rename low-level service methods into semantic facade actions',
+        'Normalize two different endpoint responses into one shared UI model',
+      ],
     },
     {
       id: 'signals-local-state',
@@ -73,6 +87,8 @@ export class PatternExplorerFacadeService {
         'Use writable and computed signals for local interactions (selection, filters, panels) close to the component.',
       whyItMatters:
         'Signals provide lightweight, explicit reactivity for UI concerns without introducing global state complexity.',
+      fullContent:
+        'At depth 3, signals shine when state is local, short-lived, and tightly coupled to one feature view. Keep writable signals minimal, derive everything else with computed signals, and avoid mutation-in-place pitfalls. Promote state to facade/store only when multiple routes must coordinate or persistence is required.',
       level: 'advanced',
       checklist: [
         'Writable signals hold local interaction state',
@@ -82,6 +98,11 @@ export class PatternExplorerFacadeService {
       antiPatterns: [
         'Using a global store for a one-page toggle',
         'Mutating arrays/objects in place instead of updating signal values immutably',
+      ],
+      relatedTopics: ['Computed Memoization', 'Change Detection', 'Component Reactivity'],
+      exercises: [
+        'Replace imperative counters with computed signals',
+        'Model a filter + selected item flow using only writable and computed signals',
       ],
     },
   ];

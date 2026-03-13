@@ -4,6 +4,8 @@
 ></app-page-header>
 
 <section class="pattern-explorer">
+  <app-breadcrumb-trail [items]="breadcrumbItems()" />
+
   <p class="pattern-explorer__intro">
     This area demonstrates three recurring Angular patterns working together inside one educational
     feature.
@@ -28,3 +30,16 @@
 
   <app-pattern-playground [patterns]="patterns()" />
 </section>
+
+<app-depth-modal
+  [isOpen]="isDepthModalOpen()"
+  [pattern]="selectedPattern()"
+  (closeModal)="onCloseModal()"
+  (openDepthPanel)="onOpenDepthPanel()"
+></app-depth-modal>
+
+<app-depth-side-panel
+  [isOpen]="isDepthPanelOpen()"
+  [pattern]="selectedPattern()"
+  (closePanel)="onCloseDepthPanel()"
+></app-depth-side-panel>

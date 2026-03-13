@@ -1,0 +1,38 @@
+@use 'globals' as *;
+
+.breadcrumb-trail {
+  padding: rem(10) rem(14);
+  border-radius: rem(10);
+  background: $neutral-bg;
+  border: rem(1) solid $neutral-lighter;
+
+  &__meta {
+    margin: 0 0 rem(8);
+    font-size: rem(12);
+    color: $neutral-darker;
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    @include flex(flex-start, center);
+    gap: rem(8);
+    flex-wrap: wrap;
+  }
+
+  &__item {
+    @include flex(flex-start, center);
+    gap: rem(8);
+    color: $neutral-darker;
+
+    &--active {
+      font-weight: 700;
+      color: $primary;
+    }
+  }
+
+  &__separator {
+    color: $neutral-light;
+  }
+}

@@ -1,0 +1,30 @@
+<aside class="depth-side-panel" [class.depth-side-panel--open]="isOpen" aria-label="Pattern depth panel">
+  @if (pattern) {
+  <header class="depth-side-panel__header">
+    <h3 class="depth-side-panel__title">{{ pattern.title }}</h3>
+    <button type="button" class="depth-side-panel__close" (click)="closePanel.emit()" aria-label="Close side panel">
+      ×
+    </button>
+  </header>
+
+  <p class="depth-side-panel__content">{{ pattern.fullContent }}</p>
+
+  <section class="depth-side-panel__section">
+    <h4 class="depth-side-panel__section-title">Related topics</h4>
+    <ul class="depth-side-panel__list">
+      @for (topic of pattern.relatedTopics; track topic) {
+      <li class="depth-side-panel__item">{{ topic }}</li>
+      }
+    </ul>
+  </section>
+
+  <section class="depth-side-panel__section">
+    <h4 class="depth-side-panel__section-title">Exercises</h4>
+    <ul class="depth-side-panel__list">
+      @for (exercise of pattern.exercises; track exercise) {
+      <li class="depth-side-panel__item">{{ exercise }}</li>
+      }
+    </ul>
+  </section>
+  }
+</aside>

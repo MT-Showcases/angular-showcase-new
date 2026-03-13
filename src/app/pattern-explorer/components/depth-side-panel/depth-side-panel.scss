@@ -1,0 +1,70 @@
+@use 'globals' as *;
+
+.depth-side-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100dvh;
+  width: min(rem(420), 90vw);
+  padding: rem(18);
+  background: $white;
+  box-shadow: rem(-10) 0 rem(30) rgba(0, 0, 0, 0.18);
+  transform: translateX(100%);
+  transition: transform 220ms ease;
+  z-index: 40;
+  overflow-y: auto;
+
+  &--open {
+    transform: translateX(0);
+  }
+
+  &__header {
+    @include flex(space-between, center);
+    gap: rem(12);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: rem(20);
+    color: $neutral-darkest;
+  }
+
+  &__close {
+    border: 0;
+    border-radius: rem(10);
+    background: $neutral-bg;
+    width: rem(34);
+    height: rem(34);
+    font-size: rem(22);
+    line-height: 1;
+    color: $neutral-darker;
+  }
+
+  &__content {
+    margin: rem(14) 0;
+    line-height: rem(24);
+    color: $neutral-darker;
+  }
+
+  &__section {
+    margin-top: rem(16);
+    padding-top: rem(12);
+    border-top: rem(1) solid $neutral-lighter;
+  }
+
+  &__section-title {
+    margin: 0 0 rem(10);
+    font-size: rem(15);
+    color: $neutral-darkest;
+  }
+
+  &__list {
+    margin: 0;
+    padding-left: rem(18);
+  }
+
+  &__item {
+    margin-bottom: rem(8);
+    color: $neutral-darker;
+  }
+}

@@ -16,7 +16,7 @@ describe('PatternExplorer integration flow', () => {
     fixture.detectChanges();
   });
 
-  it('should render initial selection and update it when a pattern card is clicked', () => {
+  it('should render initial selection and open depth modal when a pattern card is clicked', () => {
     const host: HTMLElement = fixture.nativeElement;
 
     const selectionSummaryBefore = host.querySelector('.pattern-explorer__selection-summary')?.textContent;
@@ -29,6 +29,10 @@ describe('PatternExplorer integration flow', () => {
     fixture.detectChanges();
 
     expect(component.selectedPatternId()).toBe('facade-service');
+    expect(component.isDepthModalOpen()).toBeTrue();
+
+    const modalTitle = host.querySelector('.depth-modal__title')?.textContent;
+    expect(modalTitle).toContain('Facade Service Boundary');
 
     const selectionSummaryAfter = host.querySelector('.pattern-explorer__selection-summary')?.textContent;
     expect(selectionSummaryAfter).toContain('Facade Service Boundary');

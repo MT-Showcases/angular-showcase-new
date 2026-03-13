@@ -22,9 +22,12 @@ export interface PatternCard {
   category: 'Container/Presentational' | 'Facade Service' | 'Signals Local State';
   summary: string;
   whyItMatters: string;
+  fullContent: string;
   level: PatternLevel;
   checklist: string[];
   antiPatterns: string[];
+  relatedTopics: string[];
+  exercises: string[];
 }
 
 export type PatternLabId = 'smart-dumb-refactor' | 'signal-vs-observable' | 'facade-fixer';

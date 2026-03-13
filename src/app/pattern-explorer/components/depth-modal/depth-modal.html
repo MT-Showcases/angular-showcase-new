@@ -1,0 +1,30 @@
+@if (isOpen && pattern) {
+<div class="depth-modal" (click)="onBackdropClick()" role="presentation">
+  <article
+    class="depth-modal__content"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="pattern.title + ' details'"
+    (click)="onContentClick($event)"
+  >
+    <header class="depth-modal__header">
+      <h3 class="depth-modal__title">{{ pattern.title }}</h3>
+      <button type="button" class="depth-modal__close" (click)="closeModal.emit()" aria-label="Close modal">
+        ×
+      </button>
+    </header>
+
+    <p class="depth-modal__summary">{{ pattern.summary }}</p>
+    <p class="depth-modal__text">{{ pattern.whyItMatters }}</p>
+
+    <footer class="depth-modal__actions">
+      <button type="button" class="depth-modal__action depth-modal__action--ghost" (click)="closeModal.emit()">
+        Close
+      </button>
+      <button type="button" class="depth-modal__action depth-modal__action--primary" (click)="openDepthPanel.emit()">
+        Open full depth
+      </button>
+    </footer>
+  </article>
+</div>
+}
