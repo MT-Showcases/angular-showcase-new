@@ -1,6 +1,5 @@
 :host {
   display: block;
-  background: #ffffff;
   min-height: 100vh;
 }
 
@@ -11,6 +10,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 1rem;
   }
 
   // White card with shadow containing the form

@@ -1,13 +1,15 @@
 :host {
   display: block;
-  background: #ffffff;
   min-height: 100vh;
 }
 
 // Main signals page container
 .signals-container {
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 1rem;
 
   // Card container for each section
   .section {
