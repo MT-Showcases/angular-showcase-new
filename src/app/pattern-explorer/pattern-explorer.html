@@ -6,11 +6,6 @@
 <section class="pattern-explorer">
   <p class="pattern-explorer__breadcrumb">Pattern Explorer &gt; {{ activeTabLabel() }}</p>
 
-  <!--
-    UX NOTE:
-    Mobile keeps the previous top-tab flow for familiarity and compact vertical reading.
-    Desktop moves tabs into the right detail pane to prioritize list scanning on the left.
-  -->
   <div class="tabs tabs--mobile" role="tablist" aria-label="Pattern Explorer tabs">
     <button
       type="button"
@@ -44,6 +39,73 @@
     </button>
   </div>
 
+  <div class="pattern-explorer__mobile-flow">
+    @if (activeTab() === 'panoramica') {
+    <div class="pattern-explorer__toolbar">
+      <app-search-bar
+        [(query)]="searchQuery"
+        [results]="filteredPatterns()"
+        (resultSelected)="onSearchResultSelected($event)"
+      />
+    </div>
+
+    <div class="pattern-explorer__filters" role="group" aria-label="Filter by level">
+      <button type="button" class="pattern-explorer__filter" [class.pattern-explorer__filter--active]="selectedLevel() === 'all'" (click)="onFilterLevel('all')">Tutti</button>
+      <button type="button" class="pattern-explorer__filter" [class.pattern-explorer__filter--active]="selectedLevel() === 'beginner'" (click)="onFilterLevel('beginner')">Beginner</button>
+      <button type="button" class="pattern-explorer__filter" [class.pattern-explorer__filter--active]="selectedLevel() === 'intermediate'" (click)="onFilterLevel('intermediate')">Intermediate</button>
+      <button type="button" class="pattern-explorer__filter" [class.pattern-explorer__filter--active]="selectedLevel() === 'advanced'" (click)="onFilterLevel('advanced')">Advanced</button>
+    </div>
+
+    <app-pattern-list
+      [patterns]="filteredPatterns()"
+      [selectedPatternId]="selectedPatternId()"
+      [showInlineDetail]="true"
+      (selectPattern)="onSelectPattern($event)"
+      (closePattern)="clearSelectedPattern()"
+    />
+    }
+
+    @if (activeTab() === 'approfondimento') {
+    @if (!selectedPattern()) {
+    <p class="pattern-explorer__empty">Seleziona prima un pattern in Panoramica</p>
+    } @else {
+    <article class="pattern-detail">
+      <h3 class="pattern-detail__title">{{ selectedPattern()!.title }}</h3>
+      <p class="pattern-detail__text">{{ selectedPattern()!.whyItMatters }}</p>
+      <div class="pattern-detail__columns">
+        <section>
+          <h4>Implementation Checklist</h4>
+          <ul>
+            @for (point of selectedPattern()!.checklist; track point) {
+            <li>{{ point }}</li>
+            }
+          </ul>
+        </section>
+        <section>
+          <h4>Common Anti-Patterns</h4>
+          <ul>
+            @for (antiPattern of selectedPattern()!.antiPatterns; track antiPattern) {
+            <li>{{ antiPattern }}</li>
+            }
+          </ul>
+        </section>
+      </div>
+    </article>
+    }
+    }
+
+    @if (activeTab() === 'lab') {
+    <div class="content-section">
+      <app-pattern-playground [patterns]="patterns()" />
+    </div>
+    }
+  </div>
+
+  <!--
+    UX NOTE:
+    On desktop we switch to a split view (sidebar + detail panel) to avoid wasting horizontal space.
+    This keeps pattern scanning and deep reading visible at the same time.
+  -->
   <div class="pattern-explorer__desktop-layout">
     <aside class="pattern-explorer__sidebar" aria-label="Pattern list sidebar">
       <div class="pattern-explorer__toolbar">
@@ -55,44 +117,15 @@
       </div>
 
       <div class="pattern-explorer__filters" role="group" aria-label="Filter by level">
-        <button
-          type="button"
-          class="pattern-explorer__filter"
-          [class.pattern-explorer__filter--active]="selectedLevel() === 'all'"
-          (click)="onFilterLevel('all')"
-        >
-          Tutti
-        </button>
-        <button
-          type="button"
-          class="pattern-explorer__filter"
-          [class.pattern-explorer__filter--active]="selectedLevel() === 'beginner'"
-          (click)="onFilterLevel('beginner')"
-        >
-          Beginner
-        </button>
-        <button
-          type="button"
-          class="pattern-explorer__filter"
-          [class.pattern-explorer__filter--active]="selectedLevel() === 'intermediate'"
-          (click)="onFilterLevel('intermediate')"
-        >
-          Intermediate
-        </button>
-        <button
-          type="button"
-          class="pattern-explorer__filter"
-          [class.pattern-explorer__filter--active]="selectedLevel() === 'advanced'"
-          (click)="onFilterLevel('advanced')"
-        >
-          Advanced
-        </button>
+        <button type="button" class="pattern-explorer__filter" [class.pattern-explorer__filter--active]="selectedLevel() === 'all'" (click)="onFilterLevel('all')">Tutti</button>
+        <button type="button" class="pattern-explorer__filter" [class.pattern-explorer__filter--active]="selectedLevel() === 'beginner'" (click)="onFilterLevel('beginner')">Beginner</button>
+        <button type="button" class="pattern-explorer__filter" [class.pattern-explorer__filter--active]="selectedLevel() === 'intermediate'" (click)="onFilterLevel('intermediate')">Intermediate</button>
+        <button type="button" class="pattern-explorer__filter" [class.pattern-explorer__filter--active]="selectedLevel() === 'advanced'" (click)="onFilterLevel('advanced')">Advanced</button>
       </div>
 
       <app-pattern-list
         [patterns]="filteredPatterns()"
         [selectedPatternId]="selectedPatternId()"
-        [showInlineDetail]="true"
         (selectPattern)="onSelectPattern($event)"
         (closePattern)="clearSelectedPattern()"
       />
@@ -100,36 +133,9 @@
 
     <section class="pattern-explorer__main" aria-label="Pattern detail area">
       <div class="tabs tabs--desktop" role="tablist" aria-label="Pattern detail tabs">
-        <button
-          type="button"
-          class="tab"
-          role="tab"
-          [class.active]="activeTab() === 'panoramica'"
-          [attr.aria-selected]="activeTab() === 'panoramica'"
-          (click)="setActiveTab('panoramica')"
-        >
-          Panoramica
-        </button>
-        <button
-          type="button"
-          class="tab"
-          role="tab"
-          [class.active]="activeTab() === 'approfondimento'"
-          [attr.aria-selected]="activeTab() === 'approfondimento'"
-          (click)="setActiveTab('approfondimento')"
-        >
-          Approfondimento
-        </button>
-        <button
-          type="button"
-          class="tab"
-          role="tab"
-          [class.active]="activeTab() === 'lab'"
-          [attr.aria-selected]="activeTab() === 'lab'"
-          (click)="setActiveTab('lab')"
-        >
-          Lab interattivi
-        </button>
+        <button type="button" class="tab" role="tab" [class.active]="activeTab() === 'panoramica'" [attr.aria-selected]="activeTab() === 'panoramica'" (click)="setActiveTab('panoramica')">Panoramica</button>
+        <button type="button" class="tab" role="tab" [class.active]="activeTab() === 'approfondimento'" [attr.aria-selected]="activeTab() === 'approfondimento'" (click)="setActiveTab('approfondimento')">Approfondimento</button>
+        <button type="button" class="tab" role="tab" [class.active]="activeTab() === 'lab'" [attr.aria-selected]="activeTab() === 'lab'" (click)="setActiveTab('lab')">Lab interattivi</button>
       </div>
 
       @if (!selectedPattern()) {
@@ -144,7 +150,6 @@
       <article class="pattern-detail">
         <h3 class="pattern-detail__title">{{ selectedPattern()!.title }}</h3>
         <p class="pattern-detail__text">{{ selectedPattern()!.whyItMatters }}</p>
-
         <div class="pattern-detail__columns">
           <section>
             <h4>Implementation Checklist</h4>
@@ -154,7 +159,6 @@
               }
             </ul>
           </section>
-
           <section>
             <h4>Common Anti-Patterns</h4>
             <ul>
