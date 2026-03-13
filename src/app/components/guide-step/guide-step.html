@@ -54,7 +54,9 @@
             <!-- Optional bullet points list -->
             @if (explanationBox.points && explanationBox.points.length > 0) {
               <ul class="guide-step__explanation-list">
-                @for (point of explanationBox.points; track $index) {
+                <!-- WHY: trackBy con id stabile evita re-render inutili degli elementi DOM
+                     ANTI-PATTERN: track $index su oggetti — Angular non può riutilizzare elementi quando l'ordine cambia -->
+                @for (point of explanationBox.points; track point) {
                   <li class="guide-step__explanation-list-item" [innerHTML]="point"></li>
                 }
               </ul>

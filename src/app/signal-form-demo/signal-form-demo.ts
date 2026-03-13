@@ -26,20 +26,20 @@
 
 import { Component, signal, computed, effect, ChangeDetectionStrategy } from '@angular/core';
 import { JsonPipe } from '@angular/common';
-import { PageHeader } from '../page-header/page-header';
+import { SectionHeaderComponent } from '../components/shared/section-header/section-header.component';
 import { CodeBlock } from '../components/code-block/code-block';
 
 @Component({
   selector: 'app-signal-form-demo',
-  imports: [PageHeader, CodeBlock, JsonPipe],
+  imports: [SectionHeaderComponent, CodeBlock, JsonPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   // PEDAGOGICAL NOTE: OnPush + Signals is the modern Angular performance combo.
   // Signals automatically notify Angular when they change, so OnPush works perfectly
   // without any manual markForCheck() calls.
   template: `
-    <app-page-header
+    <app-section-header
       title="Signal-Based Forms"
-      description="Build reactive forms using Angular Signals — no ReactiveForms module needed."
+      subtitle="Build reactive forms using Angular Signals — no ReactiveForms module needed."
     />
 
     <div class="demo-container">

@@ -77,7 +77,10 @@
       <div class="log-list">
         @if (vm.actionsLog.length === 0) {
         <div class="log-empty">Nessuna action ancora...</div>
-        } @for (action of vm.actionsLog; track $index) {
+        }
+        <!-- WHY: trackBy con id stabile evita re-render inutili degli elementi DOM
+             ANTI-PATTERN: track $index su oggetti — Angular non può riutilizzare elementi quando l'ordine cambia -->
+        @for (action of vm.actionsLog; track action) {
         <div class="log-item">
           <span class="log-time">{{ $index + 1 }}</span>
           <span class="log-action">{{ action }}</span>

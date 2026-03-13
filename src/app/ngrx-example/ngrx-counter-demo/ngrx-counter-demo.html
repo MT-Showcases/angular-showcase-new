@@ -22,6 +22,8 @@
     <div class="history-section">
       <h3>History</h3>
       <div class="history-list">
+        <!-- WHY: trackBy con id stabile evita re-render inutili degli elementi DOM
+             ANTI-PATTERN: track $index su oggetti — Angular non può riutilizzare elementi quando l'ordine cambia -->
         @for (value of counterState.history.slice().reverse(); track $index) {
         <span class="history-item">{{ value }}</span>
         }
@@ -39,7 +41,10 @@
       <div class="log-list">
         @if (actionsLog.length === 0) {
         <div class="log-empty">Nessuna action ancora...</div>
-        } @for (action of actionsLog; track $index) {
+        }
+        <!-- WHY: trackBy con id stabile evita re-render inutili degli elementi DOM
+             ANTI-PATTERN: track $index su oggetti — Angular non può riutilizzare elementi quando l'ordine cambia -->
+        @for (action of actionsLog; track action) {
         <div class="log-item">
           <span class="log-time">{{ $index + 1 }}</span>
           <span class="log-action">{{ action }}</span>

@@ -19,7 +19,7 @@
   color: #7f1d1d; // rosso molto scuro (Tailwind red-900), contrasto > 8:1 su #fee2e2
 
   &__icon {
-    color: #dc2626 !important; // rosso per l'icona di warning
+    color: #dc2626; // rosso per l'icona di warning
   }
 
   &__title {
@@ -66,7 +66,7 @@
   }
 
   &__item-icon {
-    color: #dc2626 !important;
+    color: #dc2626;
     font-size: 18px;
     width: 18px;
     height: 18px;

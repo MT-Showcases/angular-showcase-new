@@ -43,8 +43,8 @@
   }
 
   &__icon {
-    &--left { color: #059669 !important; }  // verde per ✅
-    &--right { color: #dc2626 !important; } // rosso per ❌
+    &--left { color: #059669; }  // verde per ✅
+    &--right { color: #dc2626; } // rosso per ❌
   }
 
   &__list {
@@ -103,6 +103,7 @@
   .mat-mdc-card-title,
   .mat-mdc-card-subtitle,
   .mat-mdc-card-content {
+    // NECESSARY: override Material default ellipsis/color behavior to ensure pedagogical visibility
     color: inherit !important;
     white-space: normal !important;
     overflow: visible !important;

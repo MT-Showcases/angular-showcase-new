@@ -129,7 +129,9 @@
     </p>
 
     <div class="cart">
-      @for (item of items(); track $index) {
+      <!-- WHY: trackBy con id stabile evita re-render inutili degli elementi DOM
+           ANTI-PATTERN: track $index su oggetti — Angular non può riutilizzare elementi quando l'ordine cambia -->
+      @for (item of items(); track item.name) {
       <div class="cart-item">
         <div class="cart-item__info">
           <div class="cart-item__name">{{ item.name }}</div>
@@ -178,7 +180,9 @@
 
     <div class="effect-logs">
       <div class="effect-logs__title">Log Effect:</div>
-      @for (log of effectLogs(); track $index) {
+      <!-- WHY: trackBy con id stabile evita re-render inutili degli elementi DOM
+           ANTI-PATTERN: track $index su oggetti — Angular non può riutilizzare elementi quando l'ordine cambia -->
+      @for (log of effectLogs(); track log) {
       <div class="effect-logs__item">{{ log }}</div>
       } @empty {
       <div class="effect-logs__empty">Nessun log ancora...</div>

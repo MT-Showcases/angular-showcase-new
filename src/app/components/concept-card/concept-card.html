@@ -37,7 +37,9 @@
 
       <!-- List of key points -->
       <ul class="concept-card__key-points-list">
-        @for (point of keyPoints; track $index) {
+        <!-- WHY: trackBy con id stabile evita re-render inutili degli elementi DOM
+             ANTI-PATTERN: track $index su oggetti — Angular non può riutilizzare elementi quando l'ordine cambia -->
+        @for (point of keyPoints; track point) {
           <li class="concept-card__key-point-item">{{ point }}</li>
         }
       </ul>
