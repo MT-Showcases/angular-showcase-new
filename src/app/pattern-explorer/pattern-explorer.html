@@ -6,6 +6,12 @@
 <section class="pattern-explorer">
   <p class="pattern-explorer__breadcrumb">Pattern Explorer &gt; {{ activeTabLabel() }}</p>
 
+  <!--
+    MOBILE TABS
+    PEDAGOGICAL NOTE: On mobile we show one panel at a time to preserve vertical space.
+    The same three tabs (Panoramica / Approfondimento / Lab) map to the same activeTab signal
+    used by the desktop layout, so state is shared automatically.
+  -->
   <div class="tabs tabs--mobile" role="tablist" aria-label="Pattern Explorer tabs">
     <button
       type="button"
@@ -39,6 +45,9 @@
     </button>
   </div>
 
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- MOBILE FLOW (hidden on desktop via CSS)                    -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
   <div class="pattern-explorer__mobile-flow">
     @if (activeTab() === 'panoramica') {
     <div class="pattern-explorer__toolbar">
@@ -102,9 +111,9 @@
   </div>
 
   <!--
-    UX NOTE:
-    On desktop we switch to a split view (sidebar + detail panel) to avoid wasting horizontal space.
-    This keeps pattern scanning and deep reading visible at the same time.
+    DESKTOP LAYOUT — sidebar + detail panel
+    PEDAGOGICAL NOTE: On desktop we switch to a split view to avoid wasting horizontal space.
+    This keeps pattern scanning (left) and deep reading (right) visible simultaneously.
   -->
   <div class="pattern-explorer__desktop-layout">
     <aside class="pattern-explorer__sidebar" aria-label="Pattern list sidebar">
@@ -131,6 +140,12 @@
       />
     </aside>
 
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- DESKTOP DETAIL PANEL                                       -->
+    <!-- Each tab renders its own article block.                    -->
+    <!-- PEDAGOGICAL NOTE: @if blocks keep each tab's template      -->
+    <!-- isolated — you can modify one tab without touching others. -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
     <section class="pattern-explorer__main" aria-label="Pattern detail area">
       <div class="tabs tabs--desktop" role="tablist" aria-label="Pattern detail tabs">
         <button type="button" class="tab" role="tab" [class.active]="activeTab() === 'panoramica'" [attr.aria-selected]="activeTab() === 'panoramica'" (click)="setActiveTab('panoramica')">Panoramica</button>
@@ -139,20 +154,91 @@
       </div>
 
       @if (!selectedPattern()) {
+      <!--
+        PEDAGOGICAL NOTE: Empty state gives the user a clear affordance.
+        Showing a blank area would silently break the UX contract.
+      -->
       <p class="pattern-explorer__empty">Seleziona un pattern dalla lista a sinistra</p>
+
       } @else if (activeTab() === 'panoramica') {
+      <!--
+        ─────────────────────────────────────────────────────────────
+        TAB: PANORAMICA
+        Shows: title, summary, whyItMatters, and the intro-depth
+        examples (analogies / plain explanations + optional snippet).
+        PEDAGOGICAL NOTE: "Intro" depth is the entry point for any
+        learner — we want concepts before code.
+        ─────────────────────────────────────────────────────────────
+      -->
       <article class="pattern-detail">
         <h3 class="pattern-detail__title">{{ selectedPattern()!.title }}</h3>
-        <p class="pattern-detail__text">{{ selectedPattern()!.summary }}</p>
-        <p class="pattern-detail__meta">Categoria: {{ selectedPattern()!.category }} · Livello: {{ selectedPattern()!.level }}</p>
+        <span class="pattern-detail__badge pattern-detail__badge--{{ selectedPattern()!.level }}">
+          {{ selectedPattern()!.level }}
+        </span>
+        <p class="pattern-detail__meta">Categoria: {{ selectedPattern()!.category }}</p>
+
+        <p class="pattern-detail__text pattern-detail__text--summary">{{ selectedPattern()!.summary }}</p>
+
+        @if (selectedPattern()!.whyItMatters) {
+        <div class="pattern-detail__why">
+          <h4 class="pattern-detail__section-title">💡 Perché è importante</h4>
+          <p class="pattern-detail__text">{{ selectedPattern()!.whyItMatters }}</p>
+        </div>
+        }
+
+        <!--
+          INTRO DEPTH EXAMPLES from learning-content.json
+          PEDAGOGICAL NOTE: We show analogy-format examples at the intro level
+          because analogies help learners anchor a new concept to familiar mental models.
+          Code comes after understanding, not before.
+        -->
+        @if (introExamples().length > 0) {
+        <div class="pattern-detail__depth-section">
+          <h4 class="pattern-detail__section-title">🌱 Concetto di base</h4>
+          @for (example of introExamples(); track example.id) {
+          <div class="pattern-detail__example">
+            <p class="pattern-detail__example-prompt"><strong>Q:</strong> {{ example.prompt }}</p>
+            @if (example.solution) {
+              @if (isCodeSnippet(example.solution)) {
+              <app-code-block [code]="example.solution" language="typescript" />
+              } @else {
+              <p class="pattern-detail__example-solution"><strong>A:</strong> {{ example.solution }}</p>
+              }
+            }
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Related topics as quick links -->
+        @if (selectedPattern()!.relatedTopics.length > 0) {
+        <div class="pattern-detail__related">
+          <h4 class="pattern-detail__section-title">🔗 Argomenti correlati</h4>
+          <ul class="pattern-detail__tags">
+            @for (topic of selectedPattern()!.relatedTopics; track topic) {
+            <li class="pattern-detail__tag">{{ topic }}</li>
+            }
+          </ul>
+        </div>
+        }
       </article>
+
       } @else if (activeTab() === 'approfondimento') {
+      <!--
+        ─────────────────────────────────────────────────────────────
+        TAB: APPROFONDIMENTO
+        Shows: checklist, anti-patterns, guided (snippet) examples,
+        and applied (exercise) examples.
+        PEDAGOGICAL NOTE: "Guided" gives worked examples; "Applied"
+        adds realistic exercises. Together they bridge concept → code → practice.
+        ─────────────────────────────────────────────────────────────
+      -->
       <article class="pattern-detail">
         <h3 class="pattern-detail__title">{{ selectedPattern()!.title }}</h3>
-        <p class="pattern-detail__text">{{ selectedPattern()!.whyItMatters }}</p>
+
         <div class="pattern-detail__columns">
           <section>
-            <h4>Implementation Checklist</h4>
+            <h4>✅ Implementation Checklist</h4>
             <ul>
               @for (point of selectedPattern()!.checklist; track point) {
               <li>{{ point }}</li>
@@ -160,7 +246,7 @@
             </ul>
           </section>
           <section>
-            <h4>Common Anti-Patterns</h4>
+            <h4>❌ Common Anti-Patterns</h4>
             <ul>
               @for (antiPattern of selectedPattern()!.antiPatterns; track antiPattern) {
               <li>{{ antiPattern }}</li>
@@ -168,10 +254,135 @@
             </ul>
           </section>
         </div>
+
+        <!--
+          GUIDED examples: snippet format
+          PEDAGOGICAL NOTE: Snippets bridge analogy and real code.
+          We show the prompt first so the learner can try before seeing the solution.
+        -->
+        @if (guidedExamples().length > 0) {
+        <div class="pattern-detail__depth-section">
+          <h4 class="pattern-detail__section-title">🧩 Pratica guidata</h4>
+          @for (example of guidedExamples(); track example.id) {
+          <div class="pattern-detail__example">
+            <p class="pattern-detail__example-label">{{ example.title }}</p>
+            <p class="pattern-detail__example-prompt">{{ example.prompt }}</p>
+            @if (example.solution) {
+            <app-code-block [code]="example.solution" language="typescript" />
+            }
+          </div>
+          }
+        </div>
+        }
+
+        <!--
+          APPLIED examples: exercise format
+          PEDAGOGICAL NOTE: Exercises force the learner to produce, not just read.
+          Even showing the solution is valuable — compare yours to the expected answer.
+        -->
+        @if (appliedExamples().length > 0) {
+        <div class="pattern-detail__depth-section">
+          <h4 class="pattern-detail__section-title">🏗️ Applicazione pratica</h4>
+          @for (example of appliedExamples(); track example.id) {
+          <div class="pattern-detail__example">
+            <p class="pattern-detail__example-label">{{ example.title }}</p>
+            <p class="pattern-detail__example-prompt"><strong>Esercizio:</strong> {{ example.prompt }}</p>
+            @if (example.solution) {
+            <details class="pattern-detail__spoiler">
+              <summary>Mostra soluzione</summary>
+              @if (isCodeSnippet(example.solution)) {
+              <app-code-block [code]="example.solution" language="typescript" />
+              } @else {
+              <p class="pattern-detail__example-solution">{{ example.solution }}</p>
+              }
+            </details>
+            }
+          </div>
+          }
+        </div>
+        }
       </article>
+
       } @else {
-      <div class="content-section">
-        <app-pattern-playground [patterns]="patterns()" />
+      <!--
+        ─────────────────────────────────────────────────────────────
+        TAB: LAB INTERATTIVI
+        Shows: mastery case-study + links to the interactive labs.
+        PEDAGOGICAL NOTE: Mastery means teaching and connecting concepts.
+        Case studies expose trade-offs — the hardest skill for any developer.
+        ─────────────────────────────────────────────────────────────
+      -->
+      <div class="pattern-detail">
+        <h3 class="pattern-detail__title">Lab interattivi</h3>
+
+        <!--
+          MASTERY examples: case-study format
+          PEDAGOGICAL NOTE: A case study forces you to reason about trade-offs,
+          not just reproduce code. That's what separates junior from senior developers.
+        -->
+        @if (masteryExamples().length > 0) {
+        <div class="pattern-detail__depth-section">
+          <h4 class="pattern-detail__section-title">🎓 Approfondimento: casi reali</h4>
+          @for (example of masteryExamples(); track example.id) {
+          <div class="pattern-detail__example">
+            <p class="pattern-detail__example-label">{{ example.title }}</p>
+            <p class="pattern-detail__example-prompt">{{ example.prompt }}</p>
+            @if (example.solution) {
+            <details class="pattern-detail__spoiler">
+              <summary>Vedi riflessione esperta</summary>
+              <p class="pattern-detail__example-solution">{{ example.solution }}</p>
+            </details>
+            }
+          </div>
+          }
+        </div>
+        }
+
+        <!--
+          INTERACTIVE LABS
+          PEDAGOGICAL NOTE: Links are explicit route references to the lab components.
+          We keep them static here (not data-driven) because lab availability depends
+          on route registration — not just JSON content.
+        -->
+        <div class="pattern-detail__depth-section">
+          <h4 class="pattern-detail__section-title">🧪 Esercizi interattivi</h4>
+          <p class="pattern-detail__text">Metti in pratica i pattern con gli esercizi guidati:</p>
+
+          <div class="pattern-detail__lab-links">
+            <button
+              type="button"
+              class="pattern-detail__lab-card"
+              (click)="setActiveTab('lab')"
+            >
+              <span class="pattern-detail__lab-icon">🔀</span>
+              <span class="pattern-detail__lab-name">Smart/Dumb Refactor Lab</span>
+              <span class="pattern-detail__lab-desc">Classifica responsabilità tra smart e dumb components</span>
+            </button>
+            <button
+              type="button"
+              class="pattern-detail__lab-card"
+              (click)="setActiveTab('lab')"
+            >
+              <span class="pattern-detail__lab-icon">⚡</span>
+              <span class="pattern-detail__lab-name">Signal vs Observable Lab</span>
+              <span class="pattern-detail__lab-desc">Confronta reattività locale con Signal e Observable</span>
+            </button>
+            <button
+              type="button"
+              class="pattern-detail__lab-card"
+              (click)="setActiveTab('lab')"
+            >
+              <span class="pattern-detail__lab-icon">🛠️</span>
+              <span class="pattern-detail__lab-name">Facade Anti-Pattern Fixer</span>
+              <span class="pattern-detail__lab-desc">Individua e correggi anti-pattern nei boundary del facade</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Full playground -->
+        <div class="content-section">
+          <app-pattern-playground [patterns]="patterns()" />
+        </div>
       </div>
       }
     </section>

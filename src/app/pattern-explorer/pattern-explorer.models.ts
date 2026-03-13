@@ -19,6 +19,10 @@ export type PatternLevel = 'beginner' | 'intermediate' | 'advanced';
 
 export interface PatternCard {
   id: string;
+  // PEDAGOGICAL NOTE: conceptId links this pattern card to the richer LearningConcept
+  // in learning-content.json. This optional field enables progressive enrichment:
+  // cards without a conceptId still work, but with one they gain depth-level examples.
+  conceptId?: string;
   title: string;
   // PEDAGOGICAL NOTE: Category is a union type, not a free string.
   // Adding a new category forces you to provide pattern cards — this is intentional.

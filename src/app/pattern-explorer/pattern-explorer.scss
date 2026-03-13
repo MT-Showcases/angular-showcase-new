@@ -203,3 +203,171 @@
     }
   }
 }
+
+// ─────────────────────────────────────────────────────────────
+// PATTERN DETAIL — Enriched depth-level styles
+// PEDAGOGICAL NOTE: Visual hierarchy reinforces learning stages.
+// Each section has a distinct visual weight so learners can scan
+// from "concept" → "code" → "exercise" naturally.
+// ─────────────────────────────────────────────────────────────
+
+.pattern-detail {
+  &__badge {
+    display: inline-block;
+    font-size: rem(12);
+    font-weight: 600;
+    padding: rem(2) rem(8);
+    border-radius: rem(999);
+    margin-bottom: rem(8);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+
+    &--beginner   { background: #d1fae5; color: #065f46; }
+    &--intermediate { background: #fef3c7; color: #92400e; }
+    &--advanced   { background: #ede9fe; color: #4c1d95; }
+  }
+
+  &__text--summary {
+    font-size: rem(16);
+    line-height: 1.7;
+    color: $neutral-darker;
+  }
+
+  &__why {
+    background: #f0fdf4;
+    border-left: 4px solid #22c55e;
+    padding: rem(12) rem(16);
+    border-radius: 0 rem(8) rem(8) 0;
+    margin: rem(16) 0;
+  }
+
+  &__depth-section {
+    margin-top: rem(24);
+    padding-top: rem(16);
+    border-top: 1px solid #e5e7eb;
+  }
+
+  &__section-title {
+    font-size: rem(14);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6b7280;
+    margin: 0 0 rem(12);
+  }
+
+  &__example {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: rem(8);
+    padding: rem(12) rem(16);
+    margin-bottom: rem(12);
+  }
+
+  &__example-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: rem(4);
+    font-size: rem(14);
+  }
+
+  &__example-prompt {
+    color: #4b5563;
+    margin-bottom: rem(8);
+    font-size: rem(14);
+  }
+
+  &__example-solution {
+    color: #1f2937;
+    background: #f3f4f6;
+    border-radius: rem(6);
+    padding: rem(8) rem(12);
+    font-size: rem(14);
+    line-height: 1.6;
+  }
+
+  &__spoiler {
+    margin-top: rem(8);
+
+    summary {
+      cursor: pointer;
+      color: #6366f1;
+      font-size: rem(13);
+      font-weight: 600;
+      user-select: none;
+      padding: rem(4) 0;
+
+      &:hover { color: #4f46e5; }
+    }
+
+    &[open] summary { margin-bottom: rem(8); }
+  }
+
+  &__related { margin-top: rem(20); }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(8);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__tag {
+    background: #ede9fe;
+    color: #5b21b6;
+    font-size: rem(12);
+    padding: rem(4) rem(10);
+    border-radius: rem(999);
+  }
+
+  &__lab-links {
+    display: flex;
+    flex-direction: column;
+    gap: rem(12);
+    margin-top: rem(12);
+  }
+
+  &__lab-card {
+    display: grid;
+    grid-template-columns: rem(32) 1fr;
+    grid-template-rows: auto auto;
+    gap: rem(2) rem(12);
+    align-items: start;
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    border-radius: rem(10);
+    padding: rem(14) rem(16);
+    text-decoration: none;
+    text-align: left;
+    color: inherit;
+    cursor: pointer;
+    width: 100%;
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &:hover {
+      border-color: #6366f1;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
+    }
+  }
+
+  &__lab-icon {
+    font-size: rem(24);
+    grid-row: span 2;
+    display: flex;
+    align-items: center;
+  }
+
+  &__lab-name {
+    font-weight: 700;
+    color: #312e81;
+    font-size: rem(14);
+  }
+
+  &__lab-desc {
+    font-size: rem(13);
+    color: #6b7280;
+  }
+}

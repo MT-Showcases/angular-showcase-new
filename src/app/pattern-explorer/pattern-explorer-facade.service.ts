@@ -30,6 +30,7 @@ export class PatternExplorerFacadeService {
   private readonly patternCards: PatternCard[] = [
     {
       id: 'container-presentational',
+      conceptId: 'smart-dumb-io',
       title: 'Container + Presentational Split',
       category: 'Container/Presentational',
       summary:
@@ -56,6 +57,7 @@ export class PatternExplorerFacadeService {
     },
     {
       id: 'facade-service',
+      conceptId: 'svc-facade',
       title: 'Facade Service Boundary',
       category: 'Facade Service',
       summary:
@@ -82,6 +84,7 @@ export class PatternExplorerFacadeService {
     },
     {
       id: 'signals-local-state',
+      conceptId: 'signals',
       title: 'Signals for Local UI State',
       category: 'Signals Local State',
       summary:
@@ -113,6 +116,7 @@ export class PatternExplorerFacadeService {
     // ──────────────────────────────────────────────────────────────
     {
       id: 'smart-dumb-io',
+      conceptId: 'smart-dumb-io',
       title: 'Smart/Dumb Components with Input/Output',
       category: 'Container/Presentational',
       summary:
@@ -146,6 +150,7 @@ export class PatternExplorerFacadeService {
     // ──────────────────────────────────────────────────────────────
     {
       id: 'http-loading-state',
+      conceptId: 'http-loading-state',
       title: 'HTTP + Loading State Pattern',
       category: 'HTTP & Data Layer',
       summary:
@@ -179,6 +184,7 @@ export class PatternExplorerFacadeService {
     // ──────────────────────────────────────────────────────────────
     {
       id: 'ngrx-store-pattern',
+      conceptId: 'ngrx-store',
       title: 'NgRx Store Pattern',
       category: 'State Management',
       summary:
@@ -210,6 +216,7 @@ export class PatternExplorerFacadeService {
     // ──────────────────────────────────────────────────────────────
     {
       id: 'onpush-change-detection',
+      conceptId: 'onpush-change-detection',
       title: 'ChangeDetection: OnPush Strategy',
       category: 'Change Detection',
       summary:
@@ -272,6 +279,7 @@ export class PatternExplorerFacadeService {
     // ──────────────────────────────────────────────────────────────
     {
       id: 'rxjs-operators',
+      conceptId: 'rxjs-operators',
       title: 'RxJS Operators: switchMap, combineLatest, takeUntilDestroyed',
       category: 'RxJS Patterns',
       summary:
