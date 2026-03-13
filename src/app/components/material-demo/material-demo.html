@@ -65,6 +65,36 @@
     </mat-card-content>
   </mat-card>
 
+  <!-- SHARED COMPONENTS DEMO -->
+  <app-section-header
+    title="Shared Pedagogical Components"
+    subtitle="Componenti condivisi costruiti su Angular Material — usati in tutte le sezioni"
+    breadcrumb="Material Demo > Shared Components">
+  </app-section-header>
+
+  <app-pedagogy-card title="Perché i componenti condivisi?" variant="info">
+    I componenti shared garantiscono coerenza visiva senza duplicare SCSS.
+    Ogni sezione usa gli stessi mattoni, il design system è centralizzato.
+  </app-pedagogy-card>
+
+  <app-antipattern-box
+    title="Anti-pattern: CSS duplicato"
+    description="Prima dei componenti shared, ogni pagina ridefiniva gli stessi stili."
+    [items]="[
+      'pedagogy-box in data-binding.scss',
+      'pedagogy-box ridefinita in directives.scss',
+      'pedagogy-box ridefinita ancora in forms.scss',
+      'Risultato: stili inconsistenti e manutenzione impossibile'
+    ]">
+  </app-antipattern-box>
+
+  <app-comparison-grid
+    leftTitle="✅ Con componenti shared"
+    rightTitle="❌ Senza componenti shared"
+    [leftItems]="['Un solo componente da mantenere', 'Consistenza visiva garantita', 'Aggiornamento in un punto solo', 'Tree-shaking ottimale']"
+    [rightItems]="['CSS duplicato in ogni file', 'Stili divergenti tra pagine', 'Bug ripetuti ovunque', 'Bundle inutilmente grande']">
+  </app-comparison-grid>
+
   <!-- Palette preview -->
   <mat-card class="demo-card">
     <mat-card-header>

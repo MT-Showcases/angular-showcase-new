@@ -18,6 +18,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { PedagogyCardComponent, AntipatternBoxComponent, ComparisonGridComponent, SectionHeaderComponent } from '../shared';
 
 @Component({
   selector: 'app-material-demo',
@@ -28,6 +29,10 @@ import { MatIconModule } from '@angular/material/icon';
     MatChipsModule,
     MatProgressBarModule,
     MatIconModule,
+    PedagogyCardComponent,
+    AntipatternBoxComponent,
+    ComparisonGridComponent,
+    SectionHeaderComponent,
   ],
   templateUrl: './material-demo.html',
   styleUrl: './material-demo.scss',
