@@ -11,6 +11,7 @@ import { NgrxExample } from './ngrx-example/ngrx-example';
 import { CodeBlockDemo } from './code-block-demo/code-block-demo';
 import { BehaviorSubjectComponent } from './behavior-subject/behavior-subject';
 import { PatternExplorer } from './pattern-explorer/pattern-explorer';
+import { SignalFormDemo } from './signal-form-demo/signal-form-demo';
 
 export const routes: Routes = [
   {
@@ -44,6 +45,10 @@ export const routes: Routes = [
       {
         path: 'http',
         component: HttpExample,
+      },
+      {
+        path: 'signal-forms',
+        component: SignalFormDemo,
       },
     ],
   },
