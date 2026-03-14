@@ -2,6 +2,10 @@
 <div appLinkInterceptor>
   <app-navbar></app-navbar>
 
+  @if (isNavigating()) {
+    <div class="route-loader" aria-hidden="true"></div>
+  }
+
   <main class="main" [@routeAnimations]="getRouteAnimationState(outlet)">
     <router-outlet #outlet="outlet"></router-outlet>
   </main>

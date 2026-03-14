@@ -106,10 +106,7 @@
 
   <!-- Indicatore di caricamento globale -->
   @if (loading()) {
-  <div class="loading-indicator">
-    <div class="loading-spinner"></div>
-    <span>Caricamento in corso...</span>
-  </div>
+    <app-skeleton-loader [rows]="['100%', '75%', '90%', '60%', '80%']" />
   }
 
   <!-- Sezione CREATE - POST -->
