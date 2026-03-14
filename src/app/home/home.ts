@@ -104,7 +104,7 @@ export class Home {
     },
     {
       routerLink: '/examples',
-      iconName: 'school',
+      iconName: 'code',
       title: 'Examples',
       description: 'Componenti utente reali con Signals, Service e animazioni',
       features: ['Lista utenti dinamica', 'Ricerca in tempo reale', 'Cards con animazioni'],
