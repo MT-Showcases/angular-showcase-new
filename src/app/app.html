@@ -2,9 +2,8 @@
 <div appLinkInterceptor>
   <app-navbar></app-navbar>
 
-  <main class="main">
-    <!--/* ROUTER OUTLET */-->
-    <router-outlet></router-outlet>
+  <main class="main" [@routeAnimations]="getRouteAnimationState(outlet)">
+    <router-outlet #outlet="outlet"></router-outlet>
   </main>
 
   <!-- Bouncing logos component -->

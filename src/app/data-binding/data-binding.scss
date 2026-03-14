@@ -220,6 +220,18 @@
   }
 }
 
+@media (max-width: 375px) {
+  .data-binding__example-code,
+  .code-snippet,
+  pre,
+  code {
+    font-size: 0.75rem !important;
+    padding: 0.75rem !important;
+    overflow-x: auto !important;
+    white-space: pre !important;
+  }
+}
+
 @media (min-width: 1024px) {
   .data-binding__examples {
     grid-template-columns: repeat(2, minmax(0, 1fr));

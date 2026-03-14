@@ -18,73 +18,90 @@ export const routes: Routes = [
   {
     path: '',
     component: Home,
+    data: { animation: 'HomePage' }
   },
   {
     path: 'basics',
+    data: { animation: 'BasicsPage' },
     children: [
       {
         path: 'data-binding',
         component: DataBinding,
+        data: { animation: 'DataBindingPage' }
       },
       {
         path: 'directives',
         component: Directives,
+        data: { animation: 'DirectivesPage' }
       },
       {
         path: 'forms',
         component: Forms,
+        data: { animation: 'FormsPage' }
       },
     ],
   },
   {
     path: 'advanced',
+    data: { animation: 'AdvancedPage' },
     children: [
       {
         path: 'signals',
         component: Signals,
+        data: { animation: 'SignalsPage' }
       },
       {
         path: 'http',
         component: HttpExample,
+        data: { animation: 'HttpPage' }
       },
       {
         path: 'signal-forms',
         component: SignalFormDemo,
+        data: { animation: 'SignalFormsPage' }
       },
     ],
   },
   {
     path: 'state',
+    data: { animation: 'StatePage' },
     children: [
       {
         path: 'ngrx',
         component: NgrxExample,
+        data: { animation: 'NgrxPage' }
       },
       {
         path: 'behavior-subject',
         component: BehaviorSubjectComponent,
+        data: { animation: 'BehaviorSubjectPage' }
       },
     ],
   },
   {
     path: 'pattern-explorer',
     component: PatternExplorer,
+    data: { animation: 'PatternExplorerPage' }
   },
   {
     path: 'patterns',
+    data: { animation: 'PatternsPage' },
     children: [
       {
         path: 'gof-reference',
-        loadComponent: () => import('./patterns/gof-reference/gof-reference').then(m => m.GofReference)
+        loadComponent: () => import('./patterns/gof-reference/gof-reference').then(m => m.GofReference),
+        data: { animation: 'GofReferencePage' }
       }
     ]
   },
   {
     path: 'examples',
+    data: { animation: 'ExamplesPage' },
     children: [
       {
         path: 'users',
         component: UserPage,
+        data: { animation: 'UsersPage' }
       },
       {
         path: 'pattern-explorer',
@@ -96,12 +113,11 @@ export const routes: Routes = [
   {
     path: 'code-block-demo',
     component: CodeBlockDemo,
+    data: { animation: 'CodeBlockDemoPage' }
   },
   {
-    // WHY /material-demo?
-    // Route di test per verificare l'integrazione Angular Material + tema M3.
-    // Accessibile direttamente durante lo sviluppo.
     path: 'material-demo',
     component: MaterialDemo,
+    data: { animation: 'MaterialDemoPage' }
   },
 ];

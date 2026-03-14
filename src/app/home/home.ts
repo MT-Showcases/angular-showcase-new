@@ -102,5 +102,12 @@ export class Home {
         'Signals per stato locale UI',
       ],
     },
+    {
+      routerLink: '/examples',
+      iconName: 'school',
+      title: 'Examples',
+      description: 'Componenti utente reali con Signals, Service e animazioni',
+      features: ['Lista utenti dinamica', 'Ricerca in tempo reale', 'Cards con animazioni'],
+    },
   ];
 }
