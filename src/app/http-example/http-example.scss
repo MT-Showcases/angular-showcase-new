@@ -898,11 +898,20 @@ pre {
   &--green {
     background: rgba(72, 187, 120, 0.08);
     border: 1px solid rgba(72, 187, 120, 0.3);
+
+    // WHY: sfondo semi-trasparente chiaro → forziamo testo scuro per WCAG AA
+    // ANTI-PATTERN: ereditare il colore — su sfondo quasi-bianco può risultare illeggibile
+    code { color: #1a3a2a; }
+    &__title { color: #1a5c35; }
   }
 
   &--red {
     background: rgba(229, 62, 62, 0.06);
     border: 1px solid rgba(229, 62, 62, 0.2);
+
+    // WHY: stesso motivo — sfondo quasi bianco, testo deve essere esplicitamente scuro
+    code { color: #3a1a1a; }
+    &__title { color: #7b1a1a; }
   }
 }
 
